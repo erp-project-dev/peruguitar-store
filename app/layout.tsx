@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <NavBar />
 
-        <div className="flex min-h-screen mt-40 mb-20 items-center justify-center font-sans">
+        <div className="flex mt-40 mb-20 items-center justify-center font-sans">
           {children}
         </div>
 

@@ -12,7 +12,7 @@ export default function ProductSpecs({ specs, brand, model }: SpecsProps) {
     <section className="mt-10">
       <h2 className="text-2xl font-semibold mb-4">Especificaciones</h2>
 
-      <div className="bg-[#161B22] rounded-xl p-8 shadow-lg border border-white/5">
+      <div className="bg-gray-800 rounded-xl p-8 shadow-lg border border-white/5">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-8">
           <div>
             <p className="text-gray-400 text-sm truncate">Marca</p>

@@ -1,6 +1,9 @@
 import { GuitarSpecs } from "./spec.type";
 
+export type PublishType = "standard" | "premium";
+
 export type ProductStatus = "new" | "like_new";
+
 export type Category =
   | "guitar"
   | "bass"
@@ -30,7 +33,7 @@ export interface Product {
   price: number;
 
   publish_date: string;
-  publish_type: string;
+  publish_type: PublishType;
 
   is_enabled: boolean;
   merchant_id: string;

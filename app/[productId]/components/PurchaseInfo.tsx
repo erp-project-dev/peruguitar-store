@@ -23,7 +23,7 @@ export default function PurchaseInfo({
 
   return (
     <section className="max-w-5xl mx-auto px-4 mt-20 mb-10">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 p-6 rounded-xl bg-[#161B22] shadow-xl border border-white/10">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 p-6 rounded-xl bg-gray-800 shadow-xl border border-white/10">
         <div>
           <p className="text-amber-400 font-bold text-5xl drop-shadow">
             S/ {price.toLocaleString("es-PE", { minimumFractionDigits: 2 })}

@@ -1,3 +1,5 @@
+import { MapPin, User } from "lucide-react";
+
 import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
 import { ProductHandler } from "@/app/handlers/product/index.handler";
 
@@ -91,12 +93,20 @@ export default async function ProductPage({
         specs={product.specs}
       />
 
-      <section className="mt-12 space-y-2">
+      <section className="mt-12 space-y-3">
         <h2 className="text-2xl font-semibold">Publicado por</h2>
 
         <p className="text-lg font-medium">
           {product.merchant.fullName} (@{product.merchant.id})
         </p>
+
+        <div className="flex items-center gap-2 text-base">
+          <MapPin className="w-5 h-5" />
+          <span>
+            {product.merchant.country}, {product.merchant.state},{" "}
+            {product.merchant.city}
+          </span>
+        </div>
       </section>
     </div>
   );

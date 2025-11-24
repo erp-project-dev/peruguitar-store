@@ -28,6 +28,9 @@ export interface ProductPageViewModel {
     id: string;
     fullName: string;
     firstName: string;
+    country: string;
+    state: string;
+    city: string;
     lastName: string;
     whatsapp: string;
     instagram: string;
