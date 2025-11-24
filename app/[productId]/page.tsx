@@ -39,7 +39,7 @@ export async function generateMetadata({
             height: 630,
           },
         ],
-        url: `https://tudominio.com/product/${params.id}`,
+        url: `https://peruguitar.com/${product.id}`,
         type: "article",
       },
     };
