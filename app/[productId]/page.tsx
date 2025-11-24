@@ -34,7 +34,10 @@ export async function generateMetadata({
         description: product.description,
         images: [
           {
-            url: getCatalogImagePath(product.merchant.id, product.pic_1),
+            url: `https://peruguitar.com/${getCatalogImagePath(
+              product.merchant.id,
+              product.pic_1
+            )}`,
             width: 1200,
             height: 630,
           },
