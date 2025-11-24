@@ -1,4 +1,4 @@
-import { MapPin, User } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
 import { ProductHandler } from "@/app/handlers/product/index.handler";
@@ -6,6 +6,7 @@ import { ProductHandler } from "@/app/handlers/product/index.handler";
 import ProductGallery from "./components/Gallery";
 import ProductPurchaseInfo from "./components/PurchaseInfo";
 import ProductSpecs from "./components/Specs";
+import { getCatalogImagePath } from "../helpers/product.helper";
 
 export async function generateStaticParams() {
   const { items } = CatalogHandler();
@@ -28,6 +29,19 @@ export async function generateMetadata({
     return {
       title: `${product.name} - Peru Guitar`,
       description: product.description,
+      openGraph: {
+        title: product.name,
+        description: product.description,
+        images: [
+          {
+            url: getCatalogImagePath(product.merchant.id, product.pic_1),
+            width: 1200,
+            height: 630,
+          },
+        ],
+        url: `https://tudominio.com/product/${params.id}`,
+        type: "article",
+      },
     };
   } catch {
     return {
