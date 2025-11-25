@@ -1,4 +1,5 @@
-import { SettingsHandler } from "../handlers/settings/index.handler";
+import PublishForm from "./components/PublishForm";
+import { StepCard } from "./components/StepCard";
 
 export const metadata = {
   title: "Publica tu instrumento | Peru Guitar",
@@ -7,12 +8,6 @@ export const metadata = {
 };
 
 export default function Publish() {
-  const WHATSAPP_NUMBER = SettingsHandler().publishNumber;
-
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    "Hola, deseo publicar un instrumento en Peru Guitar."
-  )}`;
-
   return (
     <section className="w-full flex justify-center px-4 py-12">
       <div className="max-w-3xl space-y-10">
@@ -20,31 +15,43 @@ export default function Publish() {
           <h1 className="text-3xl font-bold">Publica tu instrumento</h1>
 
           <p className="text-lg text-gray-700">
-            Publicar en <strong>Peru Guitar</strong> es rápido y directo.
+            Publica tu instrumento <strong>GRATIS</strong> en{" "}
+            <strong>Peru Guitar</strong>, sujeto a aprobación.
           </p>
         </div>
 
-        <div className="p-6 space-y-4">
+        <div className="space-y-4">
           <h2 className="text-xl font-semibold">¿Cómo funciona?</h2>
 
-          <ul className="space-y-2 text-gray-700">
-            <li>• Envías un mensaje al administrador.</li>
-            <li>• Coordinamos fotos, detalles y precio.</li>
-            <li>• Publicamos tu instrumento en el catálogo.</li>
-          </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <StepCard number={1} title="Completa el formulario">
+              Ingresa el modelo exacto de tu guitarra y el precio sugerido.
+            </StepCard>
 
-          <p className="text-sm text-gray-500">
-            No participamos en transacciones. Solo damos exposición a tu
-            anuncio.
+            <StepCard number={2} title="Evaluación de exclusividad">
+              Verificamos si el instrumento cumple nuestros criterios de{" "}
+              <strong>gama alta, boutique, rarezas o modelos rebuscados</strong>
+              .
+            </StepCard>
+
+            <StepCard number={3} title="Coordinamos detalles">
+              Ajustamos fotos, descripción, ficha técnica y cualquier
+              información adicional necesaria.
+            </StepCard>
+
+            <StepCard number={4} title="Publicación en catálogo">
+              Si es aprobado, publicamos tu instrumento en nuestro catálogo
+              exclusivo.
+            </StepCard>
+          </div>
+
+          <p className="text-gray-500 text-center">
+            No participamos en transacciones. Solo brindamos visibilidad a tu
+            anuncio y la publicación.
           </p>
         </div>
 
-        <a
-          href={whatsappUrl}
-          className="block w-full text-center bg-green-600 hover:bg-green-700 transition px-6 py-3 rounded-xl text-lg font-medium text-white"
-        >
-          Contactar por WhatsApp
-        </a>
+        <PublishForm />
       </div>
     </section>
   );
