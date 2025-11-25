@@ -25,7 +25,8 @@ export default function Publish() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <StepCard number={1} title="Completa el formulario">
-              Ingresa el modelo exacto de tu guitarra y el precio sugerido.
+              Ingresa tu nombre, el modelo exacto de tu guitarra y el precio de
+              venta.
             </StepCard>
 
             <StepCard number={2} title="Evaluación de exclusividad">
