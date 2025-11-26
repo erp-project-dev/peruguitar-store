@@ -5,6 +5,8 @@ import { ProductPageViewModel } from "./index.type";
 export const ProductHandler = (id: string): ProductPageViewModel => {
   const { Merchants, Catalog } = DATA;
 
+  console.info("ProductHandler called with id:", Catalog);
+
   const p = Catalog.find((item) => item.id === id && item.is_enabled === true);
 
   if (!p) {
@@ -36,6 +38,7 @@ export const ProductHandler = (id: string): ProductPageViewModel => {
     pic_2: p.pic_2,
     pic_3: p.pic_3,
     pic_4: p.pic_4,
+    pic_5: p.pic_5,
     pic_6: p.pic_6,
 
     price: p.price,

@@ -85,6 +85,7 @@ export default async function ProductPage({
     product.pic_2,
     product.pic_3,
     product.pic_4,
+    product.pic_5,
     product.pic_6,
   ].filter(Boolean) as string[];
 
