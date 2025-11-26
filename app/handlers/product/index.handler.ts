@@ -39,6 +39,7 @@ export const ProductHandler = (id: string): ProductPageViewModel => {
     pic_6: p.pic_6,
 
     price: p.price,
+    priceType: p.priceType,
 
     publishDate: p.publish_date,
     publishType: p.publish_type,

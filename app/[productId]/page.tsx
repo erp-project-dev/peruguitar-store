@@ -6,7 +6,11 @@ import { ProductHandler } from "@/app/handlers/product/index.handler";
 import ProductGallery from "./components/Gallery";
 import ProductPurchaseInfo from "./components/PurchaseInfo";
 import ProductSpecs from "./components/Specs";
-import { getCatalogImagePath } from "../helpers/product.helper";
+import {
+  getCatalogImagePath,
+  translateProductStatus,
+  translateStatusScore,
+} from "../helpers/product.helper";
 
 export async function generateStaticParams() {
   const { items } = CatalogHandler();
@@ -94,12 +98,28 @@ export default async function ProductPage({
         merchantName={product.merchant.firstName}
         productName={product.name}
         price={product.price}
-        score={product.statusScore}
-        status={product.status}
+        priceType={product.priceType}
         whatsapp={product.merchant.whatsapp}
       />
 
-      <section className="max-w-5xl mx-auto mt-10 space-y-3">
+      <section className="mt-10 space-y-3">
+        <h2 className="text-2xl font-semibold">Estado</h2>
+
+        <p className="leading-relaxed mb-0">
+          {translateProductStatus(product.status)} (
+          <span className="text-xl font-bold align-top">
+            {product.statusScore}
+          </span>
+          <span className="ml-1 mr-1">/</span>
+          <span>5</span>)
+        </p>
+
+        <p className="leading-relaxed  text-gray-600">
+          {translateStatusScore(product.statusScore)}
+        </p>
+      </section>
+
+      <section className="mt-10 space-y-3">
         <h2 className="text-2xl font-semibold">Descripción</h2>
         <p className="leading-relaxed">{product.description}</p>
       </section>

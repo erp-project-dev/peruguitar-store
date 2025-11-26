@@ -16,6 +16,23 @@ export function translateProductStatus(status: string): string {
   }
 }
 
+export function translateStatusScore(score: number): string {
+  switch (score) {
+    case 5:
+      return "El producto se encuentra en excelente estado. Muy bien cuidado y con un desgaste mínimo o prácticamente imperceptible.";
+    case 4:
+      return "El producto está en muy buen estado. Presenta un uso normal y algún detalle menor propio del tiempo, sin afectar su funcionamiento.";
+    case 3:
+      return "El producto está en buen estado. Muestra signos de uso visibles, pero funciona correctamente y no presenta inconvenientes relevantes.";
+    case 2:
+      return "El producto se encuentra en estado regular. Tiene desgaste evidente y podría requerir algún ajuste o mantenimiento ligero.";
+    case 1:
+      return "El producto está en estado básico. Presenta desgaste notable y podría necesitar mantenimiento o reparaciones adicionales.";
+    default:
+      return "Sin información del estado.";
+  }
+}
+
 export function translateProductSpec(spec: string): string {
   switch (spec) {
     case "release_year":

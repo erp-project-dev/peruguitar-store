@@ -1,8 +1,8 @@
 import { GuitarSpecs } from "./spec.type";
 
 export type PublishType = "standard" | "premium";
-
 export type ProductStatus = "new" | "like_new";
+export type PriceType = "fixed" | "negotiable";
 
 export type Category =
   | "guitar"
@@ -31,6 +31,7 @@ export interface Product {
   pic_6?: string;
 
   price: number;
+  priceType: PriceType;
 
   publish_date: string;
   publish_type: PublishType;

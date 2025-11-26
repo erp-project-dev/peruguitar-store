@@ -1,3 +1,4 @@
+import { PriceType } from "@/app/types/product.type";
 import { GuitarSpecs } from "@/app/types/spec.type";
 
 export interface ProductPageViewModel {
@@ -18,6 +19,7 @@ export interface ProductPageViewModel {
   pic_6?: string;
 
   price: number;
+  priceType: PriceType;
 
   publishDate: string;
   publishType: string;
