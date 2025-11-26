@@ -5,15 +5,17 @@ import { Instagram, Menu, X } from "lucide-react";
 
 import Link from "next/link";
 import Image from "next/image";
+
+import { SettingsHandler } from "../handlers/settings/index.handler";
 import logo from "../assets/logo.png";
 
 export default function NavBar() {
+  const { instagram } = SettingsHandler();
   const [open, setOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-[#171717] text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
         <Link href="/" className="flex items-center">
           <Image
             src={logo}
@@ -23,7 +25,6 @@ export default function NavBar() {
           />
         </Link>
 
-        {/* Desktop menu */}
         <div className="hidden md:flex items-center space-x-8">
           <Link
             href="/acerca-de-nosotros"
@@ -49,7 +50,6 @@ export default function NavBar() {
           </a>
         </div>
 
-        {/* Mobile button */}
         <button
           className="md:hidden hover:opacity-80 transition"
           onClick={() => setOpen(!open)}
@@ -59,7 +59,6 @@ export default function NavBar() {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {open && (
         <div className="md:hidden bg-[#111] px-4 pt-2 pb-4 space-y-4 border-t border-white/10">
           <Link
@@ -78,8 +77,8 @@ export default function NavBar() {
             Publica tu guitarra
           </Link>
 
-          <a
-            href="https://www.instagram.com/peruguitar"
+          <Link
+            href={instagram}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-lg hover:text-red-400 transition"
@@ -87,7 +86,7 @@ export default function NavBar() {
           >
             <Instagram className="w-5 h-5" />
             Instagram
-          </a>
+          </Link>
         </div>
       )}
     </nav>

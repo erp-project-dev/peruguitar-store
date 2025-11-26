@@ -1,7 +1,7 @@
 export default function AboutUs() {
   return (
     <section className="w-full flex justify-center px-4">
-      <div className="max-w-2xl space-y-6">
+      <div className="max-w-3xl space-y-6">
         <h1 className="text-3xl font-bold">Acerca de Peru Guitar</h1>
 
         <p className="leading-relaxed">

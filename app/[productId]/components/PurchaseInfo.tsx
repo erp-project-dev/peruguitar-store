@@ -23,7 +23,13 @@ export default function PurchaseInfo({
 
   return (
     <section className="max-w-5xl mx-auto px-4 mt-20 mb-10">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-10 p-10 rounded-xl bg-gray-800 shadow-xl border border-white/10">
+      <div
+        className="flex flex-col md:flex-row 
+            items-center md:items-start 
+            justify-center md:justify-between 
+            text-center md:text-left 
+            gap-10 p-10 rounded-xl bg-gray-800 shadow-xl border border-white/10"
+      >
         <div>
           <p className="text-amber-400 font-bold text-5xl drop-shadow">
             {price.toLocaleString("es-PE", {

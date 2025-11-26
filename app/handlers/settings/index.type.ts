@@ -5,4 +5,11 @@ export interface SettingsViewModel {
     standard: string;
     premium: string;
   };
+
+  instagram: string;
+
+  whatsappLinks: {
+    store: string;
+    community: string;
+  };
 }
