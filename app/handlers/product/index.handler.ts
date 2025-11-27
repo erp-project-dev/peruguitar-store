@@ -38,6 +38,7 @@ export const ProductHandler = (id: string): ProductPageViewModel => {
     pic_4: p.pic_4,
     pic_5: p.pic_5,
     pic_6: p.pic_6,
+    card_pic: p.card_pic,
 
     price: p.price,
     priceType: p.priceType,

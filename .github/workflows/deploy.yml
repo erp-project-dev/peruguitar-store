@@ -23,12 +23,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate data file
-        run: npm run build:data
+      - name: Generate data.json from Google Sheets
+        run: npm run build:read
         env:
           GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
           GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+
+      - name: Generate story card images
+        run: npm run build:cards
 
       - name: Build Next.js (static export)
         run: npm run build

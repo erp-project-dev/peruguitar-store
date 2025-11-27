@@ -24,6 +24,7 @@ export interface Product {
   description: string;
   specs: GuitarSpecs;
 
+  card_pic: string;
   pic_1: string;
   pic_2?: string;
   pic_3?: string;

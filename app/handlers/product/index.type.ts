@@ -18,6 +18,7 @@ export interface ProductPageViewModel {
   pic_4?: string;
   pic_5?: string;
   pic_6?: string;
+  card_pic: string;
 
   price: number;
   priceType: PriceType;

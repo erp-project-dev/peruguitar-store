@@ -1,4 +1,4 @@
-import { MapPin } from "lucide-react";
+import { Download, MapPin } from "lucide-react";
 
 import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
 import { ProductHandler } from "@/app/handlers/product/index.handler";
@@ -125,19 +125,42 @@ export default async function ProductPage({
         specs={product.specs}
       />
 
-      <section className="mt-12 space-y-3">
-        <h2 className="text-2xl font-semibold">Publicado por</h2>
+      <section className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <div className="space-y-3">
+          <h2 className="text-2xl font-semibold">Publicado por</h2>
 
-        <p>
-          {product.merchant.fullName} (@{product.merchant.id})
-        </p>
+          <p>
+            {product.merchant.fullName} (@{product.merchant.id})
+          </p>
 
-        <div className="flex items-center gap-2 text-base">
-          <MapPin className="w-5 h-5" />
-          <span>
-            {product.merchant.country}, {product.merchant.state},{" "}
-            {product.merchant.city}
-          </span>
+          <div className="flex items-center gap-2 text-base">
+            <MapPin className="w-5 h-5" />
+            <span>
+              {product.merchant.country}, {product.merchant.state},{" "}
+              {product.merchant.city}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex justify-center md:justify-center">
+          <a
+            href={getCatalogImagePath(product.merchant.id, product.card_pic)}
+            download
+            className="
+    inline-flex items-center justify-center
+    gap-2
+    bg-white text-black
+    py-3 px-6
+    rounded-lg font-medium
+    hover:bg-gray-100
+    active:bg-gray-200
+    transition-all
+    shadow-sm
+  "
+          >
+            <Download className="w-5 h-5" />
+            <span>Descargar Story Card</span>
+          </a>
         </div>
       </section>
     </div>
