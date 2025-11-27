@@ -6,12 +6,8 @@ import { ProductHandler } from "@/app/handlers/product/index.handler";
 import ProductGallery from "./components/ProductGallery";
 import ProductCallToAction from "./components/ProductCallToAction";
 import ProductSpecs from "./components/ProductSpecs";
-import {
-  getCatalogImagePath,
-  translateProductStatus,
-  translateStatusScore,
-} from "../helpers/product.helper";
-import ProductCardDownload from "./components/ProductCardDownload";
+import { getCatalogImagePath } from "../helpers/product.helper";
+import ProductStatus from "./components/ProductStatus";
 
 export async function generateStaticParams() {
   const { items } = CatalogHandler();
@@ -94,7 +90,12 @@ export default async function ProductPage({
     <div className="max-w-5xl mx-auto flex flex-col">
       <h1 className="text-5xl font-bold mb-5">{product.name}</h1>
 
-      <ProductGallery merchantId={product.merchant.id} pics={pics} />
+      <ProductGallery
+        productName={product.name}
+        price={product.price}
+        merchantId={product.merchant.id}
+        pics={pics}
+      />
 
       <ProductCallToAction
         merchantName={product.merchant.firstName}
@@ -104,26 +105,18 @@ export default async function ProductPage({
         whatsapp={product.merchant.whatsapp}
       />
 
-      <section className="mt-10 space-y-3">
-        <h2 className="text-2xl font-semibold">Estado</h2>
+      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="space-y-3">
+          <h2 className="text-2xl font-semibold">Descripción</h2>
+          <p className="leading-relaxed">{product.description}</p>
+        </div>
 
-        <p className="leading-relaxed mb-0">
-          {translateProductStatus(product.status)} (
-          <span className="text-xl font-bold align-top">
-            {product.statusScore}
-          </span>
-          <span className="ml-1 mr-1">/</span>
-          <span>5</span>)
-        </p>
-
-        <p className="leading-relaxed  text-gray-600">
-          {translateStatusScore(product.statusScore)}
-        </p>
-      </section>
-
-      <section className="mt-10 space-y-3">
-        <h2 className="text-2xl font-semibold">Descripción</h2>
-        <p className="leading-relaxed">{product.description}</p>
+        <div className="space-y-3">
+          <ProductStatus
+            status={product.status}
+            statusScore={product.statusScore}
+          />
+        </div>
       </section>
 
       <ProductSpecs
@@ -132,32 +125,19 @@ export default async function ProductPage({
         specs={product.specs}
       />
 
-      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="space-y-3">
-          <h2 className="text-2xl font-semibold">Publicado por</h2>
+      <section className="mt-12 space-y-3">
+        <h2 className="text-2xl font-semibold">Publicado por</h2>
 
-          <p>
-            {product.merchant.fullName} (@{product.merchant.id})
-          </p>
+        <p>
+          {product.merchant.fullName} (@{product.merchant.id})
+        </p>
 
-          <div className="flex items-center gap-2 text-base">
-            <MapPin className="w-5 h-5" />
-            <span>
-              {product.merchant.country}, {product.merchant.state},{" "}
-              {product.merchant.city}
-            </span>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <h2 className="text-2xl font-semibold">Comparte como historia</h2>
-          <p>Descarga una imagen para compartir como historia.</p>
-
-          <ProductCardDownload
-            imagePath={getCatalogImagePath(product.merchant.id, product.pic_1)}
-            productName={product.name}
-            price={product.price}
-          />
+        <div className="flex items-center gap-2 text-base">
+          <MapPin className="w-5 h-5" />
+          <span>
+            {product.merchant.country}, {product.merchant.state},{" "}
+            {product.merchant.city}
+          </span>
         </div>
       </section>
     </div>
