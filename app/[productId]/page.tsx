@@ -4,7 +4,7 @@ import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
 import { ProductHandler } from "@/app/handlers/product/index.handler";
 
 import ProductGallery from "./components/Gallery";
-import ProductPurchaseInfo from "./components/PurchaseInfo";
+import CallToAction from "./components/CallToAction";
 import ProductSpecs from "./components/Specs";
 import {
   getCatalogImagePath,
@@ -95,7 +95,7 @@ export default async function ProductPage({
 
       <ProductGallery merchantId={product.merchant.id} pics={pics} />
 
-      <ProductPurchaseInfo
+      <CallToAction
         merchantName={product.merchant.firstName}
         productName={product.name}
         price={product.price}

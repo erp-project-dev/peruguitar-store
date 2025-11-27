@@ -5,8 +5,6 @@ import { ProductPageViewModel } from "./index.type";
 export const ProductHandler = (id: string): ProductPageViewModel => {
   const { Merchants, Catalog } = DATA;
 
-  console.info("ProductHandler called with id:", Catalog);
-
   const p = Catalog.find((item) => item.id === id && item.is_enabled === true);
 
   if (!p) {

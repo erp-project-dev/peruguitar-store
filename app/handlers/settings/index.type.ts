@@ -12,4 +12,6 @@ export interface SettingsViewModel {
     store: string;
     community: string;
   };
+
+  clarityProjectId: string;
 }

@@ -1,37 +1,42 @@
 import DATA from "@/app/data";
-
 import { SettingsViewModel } from "./index.type";
 
 export const SettingsHandler = (): SettingsViewModel => {
-  const { Settings } = DATA;
-
-  const publishNumber =
-    Settings.find((s) => s.key === "publish_number")?.value || "";
-
-  const standard = Settings.find((s) => s.key === "standard")?.value || "";
-  const premium = Settings.find((s) => s.key === "premium")?.value || "";
-
-  const whatsAppStoreGroupLink =
-    Settings.find((s) => s.key === "whatsAppStoreGroupLink")?.value || "";
-
-  const whatsAppCommwhatsAppCommunityGroupLinkunityLink =
-    Settings.find((s) => s.key === "whatsAppCommunityGroupLink")?.value || "";
-
-  const instagram = Settings.find((s) => s.key === "instagram")?.value || "";
+  const {
+    publishNumber,
+    standard,
+    premium,
+    whatsAppStoreGroupLink,
+    whatsAppCommunityGroupLink,
+    instagram,
+    clarityProjectId,
+  } = getSettings();
 
   return {
     publishNumber,
-
-    publishType: {
-      standard,
-      premium,
-    },
-
+    publishType: { standard, premium },
     whatsappLinks: {
       store: whatsAppStoreGroupLink,
-      community: whatsAppCommwhatsAppCommunityGroupLinkunityLink,
+      community: whatsAppCommunityGroupLink,
     },
-
     instagram,
+    clarityProjectId,
   };
 };
+
+function getSettings() {
+  const { Settings } = DATA;
+
+  const getValue = (key: string) =>
+    Settings.find(({ key: k }) => k === key)?.value || "";
+
+  return {
+    publishNumber: getValue("publish_number"),
+    standard: getValue("standard"),
+    premium: getValue("premium"),
+    whatsAppStoreGroupLink: getValue("whatsAppStoreGroupLink"),
+    whatsAppCommunityGroupLink: getValue("whatsAppCommunityGroupLink"),
+    instagram: getValue("instagram"),
+    clarityProjectId: getValue("clarity_project_id"),
+  };
+}
