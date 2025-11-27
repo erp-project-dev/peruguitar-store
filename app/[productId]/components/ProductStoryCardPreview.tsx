@@ -4,6 +4,13 @@
 import { useRef, useEffect } from "react";
 import { X } from "lucide-react";
 
+interface ProductStoryCardPreviewProps {
+  imagePath: string;
+  productName: string;
+  price: number;
+  onClose: () => void;
+}
+
 const BOX_HEIGHT = 520;
 const MARGIN_X = 60;
 const LINE_HEIGHT = 70;
@@ -143,7 +150,7 @@ export default function ProductStoryCardPreview({
   productName,
   price,
   onClose,
-}) {
+}: ProductStoryCardPreviewProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
