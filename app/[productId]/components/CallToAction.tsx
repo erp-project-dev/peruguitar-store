@@ -1,6 +1,6 @@
 "use client";
 
-import Clarity from "@microsoft/clarity";
+import { sendClarityEvent } from "@/app/helpers/clarity.helper";
 
 interface PurchaseInfoProps {
   merchantName: string;
@@ -19,10 +19,11 @@ export default function PurchaseInfo({
 }: PurchaseInfoProps) {
   const handleClick = () => {
     console.info("Contacting via WhatsApp", productName);
-    Clarity.event("whatsapp_click");
+
+    sendClarityEvent("whatsapp_click");
 
     const message = encodeURIComponent(
-      `Hola ${merchantName}, estoy interesado en "${productName} que encontré en Peru Guitar". ¿Sigue disponible?`
+      `Hola ${merchantName}, estoy interesado en "*${productName}* que encontré en *Peru Guitar*". ¿Sigue disponible?`
     );
 
     const url = `https://wa.me/${whatsapp}?text=${message}.`;
