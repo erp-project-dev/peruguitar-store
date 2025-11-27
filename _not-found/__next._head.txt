@@ -1,8 +1,8 @@
 1:"$Sreact.fragment"
-2:I[97367,["/_next/static/chunks/62cdcbf8a9c98c2a.js","/_next/static/chunks/247eb132b7f7b574.js"],"ViewportBoundary"]
-4:I[97367,["/_next/static/chunks/62cdcbf8a9c98c2a.js","/_next/static/chunks/247eb132b7f7b574.js"],"MetadataBoundary"]
+2:I[97367,["/_next/static/chunks/5754e9901b82fa7a.js","/_next/static/chunks/247eb132b7f7b574.js"],"ViewportBoundary"]
+4:I[97367,["/_next/static/chunks/5754e9901b82fa7a.js","/_next/static/chunks/247eb132b7f7b574.js"],"MetadataBoundary"]
 5:"$Sreact.suspense"
-7:I[27201,["/_next/static/chunks/62cdcbf8a9c98c2a.js","/_next/static/chunks/247eb132b7f7b574.js"],"IconMark"]
-0:{"buildId":"HHZfn4EhugwYiGO_OUu2g","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
+7:I[27201,["/_next/static/chunks/5754e9901b82fa7a.js","/_next/static/chunks/247eb132b7f7b574.js"],"IconMark"]
+0:{"buildId":"um-PlgtrF40jn9wuMKycn","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
 3:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
 6:[["$","title","0",{"children":"Peru Guitar - Marketplace de Guitarras en Perú"}],["$","meta","1",{"name":"description","content":"Publica, descubre y encuentra guitarras en venta en Perú. Marketplace gratuito con fotos, especificaciones y contacto directo por WhatsApp."}],["$","link","2",{"rel":"icon","href":"/favicon.png"}],["$","$L7","3",{}]]
