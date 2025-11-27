@@ -2,7 +2,7 @@
 
 import { sendClarityEvent } from "@/app/helpers/clarity.helper";
 
-interface PurchaseInfoProps {
+interface ProductCallToActionProps {
   merchantName: string;
   productName: string;
   price: number;
@@ -10,13 +10,13 @@ interface PurchaseInfoProps {
   priceType: "fixed" | "negotiable";
 }
 
-export default function PurchaseInfo({
+export default function ProductCallToAction({
   merchantName,
   productName,
   price,
   whatsapp,
   priceType,
-}: PurchaseInfoProps) {
+}: ProductCallToActionProps) {
   const handleClick = () => {
     console.info("Contacting via WhatsApp", productName);
 

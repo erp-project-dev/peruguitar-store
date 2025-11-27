@@ -5,17 +5,20 @@
 import { getCatalogImagePath } from "@/app/helpers/product.helper";
 import { useState } from "react";
 
-interface GalleryProps {
+interface ProductGalleryProps {
   merchantId: string;
   pics: string[];
 }
 
-export default function Gallery({ merchantId, pics }: GalleryProps) {
+export default function ProductGallery({
+  merchantId,
+  pics,
+}: ProductGalleryProps) {
   const [mainImg, setMainImg] = useState(pics[0]);
 
   return (
     <section className="flex flex-col items-center gap-6">
-      <div className="w-full bg-black/20 rounded-xl p-4 flex items-center justify-center">
+      <div className="w-full bg-black/20 rounded-xl flex items-center justify-center">
         <img
           src={getCatalogImagePath(merchantId, mainImg)}
           className="max-h-[600px] w-full object-contain rounded-xl"

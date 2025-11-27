@@ -39,7 +39,7 @@ export default function RootLayout({
       >
         <ClarityInitializer />
         <NavBar />
-        <div className="flex mt-40 mb-20 items-center justify-center font-sans">
+        <div className="flex mt-30 mb-10 items-center justify-center px-8">
           {children}
         </div>
         <Footer />

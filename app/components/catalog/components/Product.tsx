@@ -17,7 +17,7 @@ export default function Product(product: ProductViewModel) {
       <img
         src={getCatalogImagePath(product.merchant.id, product.pic_1)}
         alt={product.name}
-        className="w-full h-100 object-cover group-hover:scale-105 transition-transform duration-500"
+        className="w-full object-cover group-hover:scale-105 transition-transform duration-500"
       />
 
       <div className="absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/70 via-black/40 to-transparent">
@@ -27,7 +27,11 @@ export default function Product(product: ProductViewModel) {
 
         <div className="flex items-center gap-3 drop-shadow-md">
           <p className="text-yellow-400 font-bold text-xl whitespace-nowrap">
-            S/ {product.price.toLocaleString("es-PE")}
+            {product.price.toLocaleString("es-PE", {
+              minimumFractionDigits: 0,
+              currency: "PEN",
+              style: "currency",
+            })}
           </p>
 
           <span className="text-gray-300">–</span>

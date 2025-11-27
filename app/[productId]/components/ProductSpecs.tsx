@@ -1,13 +1,17 @@
 import { translateProductSpec } from "@/app/helpers/product.helper";
 import { GuitarSpecs } from "@/app/types/spec.type";
 
-interface SpecsProps {
+interface ProductSpecsProps {
   specs: GuitarSpecs;
   brand: string;
   model: string;
 }
 
-export default function ProductSpecs({ specs, brand, model }: SpecsProps) {
+export default function ProductSpecs({
+  specs,
+  brand,
+  model,
+}: ProductSpecsProps) {
   return (
     <section className="mt-10">
       <h2 className="text-2xl font-semibold mb-4">Especificaciones</h2>

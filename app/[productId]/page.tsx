@@ -3,14 +3,15 @@ import { MapPin } from "lucide-react";
 import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
 import { ProductHandler } from "@/app/handlers/product/index.handler";
 
-import ProductGallery from "./components/Gallery";
-import CallToAction from "./components/CallToAction";
-import ProductSpecs from "./components/Specs";
+import ProductGallery from "./components/ProductGallery";
+import ProductCallToAction from "./components/ProductCallToAction";
+import ProductSpecs from "./components/ProductSpecs";
 import {
   getCatalogImagePath,
   translateProductStatus,
   translateStatusScore,
 } from "../helpers/product.helper";
+import ProductCardDownload from "./components/ProductCardDownload";
 
 export async function generateStaticParams() {
   const { items } = CatalogHandler();
@@ -90,12 +91,12 @@ export default async function ProductPage({
   ].filter(Boolean) as string[];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 flex flex-col pb-20">
+    <div className="max-w-5xl mx-auto flex flex-col">
       <h1 className="text-5xl font-bold mb-5">{product.name}</h1>
 
       <ProductGallery merchantId={product.merchant.id} pics={pics} />
 
-      <CallToAction
+      <ProductCallToAction
         merchantName={product.merchant.firstName}
         productName={product.name}
         price={product.price}
@@ -131,19 +132,32 @@ export default async function ProductPage({
         specs={product.specs}
       />
 
-      <section className="mt-12 space-y-3">
-        <h2 className="text-2xl font-semibold">Publicado por</h2>
+      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="space-y-3">
+          <h2 className="text-2xl font-semibold">Publicado por</h2>
 
-        <p className="text-lg font-medium">
-          {product.merchant.fullName} (@{product.merchant.id})
-        </p>
+          <p>
+            {product.merchant.fullName} (@{product.merchant.id})
+          </p>
 
-        <div className="flex items-center gap-2 text-base">
-          <MapPin className="w-5 h-5" />
-          <span>
-            {product.merchant.country}, {product.merchant.state},{" "}
-            {product.merchant.city}
-          </span>
+          <div className="flex items-center gap-2 text-base">
+            <MapPin className="w-5 h-5" />
+            <span>
+              {product.merchant.country}, {product.merchant.state},{" "}
+              {product.merchant.city}
+            </span>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <h2 className="text-2xl font-semibold">Comparte como historia</h2>
+          <p>Descarga una imagen para compartir como historia.</p>
+
+          <ProductCardDownload
+            imagePath={getCatalogImagePath(product.merchant.id, product.pic_1)}
+            productName={product.name}
+            price={product.price}
+          />
         </div>
       </section>
     </div>

@@ -10,7 +10,6 @@ export default function Catalog() {
       className="
         grid
         gap-6
-        px-4
         sm:grid-cols-2
         md:grid-cols-3
         lg:grid-cols-4
