@@ -1,4 +1,4 @@
-import { Download, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
 import { ProductHandler } from "@/app/handlers/product/index.handler";
@@ -8,6 +8,7 @@ import ProductCallToAction from "./components/ProductCallToAction";
 import ProductSpecs from "./components/ProductSpecs";
 import { getCatalogImagePath } from "../helpers/product.helper";
 import ProductStatus from "./components/ProductStatus";
+import ProductStoryCardModal from "./components/ProductStoryCardModal";
 
 export async function generateStaticParams() {
   const { items } = CatalogHandler();
@@ -143,24 +144,12 @@ export default async function ProductPage({
         </div>
 
         <div className="flex justify-center md:justify-center">
-          <a
-            href={getCatalogImagePath(product.merchant.id, product.card_pic)}
-            download
-            className="
-    inline-flex items-center justify-center
-    gap-2
-    bg-white text-black
-    py-3 px-6
-    rounded-lg font-medium
-    hover:bg-gray-100
-    active:bg-gray-200
-    transition-all
-    shadow-sm
-  "
-          >
-            <Download className="w-5 h-5" />
-            <span>Descargar Story Card</span>
-          </a>
+          <ProductStoryCardModal
+            imageCardUrl={getCatalogImagePath(
+              product.merchant.id,
+              product.card_pic
+            )}
+          />
         </div>
       </section>
     </div>

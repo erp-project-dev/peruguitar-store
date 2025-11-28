@@ -24,14 +24,14 @@ jobs:
         run: npm ci
 
       - name: Generate data.json from Google Sheets
-        run: npm run build:read
+        run: npm run task:read
         env:
           GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
           GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
 
       - name: Generate story card images
-        run: npm run build:cards
+        run: npm run task:cards
 
       - name: Build Next.js (static export)
         run: npm run build
