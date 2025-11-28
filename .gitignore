@@ -40,3 +40,6 @@ data.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# catalog
+public/catalog/**/*-card.*

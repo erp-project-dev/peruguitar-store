@@ -102,7 +102,11 @@ function drawBrand(ctx) {
 
   ctx.fillStyle = "rgba(230,230,230,0.92)";
   ctx.font = "italic 32px sans-serif";
-  ctx.fillText("Exclusive guitar marketplace", WIDTH - MARGIN, HEIGHT - 75);
+  ctx.fillText(
+    "Marketplace exclusivo de guitarras",
+    WIDTH - MARGIN,
+    HEIGHT - 75
+  );
 
   ctx.textAlign = "left";
 }
