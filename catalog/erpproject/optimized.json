@@ -1,0 +1,38 @@
+{
+  "prs-mark-holcomb-7s-1.jpg": {
+    "size_before_mb": "0.113",
+    "size_after_mb": "0.107",
+    "gain_percent": "5.15",
+    "optimized_at": "2025-11-28T18:19:15.062Z"
+  },
+  "prs-mark-holcomb-7s-2.jpg": {
+    "size_before_mb": "0.109",
+    "size_after_mb": "0.104",
+    "gain_percent": "4.56",
+    "optimized_at": "2025-11-28T18:19:15.117Z"
+  },
+  "prs-mark-holcomb-7s-3.jpg": {
+    "size_before_mb": "0.074",
+    "size_after_mb": "0.072",
+    "gain_percent": "1.85",
+    "optimized_at": "2025-11-28T18:19:15.160Z"
+  },
+  "prs-mark-holcomb-7s-4.jpg": {
+    "size_before_mb": "0.111",
+    "size_after_mb": "0.102",
+    "gain_percent": "7.68",
+    "optimized_at": "2025-11-28T18:19:15.213Z"
+  },
+  "prs-mark-holcomb-7s-5.jpg": {
+    "size_before_mb": "0.128",
+    "size_after_mb": "0.119",
+    "gain_percent": "7.66",
+    "optimized_at": "2025-11-28T18:19:15.272Z"
+  },
+  "prs-mark-holcomb-7s-6.jpg": {
+    "size_before_mb": "0.094",
+    "size_after_mb": "0.089",
+    "gain_percent": "6.11",
+    "optimized_at": "2025-11-28T18:19:15.320Z"
+  }
+}
