@@ -30,9 +30,6 @@ jobs:
           GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
 
-      - name: Generate story card images
-        run: npm run task:cards
-
       - name: Build Next.js (static export)
         run: npm run build
 
