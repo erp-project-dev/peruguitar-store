@@ -1,7 +1,7 @@
 import { writeFileSync, existsSync, readFileSync } from "fs";
 import path from "path";
-import ora from "ora";
 import { createCanvas, loadImage } from "canvas";
+import logger from "./worker-logger.js";
 
 // Load DB
 const db = JSON.parse(readFileSync("./data.json", "utf8"));
@@ -14,14 +14,10 @@ const BOX_HEIGHT = 520;
 const MARGIN = 60;
 const LINE_HEIGHT = 70;
 
-// -------------------------------------------
 // DRAW HELPERS
-// -------------------------------------------
-
 function drawBackground(ctx, img) {
   const aspectImg = img.width / img.height;
   const aspectCanvas = WIDTH / HEIGHT;
-
   let w = WIDTH,
     h = HEIGHT,
     x = 0,
@@ -51,8 +47,8 @@ function drawGradient(ctx) {
 
   fade.addColorStop(0, "rgba(0,0,0,0.65)");
   fade.addColorStop(1, "rgba(0,0,0,0)");
-
   ctx.fillStyle = fade;
+
   ctx.fillRect(0, HEIGHT - BOX_HEIGHT - 200, WIDTH, 200);
 }
 
@@ -73,8 +69,8 @@ function drawTitle(ctx, text) {
   }
 
   if (row.length) lines.push(row.join(" "));
-
   const startY = HEIGHT - 300;
+
   lines.forEach((line, i) =>
     ctx.fillText(line, MARGIN, startY + i * LINE_HEIGHT)
   );
@@ -95,7 +91,6 @@ function drawPrice(ctx, price) {
 
 function drawBrand(ctx) {
   ctx.textAlign = "right";
-
   ctx.fillStyle = "white";
   ctx.font = "bold 40px sans-serif";
   ctx.fillText("peruguitar.com", WIDTH - MARGIN, HEIGHT - 120);
@@ -111,29 +106,36 @@ function drawBrand(ctx) {
   ctx.textAlign = "left";
 }
 
-// -------------------------------------------
 // CARD GENERATOR
-// -------------------------------------------
-
-async function generateCard(product) {
+async function generateCard(product, stats) {
   const merchantId = product.merchant_id;
+  const pic = product.pic_1;
 
-  const base = product.pic_1.replace(/\.(jpg|jpeg|png|webp)$/i, "");
-  const inputPath = `public/catalog/${merchantId}/${product.pic_1}`;
-  const outputName = `${base}-card.jpg`;
-  const outputPath = `public/catalog/${merchantId}/${outputName}`;
+  const inputPath = path.join("public/catalog", merchantId, pic);
+  const lastDot = pic.lastIndexOf(".");
+  const base = lastDot > 0 ? pic.slice(0, lastDot) : pic;
+  const ext = lastDot > 0 ? pic.slice(lastDot) : "";
 
-  const spinner = ora(`Generating card → ${product.id}`).start();
+  const outputName = `${base}-card${ext}`;
+  const outputPath = path.join("public/catalog", merchantId, outputName);
+
+  const nameCol = outputName.padEnd(60, " ");
 
   try {
     if (!existsSync(inputPath)) {
-      spinner.fail(`Image not found: ${inputPath}`);
+      logger.error(`${nameCol} ERROR (image not found)`);
+      stats.errors++;
+      return;
+    }
+
+    if (existsSync(outputPath)) {
+      logger.info(`${nameCol} SKIPPED (already exists)`);
+      stats.skipped++;
       return;
     }
 
     const canvas = createCanvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext("2d");
-
     const img = await loadImage(path.resolve(inputPath));
 
     drawBackground(ctx, img);
@@ -144,27 +146,54 @@ async function generateCard(product) {
 
     writeFileSync(outputPath, canvas.toBuffer("image/jpeg", { quality: 0.9 }));
 
-    // Save only filename
-    product.card_pic = outputName;
-
-    spinner.succeed(`Card regenerated: ${outputName}`);
+    logger.success(`${nameCol} CREATED`);
+    stats.created++;
   } catch (err) {
-    spinner.fail(`Error generating card for ${product.id}`);
-    console.error(err);
+    logger.error(`${nameCol} ERROR (${err.message})`);
+    stats.errors++;
   }
 }
 
-// -------------------------------------------
-// MAIN
-// -------------------------------------------
-
+// MAIN EXECUTION
 (async () => {
-  const items = Catalog.filter((p) => p.is_enabled);
+  logger.start("Cards Generator");
 
-  for (const product of items) {
-    await generateCard(product);
+  const grouped = {};
+  const globalStats = { created: 0, skipped: 0, errors: 0 };
+
+  // Group products by merchant
+  for (const product of Catalog) {
+    if (!product.is_enabled) continue;
+    const merchantId = product.merchant_id;
+    if (!grouped[merchantId]) grouped[merchantId] = [];
+    grouped[merchantId].push(product);
   }
 
-  writeFileSync("./data.json", JSON.stringify(db, null, 2));
-  console.log("\n🎸 All cards regenerated and data.json updated.\n");
+  // Process each merchant
+  for (const merchantId of Object.keys(grouped)) {
+    const merchantStats = { created: 0, skipped: 0, errors: 0 };
+
+    await logger.asyncBlock(merchantId, async () => {
+      for (const product of grouped[merchantId]) {
+        await generateCard(product, merchantStats);
+      }
+
+      logger.info(
+        `Summary → created: ${merchantStats.created}, skipped: ${merchantStats.skipped}, errors: ${merchantStats.errors}`
+      );
+
+      globalStats.created += merchantStats.created;
+      globalStats.skipped += merchantStats.skipped;
+      globalStats.errors += merchantStats.errors;
+    });
+  }
+
+  // GLOBAL SUMMARY
+  logger.block("Summary", () => {
+    logger.info(`Total created: ${globalStats.created}`);
+    logger.info(`Total skipped: ${globalStats.skipped}`);
+    logger.info(`Total errors: ${globalStats.errors}`);
+  });
+
+  logger.end("Cards Generator");
 })();

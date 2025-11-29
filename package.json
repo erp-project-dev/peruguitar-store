@@ -6,6 +6,7 @@
     "task:read": "node worker-reader.js",
     "task:cards": "node worker-cards.js",
     "task:optz": "node worker-optz.js",
+    "task:build": "npm run task:read && npm run task:optz && npm run task:cards",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -28,7 +29,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "googleapis": "^153.0.0",
-    "ora": "^9.0.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
