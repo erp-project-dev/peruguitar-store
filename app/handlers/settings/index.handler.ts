@@ -37,6 +37,6 @@ function getSettings() {
     whatsAppStoreGroupLink: getValue("whatsAppStoreGroupLink"),
     whatsAppCommunityGroupLink: getValue("whatsAppCommunityGroupLink"),
     instagram: getValue("instagram"),
-    clarityProjectId: getValue("clarity_project_id"),
+    clarityProjectId: getValue("clarityProjectId"),
   };
 }
