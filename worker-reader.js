@@ -61,27 +61,6 @@ function normalizeValue(value) {
 }
 
 // -------------------------------------------
-// EXTRA DATA FOR CATALOG
-// -------------------------------------------
-function addExtraInformation(sheetName, data) {
-  if (sheetName !== "Catalog") return data;
-
-  return data.map((item) => {
-    const pic = item.pic_1;
-
-    if (!pic || typeof pic !== "string") {
-      return { ...item, card_pic: "" };
-    }
-
-    const lastDot = pic.lastIndexOf(".");
-    const base = lastDot > 0 ? pic.substring(0, lastDot) : pic;
-    const ext = lastDot > 0 ? pic.substring(lastDot) : "";
-
-    return { ...item, card_pic: `${base}-card${ext}` };
-  });
-}
-
-// -------------------------------------------
 // SHEET READER
 // -------------------------------------------
 async function _readSheet(sheetName) {
@@ -124,8 +103,6 @@ async function _readSheet(sheetName) {
           ])
         )
       );
-
-      data = addExtraInformation(sheetName, data);
 
       logger.success(`Loaded ${data.length} records`);
     } catch (err) {

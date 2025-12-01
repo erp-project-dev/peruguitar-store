@@ -4,7 +4,8 @@ import { createCanvas, loadImage } from "canvas";
 import logger from "./worker-logger.js";
 
 // Load DB
-const db = JSON.parse(readFileSync("./data.json", "utf8"));
+const dbPath = "./data.json";
+const db = JSON.parse(readFileSync(dbPath, "utf8"));
 const Catalog = db.Catalog;
 
 // Canvas config
@@ -69,6 +70,7 @@ function drawTitle(ctx, text) {
   }
 
   if (row.length) lines.push(row.join(" "));
+
   const startY = HEIGHT - 300;
 
   lines.forEach((line, i) =>
@@ -106,7 +108,7 @@ function drawBrand(ctx) {
   ctx.textAlign = "left";
 }
 
-// CARD GENERATOR
+// CARD GENERATOR (always overwrites)
 async function generateCard(product, stats) {
   const merchantId = product.merchant_id;
   const pic = product.pic_1;
@@ -128,12 +130,7 @@ async function generateCard(product, stats) {
       return;
     }
 
-    if (existsSync(outputPath)) {
-      logger.info(`${nameCol} SKIPPED (already exists)`);
-      stats.skipped++;
-      return;
-    }
-
+    // Always generate → overwrite
     const canvas = createCanvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext("2d");
     const img = await loadImage(path.resolve(inputPath));
@@ -145,6 +142,9 @@ async function generateCard(product, stats) {
     drawBrand(ctx);
 
     writeFileSync(outputPath, canvas.toBuffer("image/jpeg", { quality: 0.9 }));
+
+    // 🔥 UPDATE product.card_pic
+    product.card_pic = outputName;
 
     logger.success(`${nameCol} CREATED`);
     stats.created++;
@@ -159,19 +159,18 @@ async function generateCard(product, stats) {
   logger.start("Cards Generator");
 
   const grouped = {};
-  const globalStats = { created: 0, skipped: 0, errors: 0 };
+  const globalStats = { created: 0, errors: 0 };
 
   // Group products by merchant
   for (const product of Catalog) {
     if (!product.is_enabled) continue;
-    const merchantId = product.merchant_id;
-    if (!grouped[merchantId]) grouped[merchantId] = [];
-    grouped[merchantId].push(product);
+    const m = product.merchant_id;
+    if (!grouped[m]) grouped[m] = [];
+    grouped[m].push(product);
   }
 
-  // Process each merchant
   for (const merchantId of Object.keys(grouped)) {
-    const merchantStats = { created: 0, skipped: 0, errors: 0 };
+    const merchantStats = { created: 0, errors: 0 };
 
     await logger.asyncBlock(merchantId, async () => {
       for (const product of grouped[merchantId]) {
@@ -179,19 +178,18 @@ async function generateCard(product, stats) {
       }
 
       logger.info(
-        `Summary → created: ${merchantStats.created}, skipped: ${merchantStats.skipped}, errors: ${merchantStats.errors}`
+        `Summary → created: ${merchantStats.created}, errors: ${merchantStats.errors}`
       );
 
       globalStats.created += merchantStats.created;
-      globalStats.skipped += merchantStats.skipped;
       globalStats.errors += merchantStats.errors;
     });
   }
 
-  // GLOBAL SUMMARY
+  writeFileSync(dbPath, JSON.stringify(db, null, 2), "utf8");
+
   logger.block("Summary", () => {
     logger.info(`Total created: ${globalStats.created}`);
-    logger.info(`Total skipped: ${globalStats.skipped}`);
     logger.info(`Total errors: ${globalStats.errors}`);
   });
 
