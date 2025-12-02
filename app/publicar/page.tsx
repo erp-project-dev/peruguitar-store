@@ -1,10 +1,26 @@
+import { getPublicPath } from "../helpers/path.helper";
 import PublishForm from "./components/PublishForm";
 import { StepCard } from "./components/StepCard";
 
+const title = "Publica tu instrumento | Peru Guitar";
+const description =
+  "Publica tu instrumento musical en Peru Guitar. Contáctate con el administrador para coordinar la publicación.";
+
 export const metadata = {
-  title: "Publica tu instrumento | Peru Guitar",
-  description:
-    "Publica tu instrumento musical en Peru Guitar. Contáctate con el administrador para coordinar la publicación.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    images: [
+      {
+        url: getPublicPath("/peruguitar-og-image.jpg"),
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function Publish() {
