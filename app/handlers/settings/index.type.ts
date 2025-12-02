@@ -14,4 +14,10 @@ export interface SettingsViewModel {
   };
 
   clarityProjectId: string;
+
+  website: {
+    url: string;
+    title: string;
+    description: string;
+  };
 }

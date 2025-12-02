@@ -6,6 +6,9 @@ import NavBar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ClarityInitializer from "./components/Clarity";
 
+import { getPublicPath } from "./helpers/path.helper";
+import { SettingsHandler } from "./handlers/settings/index.handler";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,12 +21,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const { website } = SettingsHandler();
+
 export const metadata: Metadata = {
-  title: "Peru Guitar - Marketplace de Guitarras en Perú",
-  description:
-    "Publica, descubre y encuentra guitarras en venta en Perú. Marketplace gratuito con fotos, especificaciones y contacto directo por WhatsApp.",
+  title: website.title,
+  description: website.description,
   icons: {
     icon: "/favicon.png",
+  },
+  openGraph: {
+    title: website.title,
+    description: website.description,
+    images: [
+      {
+        url: getPublicPath("/peruguitar-og-image.jpg"),
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: "website",
   },
 };
 

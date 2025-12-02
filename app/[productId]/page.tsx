@@ -9,6 +9,7 @@ import ProductSpecs from "./components/ProductSpecs";
 import { getCatalogImagePath } from "../helpers/product.helper";
 import ProductStatus from "./components/ProductStatus";
 import ProductStoryCardModal from "./components/ProductStoryCardModal";
+import { getPublicPath } from "../helpers/path.helper";
 
 export async function generateStaticParams() {
   const { items } = CatalogHandler();
@@ -36,15 +37,14 @@ export async function generateMetadata({
         description: product.description,
         images: [
           {
-            url: `https://peruguitar.com/${getCatalogImagePath(
-              product.merchant.id,
-              product.pic_1
-            )}`,
+            url: getPublicPath(
+              getCatalogImagePath(product.merchant.id, product.pic_1)
+            ),
             width: 1200,
             height: 630,
           },
         ],
-        url: `https://peruguitar.com/${product.id}`,
+        url: getPublicPath(product.id),
         type: "article",
       },
     };

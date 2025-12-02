@@ -10,6 +10,9 @@ export const SettingsHandler = (): SettingsViewModel => {
     whatsAppCommunityGroupLink,
     instagram,
     clarityProjectId,
+    websiteUrl,
+    websiteTitle,
+    websiteDescription,
   } = getSettings();
 
   return {
@@ -21,6 +24,11 @@ export const SettingsHandler = (): SettingsViewModel => {
     },
     instagram,
     clarityProjectId,
+    website: {
+      url: websiteUrl,
+      title: websiteTitle,
+      description: websiteDescription,
+    },
   };
 };
 
@@ -38,5 +46,8 @@ function getSettings() {
     whatsAppCommunityGroupLink: getValue("whatsAppCommunityGroupLink"),
     instagram: getValue("instagram"),
     clarityProjectId: getValue("clarityProjectId"),
+    websiteUrl: getValue("website_url"),
+    websiteTitle: getValue("website_title"),
+    websiteDescription: getValue("website_description"),
   };
 }
