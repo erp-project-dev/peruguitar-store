@@ -4,8 +4,6 @@ import { SettingsViewModel } from "./index.type";
 export const SettingsHandler = (): SettingsViewModel => {
   const {
     publishNumber,
-    standard,
-    premium,
     whatsAppStoreGroupLink,
     whatsAppCommunityGroupLink,
     instagram,
@@ -17,7 +15,6 @@ export const SettingsHandler = (): SettingsViewModel => {
 
   return {
     publishNumber,
-    publishType: { standard, premium },
     whatsappLinks: {
       store: whatsAppStoreGroupLink,
       community: whatsAppCommunityGroupLink,
@@ -40,8 +37,6 @@ function getSettings() {
 
   return {
     publishNumber: getValue("publish_number"),
-    standard: getValue("standard"),
-    premium: getValue("premium"),
     whatsAppStoreGroupLink: getValue("whatsAppStoreGroupLink"),
     whatsAppCommunityGroupLink: getValue("whatsAppCommunityGroupLink"),
     instagram: getValue("instagram"),

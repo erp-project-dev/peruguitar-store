@@ -1,4 +1,4 @@
-import { MapPin } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
 
 import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
 import { ProductHandler } from "@/app/handlers/product/index.handler";
@@ -127,7 +127,7 @@ export default async function ProductPage({
       />
 
       <section className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-        <div className="space-y-3">
+        <div className="space-y-2">
           <h2 className="text-2xl font-semibold">Publicado por</h2>
 
           <p>
@@ -141,6 +141,15 @@ export default async function ProductPage({
               {product.merchant.city}
             </span>
           </div>
+
+          <div className="flex items-center gap-2 text-base">
+            <Calendar className="w-5 h-5" />
+            <span>
+              Desde el {product.publishDate.toLocaleDateString("es-PE")}
+            </span>
+          </div>
+
+          <p className="italic text-gray-600"></p>
         </div>
 
         <div className="flex justify-center md:justify-center">

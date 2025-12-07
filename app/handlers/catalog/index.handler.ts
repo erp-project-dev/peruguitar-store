@@ -1,21 +1,26 @@
 import DATA from "@/app/data";
 import { CatalogViewModel, ProductViewModel } from "./index.type";
+import { Product } from "@/app/types/product.type";
 
 export interface CatalogHandlerProps {
   sort?: "new" | "latest" | "random";
 }
 
 function sortItems(
-  a: ProductViewModel,
-  b: ProductViewModel,
+  a: Product,
+  b: Product,
   sortType: "new" | "latest" | "random"
 ) {
   if (sortType === "latest") {
-    return b.publishDate.getTime() - a.publishDate.getTime();
+    return (
+      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
+    );
   }
 
   if (sortType === "new") {
-    return b.publishDate.getTime() - a.publishDate.getTime();
+    return (
+      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
+    );
   }
 
   return Math.random() - 0.5;
@@ -27,8 +32,13 @@ export const CatalogHandler = (
 
   const sortType = props.sort ?? "random";
 
-  const items: ProductViewModel[] = Catalog.filter((p) => p.is_enabled)
-    .map((p) => {
+  const pinnedItems = Catalog.filter((p) => p.is_enabled && p.is_pinned);
+  const standardItems = Catalog.filter(
+    (p) => p.is_enabled && !p.is_pinned
+  ).sort((a, b) => sortItems(a, b, sortType));
+
+  const items: ProductViewModel[] = [...pinnedItems, ...standardItems].map(
+    (p) => {
       const merchant = Merchants.find((x) => x.id === p.merchant_id);
 
       if (!merchant) {
@@ -55,7 +65,8 @@ export const CatalogHandler = (
         price: p.price,
         publishDate: new Date(p.publish_date),
         publishType: p.publish_type,
-        is_enabled: p.is_enabled,
+        isPinned: p.is_pinned,
+        isEnabled: p.is_enabled,
         merchant: {
           id: merchant.id,
           fullName: `${merchant.name} ${merchant.last_name}`,
@@ -63,8 +74,8 @@ export const CatalogHandler = (
           instagram: merchant.instagram,
         },
       };
-    })
-    .sort((a, b) => sortItems(a, b, sortType));
+    }
+  );
 
   return {
     total: items.length,

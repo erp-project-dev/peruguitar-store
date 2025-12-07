@@ -23,7 +23,7 @@ export interface ProductPageViewModel {
   price: number;
   priceType: PriceType;
 
-  publishDate: string;
+  publishDate: Date;
   publishType: string;
 
   is_enabled: boolean;

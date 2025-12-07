@@ -38,6 +38,7 @@ export interface Product {
   publish_date: string;
   publish_type: PublishType;
 
+  is_pinned: boolean;
   is_enabled: boolean;
   merchant_id: string;
 }

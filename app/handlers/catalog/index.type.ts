@@ -22,7 +22,8 @@ export interface ProductViewModel {
   publishDate: Date;
   publishType: string;
 
-  is_enabled: boolean;
+  isPinned: boolean;
+  isEnabled: boolean;
 
   merchant: {
     id: string;
