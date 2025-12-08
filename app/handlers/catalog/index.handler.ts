@@ -2,29 +2,27 @@ import DATA from "@/app/data";
 import { CatalogViewModel, ProductViewModel } from "./index.type";
 import { Product } from "@/app/types/product.type";
 
+type SortType = "latest" | "oldest" | "random";
+
 export interface CatalogHandlerProps {
-  sort?: "new" | "latest" | "random";
+  sort?: SortType;
 }
 
-function sortItems(
-  a: Product,
-  b: Product,
-  sortType: "new" | "latest" | "random"
-) {
+function sortItems(a: Product, b: Product, sortType: SortType) {
+  const dateA = new Date(a.publish_date).getTime();
+  const dateB = new Date(b.publish_date).getTime();
+
   if (sortType === "latest") {
-    return (
-      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
-    );
+    return dateB - dateA;
   }
 
-  if (sortType === "new") {
-    return (
-      new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
-    );
+  if (sortType === "oldest") {
+    return dateA - dateB;
   }
 
   return Math.random() - 0.5;
 }
+
 export const CatalogHandler = (
   props: CatalogHandlerProps = {}
 ): CatalogViewModel => {

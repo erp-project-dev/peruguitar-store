@@ -3,7 +3,7 @@ import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
 import Product from "./components/Product";
 
 export default function Catalog() {
-  const catalog = CatalogHandler();
+  const catalog = CatalogHandler({ sort: "latest" });
 
   return (
     <div
