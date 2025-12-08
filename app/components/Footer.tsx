@@ -4,16 +4,14 @@ export default function Footer() {
   const { whatsappLinks, instagram } = SettingsHandler();
 
   return (
-    <footer className="w-full py-8">
-      <div className="max-w-7xl mx-auto px-4 flex flex-col items-center gap-4 text-neutral-600">
-        <p>
-          © {new Date().getFullYear()} Peru Guitar — Todos los derechos
-          reservados.
+    <footer className="w-full py-4">
+      <div className="max-w-7xl mx-auto px-4 flex flex-col items-start sm:items-center gap-2 text-neutral-600">
+        <p className="text-left sm:text-center">
+          © {new Date().getFullYear()} Peru Guitar — Marketplace exclusivo de
+          guitarras reservados.
         </p>
 
-        <p className="-mt-4 italic">Marketplace exclusivo de guitarras</p>
-
-        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-left sm:text-center">
           <a href={whatsappLinks.store} className="hover:text-black transition">
             Grupo de compra y venta
           </a>
