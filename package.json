@@ -6,7 +6,7 @@
     "task:read": "node worker-reader.js",
     "task:cards": "node worker-cards.js",
     "task:optz": "node worker-optz.js",
-    "task:build": "npm run task:read && npm run task:optz && npm run task:cards",
+    "task:build": "npm run task:read && npm run task:cards && npm run task:optz ",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

@@ -133,7 +133,6 @@ async function optimizeImage(fullPath, fileName, optimizedList, stats) {
   logger.start("Image Optimizer");
 
   const globalStats = { optimized: 0, skipped: 0, errors: 0 };
-
   const merchants = fs.readdirSync(ROOT);
 
   for (const merchant of merchants) {
