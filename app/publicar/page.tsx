@@ -1,4 +1,4 @@
-import { getPublicPath } from "../helpers/path.helper";
+import { getBasePath } from "../helpers/path.helper";
 import PublishForm from "./components/PublishForm";
 import { StepCard } from "./components/StepCard";
 
@@ -14,7 +14,7 @@ export const metadata = {
     description,
     images: [
       {
-        url: getPublicPath("/peruguitar-og-image.jpg"),
+        url: getBasePath("/peruguitar-og-image.jpg"),
         width: 1200,
         height: 630,
       },

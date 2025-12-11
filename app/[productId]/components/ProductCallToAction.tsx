@@ -1,9 +1,11 @@
 "use client";
 
 import { sendClarityEvent } from "@/app/helpers/clarity.helper";
+import { getBasePath } from "@/app/helpers/path.helper";
 
 interface ProductCallToActionProps {
   merchantName: string;
+  productId: string;
   productName: string;
   price: number;
   whatsapp: string;
@@ -12,6 +14,7 @@ interface ProductCallToActionProps {
 
 export default function ProductCallToAction({
   merchantName,
+  productId,
   productName,
   price,
   whatsapp,
@@ -23,10 +26,13 @@ export default function ProductCallToAction({
     sendClarityEvent("whatsapp_click");
 
     const message = encodeURIComponent(
-      `Hola ${merchantName}, estoy interesado en "*${productName}* que encontré en *Peru Guitar*". ¿Sigue disponible?`
+      `
+Hola ${merchantName}, estoy interesado en "*${productName}* que encontré en *Peru Guitar*". ¿Sigue disponible?
+
+ref: _${getBasePath(productId)}_`
     );
 
-    const url = `https://wa.me/${whatsapp}?text=${message}.`;
+    const url = `https://wa.me/${whatsapp}?text=${message}`;
 
     window.open(url, "_blank");
   };

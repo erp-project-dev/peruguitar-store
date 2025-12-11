@@ -1,6 +1,8 @@
 import { SettingsHandler } from "../handlers/settings/index.handler";
 
-export function getPublicPath(src: string = "") {
+export function getBasePath(src: string = "") {
   const { website } = SettingsHandler();
-  return `${website.url}${src}`;
+  const normalized = src.startsWith("/") ? src : `/${src}`;
+
+  return `${website.url}${normalized}`;
 }

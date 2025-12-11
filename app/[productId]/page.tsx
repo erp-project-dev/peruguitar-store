@@ -9,7 +9,7 @@ import ProductSpecs from "./components/ProductSpecs";
 import { getCatalogImagePath } from "../helpers/product.helper";
 import ProductStatus from "./components/ProductStatus";
 import ProductStoryCardModal from "./components/ProductStoryCardModal";
-import { getPublicPath } from "../helpers/path.helper";
+import { getBasePath } from "../helpers/path.helper";
 
 export async function generateStaticParams() {
   const { items } = CatalogHandler();
@@ -37,14 +37,14 @@ export async function generateMetadata({
         description: product.description,
         images: [
           {
-            url: getPublicPath(
+            url: getBasePath(
               getCatalogImagePath(product.merchant.id, product.pic_1)
             ),
             width: 1200,
             height: 630,
           },
         ],
-        url: getPublicPath(product.id),
+        url: getBasePath(product.id),
         type: "article",
       },
     };
@@ -100,6 +100,7 @@ export default async function ProductPage({
 
       <ProductCallToAction
         merchantName={product.merchant.firstName}
+        productId={product.id}
         productName={product.name}
         price={product.price}
         priceType={product.priceType}

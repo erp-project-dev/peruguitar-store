@@ -7,7 +7,7 @@ import Footer from "./components/Footer";
 
 import ClarityInitializer from "./components/Clarity";
 
-import { getPublicPath } from "./helpers/path.helper";
+import { getBasePath } from "./helpers/path.helper";
 import { SettingsHandler } from "./handlers/settings/index.handler";
 
 import "./globals.css";
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description: website.description,
     images: [
       {
-        url: getPublicPath("/peruguitar-og-image.jpg"),
+        url: getBasePath("/peruguitar-og-image.jpg"),
         width: 1200,
         height: 630,
       },
