@@ -14,4 +14,4 @@
 :HL["/catalog/lucianotello/silvertone-u1-1960-1.jpg","image"]
 :HL["/catalog/ricardoroa/esp-e2-m1-made-in-japan-1.jpeg","image"]
 :HL["/catalog/ricardoroa/fender-player-plus-stratocaster-tequila-sunrise-2024-made-in-mexico-1.jpeg","image"]
-0:{"buildId":"7K3G_06zXIFOEKImm8P0D","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"k5LKYP11g9JzIOSzULFT1","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
