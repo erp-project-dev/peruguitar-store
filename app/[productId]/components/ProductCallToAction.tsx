@@ -32,7 +32,7 @@ Hola ${merchantName}, estoy interesado en "*${productName}* que encontré en *Pe
 ref: _${getBasePath(productId)}_`
     );
 
-    const url = `https://wa.me/${whatsapp}?text=${message}`;
+    const url = `https://wa.me/51${whatsapp}?text=${message}`;
 
     window.open(url, "_blank");
   };
