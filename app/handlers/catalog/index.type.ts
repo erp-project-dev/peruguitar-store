@@ -1,3 +1,4 @@
+import { ProductCurrency } from "@/app/types/product.type";
 import { GuitarSpecs } from "@/app/types/spec.type";
 
 export interface ProductViewModel {
@@ -17,6 +18,7 @@ export interface ProductViewModel {
   pic_4?: string;
   pic_6?: string;
 
+  currency: ProductCurrency;
   price: number;
 
   publishDate: Date;

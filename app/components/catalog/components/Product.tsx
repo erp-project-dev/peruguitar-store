@@ -40,7 +40,7 @@ export default function Product(product: ProductViewModel) {
           <p className="text-yellow-400 font-bold text-xl whitespace-nowrap">
             {product.price.toLocaleString("es-PE", {
               minimumFractionDigits: 0,
-              currency: "PEN",
+              currency: product.currency,
               style: "currency",
             })}
           </p>

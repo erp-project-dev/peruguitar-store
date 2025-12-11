@@ -60,6 +60,7 @@ export const CatalogHandler = (
         pic_3: p.pic_3,
         pic_4: p.pic_4,
         pic_6: p.pic_6,
+        currency: p.currency,
         price: p.price,
         publishDate: new Date(p.publish_date),
         publishType: p.publish_type,

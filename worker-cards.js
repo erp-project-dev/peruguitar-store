@@ -78,12 +78,12 @@ function drawTitle(ctx, text) {
   );
 }
 
-function drawPrice(ctx, price) {
+function drawPrice(ctx, currency, price) {
   ctx.fillStyle = "#FFD700";
   ctx.font = "bold 80px sans-serif";
 
   const formatted = price.toLocaleString("es-PE", {
-    currency: "PEN",
+    currency,
     style: "currency",
     minimumFractionDigits: 0,
   });
@@ -138,12 +138,12 @@ async function generateCard(product, stats) {
     drawBackground(ctx, img);
     drawGradient(ctx);
     drawTitle(ctx, product.name);
-    drawPrice(ctx, product.price);
+    drawPrice(ctx, product.currency, product.price);
     drawBrand(ctx);
 
     writeFileSync(outputPath, canvas.toBuffer("image/jpeg", { quality: 0.9 }));
 
-    // 🔥 UPDATE product.card_pic
+    // Update product card pic in DB
     product.card_pic = outputName;
 
     logger.success(`${nameCol} CREATED`);

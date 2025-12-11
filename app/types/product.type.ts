@@ -1,5 +1,6 @@
 import { GuitarSpecs } from "./spec.type";
 
+export type ProductCurrency = "USD" | "PEN";
 export type PublishType = "standard" | "premium";
 export type ProductStatus = "new" | "like_new";
 export type PriceType = "fixed" | "negotiable";
@@ -32,6 +33,7 @@ export interface Product {
   pic_5?: string;
   pic_6?: string;
 
+  currency: ProductCurrency;
   price: number;
   priceType: PriceType;
 

@@ -102,6 +102,7 @@ export default async function ProductPage({
         merchantName={product.merchant.firstName}
         productId={product.id}
         productName={product.name}
+        currency={product.currency}
         price={product.price}
         priceType={product.priceType}
         whatsapp={product.merchant.whatsapp}

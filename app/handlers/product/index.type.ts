@@ -1,4 +1,4 @@
-import { PriceType } from "@/app/types/product.type";
+import { PriceType, ProductCurrency } from "@/app/types/product.type";
 import { GuitarSpecs } from "@/app/types/spec.type";
 
 export interface ProductPageViewModel {
@@ -20,6 +20,7 @@ export interface ProductPageViewModel {
   pic_6?: string;
   card_pic: string;
 
+  currency: ProductCurrency;
   price: number;
   priceType: PriceType;
 

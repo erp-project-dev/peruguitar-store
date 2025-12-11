@@ -2,11 +2,13 @@
 
 import { sendClarityEvent } from "@/app/helpers/clarity.helper";
 import { getBasePath } from "@/app/helpers/path.helper";
+import { ProductCurrency } from "@/app/types/product.type";
 
 interface ProductCallToActionProps {
   merchantName: string;
   productId: string;
   productName: string;
+  currency: ProductCurrency;
   price: number;
   whatsapp: string;
   priceType: "fixed" | "negotiable";
@@ -16,6 +18,7 @@ export default function ProductCallToAction({
   merchantName,
   productId,
   productName,
+  currency,
   price,
   whatsapp,
   priceType,
@@ -50,7 +53,7 @@ ref: _${getBasePath(productId)}_`
           <p className="text-amber-400 font-bold text-5xl drop-shadow">
             {price.toLocaleString("es-PE", {
               minimumFractionDigits: 0,
-              currency: "PEN",
+              currency,
               style: "currency",
             })}
           </p>
