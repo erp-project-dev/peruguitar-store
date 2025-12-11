@@ -5,7 +5,7 @@ export interface ProductPageViewModel {
   id: string;
   category: string;
   name: string;
-  brand: string;
+  brand: { id: string; name: string };
   model: string;
   status: string;
   statusScore: number;

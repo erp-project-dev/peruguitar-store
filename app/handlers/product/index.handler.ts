@@ -3,7 +3,7 @@ import DATA from "@/app/data";
 import { ProductPageViewModel } from "./index.type";
 
 export const ProductHandler = (id: string): ProductPageViewModel => {
-  const { Merchants, Catalog } = DATA;
+  const { Merchants, Catalog, Brands } = DATA;
 
   const p = Catalog.find((item) => item.id === id && item.is_enabled === true);
 
@@ -21,11 +21,19 @@ export const ProductHandler = (id: string): ProductPageViewModel => {
     );
   }
 
+  const brand = Brands.find((b) => b.id === p.brand);
+
+  if (!brand) {
+    throw new Error(
+      `DATA ERROR: Brand not found for product ${p.id} (brand: ${p.brand})`
+    );
+  }
+
   return {
     id: p.id,
     category: p.category,
     name: p.name,
-    brand: p.brand,
+    brand,
     model: p.model,
     status: p.status,
     statusScore: p.status_score,

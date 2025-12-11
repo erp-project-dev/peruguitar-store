@@ -27,7 +27,7 @@ export default function ProductCallToAction({
 
     const message = encodeURIComponent(
       `
-Hola ${merchantName}, estoy interesado en "*${productName}* que encontré en *Peru Guitar*". ¿Sigue disponible?
+Hola ${merchantName}, estoy interesado en *${productName}* que encontré en *Peru Guitar*. ¿Sigue disponible?
 
 ref: _${getBasePath(productId)}_`
     );

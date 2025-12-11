@@ -123,7 +123,7 @@ export default async function ProductPage({
 
       <ProductSpecs
         model={product.model}
-        brand={product.brand}
+        brand={product.brand.name}
         specs={product.specs}
       />
 

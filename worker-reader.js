@@ -132,6 +132,7 @@ function createDataJson(result) {
     const result = {
       Merchants: await _readSheet("Merchants"),
       Catalog: await _readSheet("Catalog"),
+      Brands: await _readSheet("Brands"),
       Settings: await _readSheet("Settings"),
     };
 
