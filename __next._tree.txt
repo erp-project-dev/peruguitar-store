@@ -2,7 +2,6 @@
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/catalog/erpproject/prs-mark-holcomb-7s-1.jpg","image"]
-:HL["/catalog/martincamasca/prs-se-custom-24-floyd-1.jpg","image"]
 :HL["/catalog/emiliocardenas/prs-513-25-aniversario-usa-1.jpg","image"]
 :HL["/catalog/mariodiaz/gibson-les-paul-studio-1.jpg","image"]
 :HL["/catalog/vanerabel/fender-telecaster-american-special-2013-1.jpg","image"]
@@ -13,4 +12,4 @@
 :HL["/catalog/vanerabel/gibson-les-paul-studio-goldtop-bonamassa-2013-1.jpg","image"]
 :HL["/catalog/ricardoroa/fender-player-plus-stratocaster-tequila-sunrise-2024-made-in-mexico-1.jpeg","image"]
 :HL["/catalog/ricardoroa/esp-e2-m1-made-in-japan-1.jpeg","image"]
-0:{"buildId":"i1NPDX9FT8zP4SfzeoiC6","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"zQtNWyC4nbhQ_LzVzxNvK","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
