@@ -1,4 +1,4 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,26735,e=>{"use strict";var r=e.i(43476),t=e.i(9553);function n(){let e=(0,t.SettingsHandler)().publishNumber;return(0,r.jsxs)("form",{onSubmit:r=>{r.preventDefault();let t=r.currentTarget;if(!t.reportValidity())return;let n=t.elements.namedItem("merchantName").value,o=t.elements.namedItem("productName").value,a=t.elements.namedItem("productPrice").value,i=`
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,26735,e=>{"use strict";var r=e.i(43476),t=e.i(59368);function n(){let e=t.SettingGetCommand.handle().publishNumber;return(0,r.jsxs)("form",{onSubmit:r=>{r.preventDefault();let t=r.currentTarget;if(!t.reportValidity())return;let n=t.elements.namedItem("merchantName").value,o=t.elements.namedItem("productName").value,a=t.elements.namedItem("productPrice").value,i=`
 Hola, te escribe *${n}*. Deseo publicar un instrumento en Peru Guitar.
 
 • *Modelo:* ${o}  
