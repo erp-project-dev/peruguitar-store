@@ -1,3 +1,9 @@
+export const metadata = {
+  title: "Acerca de nosotros",
+  description:
+    "Conoce Peru Guitar, un marketplace especializado en guitarras curadas y de alta gama. Seleccionamos cada instrumento, no compramos ni vendemos directamente y conectamos a compradores y vendedores de forma transparente.",
+};
+
 export default function AboutUs() {
   return (
     <section className="max-w-3xl space-y-6 py-12">

@@ -16,7 +16,7 @@ export default function ProductDetails({
   ].filter(Boolean) as string[];
 
   return (
-    <div className="space-y-4 bg-slate-100 px-4 py-4">
+    <div className="space-y-4 bg-slate-100 px-4 py-4 border-t-4 border-black">
       <div className="grid grid-cols-6 gap-2">
         {photos.map((src, i) => (
           <div

@@ -145,7 +145,9 @@ function validateEntry(schema, entry) {
   const result = SCHEMA[schema].safeParse(entry);
 
   if (!result.success) {
-    logger.error(`Invalid entry in sheet ${schema}`, result.error.issues);
+    logger.error(
+      `Invalid entry in sheet ${schema}: ${JSON.stringify(result.error.issues)}`
+    );
     process.exit(1);
   }
 }
