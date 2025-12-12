@@ -8,6 +8,87 @@ const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, SPREADSHEET_ID } = process.env;
 
 const EXCLUDED_COLUMNS = ["email"];
 
+import { z } from "zod";
+
+const SHEET_NAMES = {
+  MERCHANTS: "Merchants",
+  CATALOG: "Catalog",
+  BRANDS: "Brands",
+  SETTINGS: "Settings",
+};
+
+const SCHEMA = {
+  [SHEET_NAMES.MERCHANTS]: z.object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    last_name: z.string().min(1),
+    country: z.string().min(1),
+    state: z.string().min(1),
+    city: z.string().min(1),
+    whatsapp: z.number().int().min(100000000).max(999999999),
+    instagram: z.string().url().optional().or(z.literal("")),
+  }),
+
+  [SHEET_NAMES.BRANDS]: z.object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+  }),
+
+  [SHEET_NAMES.CATALOG]: z.object({
+    id: z.string().min(1),
+    category: z.string().min(1),
+    name: z.string().min(1),
+    brand: z.string().min(1),
+    model: z.string().min(1),
+    status: z.string().min(1),
+    status_score: z.number().int().min(1).max(5),
+    description: z.string().min(1),
+    specs: z.object({
+      release_year: z.number().int().nullable(),
+      origin: z.string().nullable(),
+      body_wood: z.string().nullable(),
+      body_finish: z.string().nullable(),
+      body_type: z.string().nullable(),
+      neck_wood: z.string().nullable(),
+      fingerboard_wood: z.string().nullable(),
+      scale_length_mm: z.number().nullable(),
+      number_of_strings: z.number().int().nullable(),
+      hand_orientation: z.string().nullable(),
+      color: z.string().nullable(),
+      bridge_type: z.string().nullable(),
+      pickups: z.string().nullable(),
+      hardware_color: z.string().nullable(),
+    }),
+
+    pic_1: z.string().optional(),
+    pic_2: z.string().optional(),
+    pic_3: z.string().optional(),
+    pic_4: z.string().optional(),
+    pic_5: z.string().optional(),
+    pic_6: z.string().optional(),
+    currency: z.enum(["PEN", "USD"]),
+    price: z.number().positive(),
+    priceType: z.enum(["fixed", "negotiable"]),
+    publish_date: z.string().min(1),
+    is_pinned: z.boolean(),
+    is_enabled: z.boolean(),
+    merchant_id: z.string().min(1),
+  }),
+
+  [SHEET_NAMES.SETTINGS]: z.object({
+    id: z.string().min(1),
+    value: z.union([z.string(), z.number(), z.boolean()]),
+    comment: z.string().optional(),
+  }),
+};
+
+const SCHEMA_UNIQUES = {
+  [SHEET_NAMES.MERCHANTS]: ["id", "whatsapp"],
+  [SHEET_NAMES.BRANDS]: ["id"],
+  [SHEET_NAMES.CATALOG]: ["id"],
+  [SHEET_NAMES.SETTINGS]: ["id"],
+};
+
 // -------------------------------------------
 // GOOGLE AUTH
 // -------------------------------------------
@@ -60,11 +141,40 @@ function normalizeValue(value) {
   return parsed !== value ? parsed : value;
 }
 
+function validateEntry(schema, entry) {
+  const result = SCHEMA[schema].safeParse(entry);
+
+  if (!result.success) {
+    logger.error(`Invalid entry in sheet ${schema}`, result.error.issues);
+    process.exit(1);
+  }
+}
+
+const _UNIQUES = Object.fromEntries(
+  Object.entries(SCHEMA_UNIQUES).map(([sheet, fields]) => [
+    sheet,
+    Object.fromEntries(fields.map((field) => [field, new Set()])),
+  ])
+);
+
+function validateUnique(schema, field, value) {
+  const set = _UNIQUES[schema]?.[field];
+
+  if (!set) return;
+
+  if (set.has(value)) {
+    logger.error(`Duplicate entry for ${schema}.${field}: ${value}`);
+    process.exit(1);
+  }
+
+  set.add(value);
+}
+
 // -------------------------------------------
 // SHEET READER
 // -------------------------------------------
 async function _readSheet(sheetName) {
-  let data;
+  const data = [];
 
   await logger.asyncBlock(sheetName, async () => {
     const sheets = google.sheets({ version: "v4", auth: _getAuth() });
@@ -95,14 +205,22 @@ async function _readSheet(sheetName) {
         .map((h, i) => [h, i])
         .filter(([header]) => !EXCLUDED_COLUMNS.includes(header.toLowerCase()));
 
-      data = dataRows.map((row) =>
-        Object.fromEntries(
+      for (const row of dataRows) {
+        const entry = Object.fromEntries(
           allowedHeaders.map(([header, colIndex]) => [
             header,
             normalizeValue(row[colIndex]),
           ])
-        )
-      );
+        );
+
+        validateEntry(sheetName, entry);
+
+        SCHEMA_UNIQUES[sheetName].forEach((uniqueField) => {
+          validateUnique(sheetName, uniqueField, entry[uniqueField], data);
+        });
+
+        data.push(entry);
+      }
 
       logger.success(`Loaded ${data.length} records`);
     } catch (err) {
@@ -130,10 +248,10 @@ function createDataJson(result) {
 
   try {
     const result = {
-      Merchants: await _readSheet("Merchants"),
-      Catalog: await _readSheet("Catalog"),
-      Brands: await _readSheet("Brands"),
-      Settings: await _readSheet("Settings"),
+      Merchants: await _readSheet(SHEET_NAMES.MERCHANTS),
+      Catalog: await _readSheet(SHEET_NAMES.CATALOG),
+      Brands: await _readSheet(SHEET_NAMES.BRANDS),
+      Settings: await _readSheet(SHEET_NAMES.SETTINGS),
     };
 
     createDataJson(result);

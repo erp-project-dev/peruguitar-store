@@ -33,7 +33,7 @@ function getSettings() {
   const { Settings } = DATA;
 
   const getValue = (key: string) =>
-    Settings.find(({ key: k }) => k === key)?.value || "";
+    Settings.find(({ id: k }) => k === key)?.value || "";
 
   return {
     publishNumber: getValue("publish_number"),

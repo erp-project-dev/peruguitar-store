@@ -1,5 +1,5 @@
 export interface Setting {
-  key: string;
+  id: string;
   value: string;
   comment: string;
 }

@@ -88,7 +88,7 @@ export default async function ProductPage({
   ].filter(Boolean) as string[];
 
   return (
-    <div className="max-w-5xl mx-auto flex flex-col">
+    <section className="max-w-5xl mx-auto flex flex-col">
       <h1 className="text-5xl font-bold mb-5">{product.name}</h1>
 
       <ProductGallery
@@ -108,7 +108,7 @@ export default async function ProductPage({
         whatsapp={product.merchant.whatsapp}
       />
 
-      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
         <div className="space-y-3">
           <h2 className="text-2xl font-semibold">Descripción</h2>
           <p className="leading-relaxed">{product.description}</p>
@@ -120,7 +120,7 @@ export default async function ProductPage({
             statusScore={product.statusScore}
           />
         </div>
-      </section>
+      </div>
 
       <ProductSpecs
         model={product.model}
@@ -128,7 +128,7 @@ export default async function ProductPage({
         specs={product.specs}
       />
 
-      <section className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold">Publicado por</h2>
 
@@ -162,7 +162,19 @@ export default async function ProductPage({
             )}
           />
         </div>
-      </section>
-    </div>
+      </div>
+
+      <div className="flex justify-center">
+        <div className="max-w-full rounded-md bg-gray-200 mt-10 px-6 py-6 text-center text-sm text-gray-900">
+          <p>
+            <strong>Peru Guitar</strong> es una plataforma de anuncios
+            clasificados. No participamos en la venta ni intermediamos en las
+            transacciones de los productos publicados. La responsabilidad de la
+            compra y venta recae exclusivamente en el <strong>comprador</strong>{" "}
+            y el <strong>vendedor</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }

@@ -30,6 +30,7 @@
     "eslint-config-next": "16.0.3",
     "googleapis": "^153.0.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "valibot": "^1.2.0"
   }
 }
