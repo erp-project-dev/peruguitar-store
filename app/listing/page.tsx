@@ -23,7 +23,6 @@ export default function Listing() {
   return (
     <section className="mx-auto w-7xl space-y-6 px-4 py-12">
       <h1 className="text-3xl font-bold">Listing</h1>
-
       <ProductHeader
         total={total}
         pinned={pinned}
@@ -32,7 +31,6 @@ export default function Listing() {
         maxPrice={maxPrice}
         avgPrice={avgPrice}
       />
-
       <ProductListing items={items} />
     </section>
   );

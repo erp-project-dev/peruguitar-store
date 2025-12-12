@@ -3,7 +3,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { Eye, ArrowUpDown, Pin, Download, ImageOff } from "lucide-react";
+import { Eye, ArrowUpDown, Pin } from "lucide-react";
 
 import {
   getCatalogImagePath,
@@ -60,7 +60,6 @@ export default function ProductListing({
           <col style={{ width: 64 }} />
           <col />
           <col style={{ width: 80 }} />
-          <col style={{ width: 80 }} />
           <col style={{ width: 100 }} />
           <col style={{ width: 160 }} />
           <col style={{ width: 120 }} />
@@ -81,7 +80,6 @@ export default function ProductListing({
               </button>
             </th>
 
-            <th className="text-center">Card</th>
             <th className="text-center">Fotos</th>
 
             <th className="text-center">
@@ -128,7 +126,16 @@ export default function ProductListing({
                   className="cursor-pointer border-b border-slate-800 bg-gray-900 hover:bg-slate-800"
                 >
                   <td className="px-2">
-                    <div className="relative h-12 w-12 overflow-hidden rounded bg-slate-700">
+                    <a
+                      href={getCatalogImagePath(
+                        product.merchant.id,
+                        product.card_pic
+                      )}
+                      download
+                      onClick={(e) => e.stopPropagation()}
+                      className="relative inline-block h-12 w-12 overflow-hidden rounded bg-slate-700"
+                      title="Descargar card"
+                    >
                       <Image
                         src={getCatalogImagePath(
                           product.merchant.id,
@@ -138,42 +145,26 @@ export default function ProductListing({
                         fill
                         className="object-cover"
                       />
-                    </div>
+                    </a>
                   </td>
 
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-2 font-medium text-slate-100">
+                    <div className="flex items-center gap-2 text-slate-100 text-lg">
                       {product.name}
                       {product.isPinned && (
                         <Pin size={16} className="text-purple-500" />
                       )}
                     </div>
-                    <div className="text-slate-400">
-                      {product.brand.toUpperCase()} ·{" "}
-                      {product.model.toUpperCase()}
-                    </div>
-                    <div className="text-slate-500">
-                      {product.merchant.fullName}
+
+                    <div className="text-xs uppercase text-slate-400">
+                      {product.brand} / {product.model}
+                      <span className="mx-1 opacity-40">—</span>
+                      <span className="text-slate-500">
+                        {product.merchant.fullName}
+                      </span>
                     </div>
                   </td>
 
-                  <td className="text-center">
-                    {product.card_pic ? (
-                      <a
-                        href={getCatalogImagePath(
-                          product.merchant.id,
-                          product.card_pic
-                        )}
-                        download
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex rounded p-2 text-emerald-500 hover:bg-emerald-500/10"
-                      >
-                        <Download size={18} />
-                      </a>
-                    ) : (
-                      <ImageOff size={18} className="mx-auto text-slate-500" />
-                    )}
-                  </td>
                   <td className="text-center text-slate-100">
                     {
                       [
@@ -221,7 +212,7 @@ export default function ProductListing({
                 {isOpen && (
                   <tr>
                     <td colSpan={8}>
-                      <ProductDetails product={product} />
+                      <ProductDetails key={product.id} product={product} />
                     </td>
                   </tr>
                 )}
