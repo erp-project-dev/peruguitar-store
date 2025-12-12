@@ -1,7 +1,7 @@
 import { Calendar, MapPin } from "lucide-react";
 
-import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
-import { ProductHandler } from "@/app/handlers/product/index.handler";
+import { CatalogGetCommand } from "@/app/commands/catalog/index.command";
+import { ProductGetCommand } from "@/app/commands/product/index.command";
 
 import ProductGallery from "./components/ProductGallery";
 import ProductCallToAction from "./components/ProductCallToAction";
@@ -12,7 +12,7 @@ import ProductStoryCardModal from "./components/ProductStoryCardModal";
 import { getBasePath } from "../helpers/path.helper";
 
 export async function generateStaticParams() {
-  const { items } = CatalogHandler();
+  const { items } = CatalogGetCommand.handle();
 
   return items.map((p) => ({
     productId: p.id,
@@ -27,7 +27,7 @@ export async function generateMetadata({
   const { productId } = await params;
 
   try {
-    const product = ProductHandler(productId);
+    const product = ProductGetCommand.handle(productId);
 
     return {
       title: `${product.name} - Peru Guitar`,
@@ -67,15 +67,9 @@ export default async function ProductPage({
     return <div className="text-center text-white py-20">ID inválido.</div>;
   }
 
-  let product = null;
-  try {
-    product = ProductHandler(productId);
-  } catch {
-    return (
-      <div className="text-center text-white py-20">
-        Producto no encontrado.
-      </div>
-    );
+  const product = ProductGetCommand.handle(productId);
+  if (!product) {
+    <div className="text-center text-white py-20">Producto no encontrado.</div>;
   }
 
   const pics = [

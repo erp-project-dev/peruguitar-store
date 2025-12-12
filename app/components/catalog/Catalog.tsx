@@ -1,9 +1,9 @@
-import { CatalogHandler } from "@/app/handlers/catalog/index.handler";
+import { CatalogGetCommand } from "@/app/commands/catalog/index.command";
 
 import Product from "./components/Product";
 
 export default function Catalog() {
-  const catalog = CatalogHandler({ sort: "latest" });
+  const catalog = CatalogGetCommand.handle({ sort: "latest" });
 
   return (
     <div

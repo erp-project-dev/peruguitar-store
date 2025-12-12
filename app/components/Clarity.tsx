@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Clarity from "@microsoft/clarity";
 
-import { SettingsHandler } from "../handlers/settings/index.handler";
+import { SettingGetCommand } from "../commands/settings/index.command";
 
 export default function ClarityInitializer() {
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function ClarityInitializer() {
 
     console.info("Initializing Clarity Analytics");
 
-    Clarity.init(SettingsHandler().clarityProjectId);
+    Clarity.init(SettingGetCommand.handle().clarityProjectId);
   }, []);
 
   return null;

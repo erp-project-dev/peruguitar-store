@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Pin } from "lucide-react";
 
-import { ProductViewModel } from "@/app/handlers/catalog/index.type";
+import { ProductViewModel } from "@/app/commands/catalog/index.type";
 
 import {
   getCatalogImagePath,

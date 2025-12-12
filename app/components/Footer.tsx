@@ -1,7 +1,7 @@
-import { SettingsHandler } from "../handlers/settings/index.handler";
+import { SettingGetCommand } from "../commands/settings/index.command";
 
 export default function Footer() {
-  const { whatsappLinks, instagram } = SettingsHandler();
+  const { whatsappLinks, instagram } = SettingGetCommand.handle();
 
   return (
     <footer className="w-full py-4">

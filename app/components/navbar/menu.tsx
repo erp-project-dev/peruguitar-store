@@ -1,7 +1,7 @@
-import { SettingsHandler } from "@/app/handlers/settings/index.handler";
+import { SettingGetCommand } from "@/app/commands/settings/index.command";
 import { Instagram, UsersRound } from "lucide-react";
 
-const { instagram, whatsappLinks } = SettingsHandler();
+const { instagram, whatsappLinks } = SettingGetCommand.handle();
 
 export const NAV_LINKS = [
   {

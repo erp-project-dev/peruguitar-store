@@ -17,6 +17,7 @@ export interface ProductViewModel {
   pic_3?: string;
   pic_4?: string;
   pic_6?: string;
+  card_pic: string;
 
   currency: ProductCurrency;
   price: number;

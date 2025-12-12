@@ -8,7 +8,7 @@ import Footer from "./components/Footer";
 import ClarityInitializer from "./components/Clarity";
 
 import { getBasePath } from "./helpers/path.helper";
-import { SettingsHandler } from "./handlers/settings/index.handler";
+import { SettingGetCommand } from "./commands/settings/index.command";
 
 import "./globals.css";
 
@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const { website } = SettingsHandler();
+const { website } = SettingGetCommand.handle();
 
 export const metadata: Metadata = {
   title: website.title,

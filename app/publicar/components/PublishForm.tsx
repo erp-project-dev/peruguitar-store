@@ -1,9 +1,9 @@
 "use client";
 
-import { SettingsHandler } from "@/app/handlers/settings/index.handler";
+import { SettingGetCommand } from "@/app/commands/settings/index.command";
 
 export default function PublishForm() {
-  const WHATSAPP_NUMBER = SettingsHandler().publishNumber;
+  const WHATSAPP_NUMBER = SettingGetCommand.handle().publishNumber;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
