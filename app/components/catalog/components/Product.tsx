@@ -9,15 +9,15 @@ import {
 } from "@/app/helpers/product.helper";
 
 const PRODUCT_TYPE_BADGE = {
-  standard: "bg-slate-600 text-white",
-  high_end: "bg-amber-600 text-white",
-  signature: "bg-indigo-600 text-white",
-  rare: "bg-rose-600 text-white",
-  discontinued: "bg-gray-800 text-white",
-  limited: "bg-emerald-600 text-white",
-  vintage: "bg-orange-700 text-white",
-  handcrafted: "bg-teal-700 text-white",
-  boutique: "bg-purple-700 text-white",
+  standard: "bg-slate-600/90 text-white border-slate-700",
+  high_end: "bg-amber-600/90 text-white border-amber-700",
+  signature: "bg-indigo-600/90 text-white border-indigo-700",
+  rare: "bg-rose-600/90 text-white border-rose-700",
+  discontinued: "bg-gray-800/90 text-white border-gray-900",
+  limited: "bg-emerald-600/90 text-white border-emerald-700",
+  vintage: "bg-orange-700/90 text-white border-orange-800",
+  handcrafted: "bg-teal-700/90 text-white border-teal-800",
+  boutique: "bg-purple-700/90 text-white border-purple-800",
 };
 
 export default function Product(product: ProductViewModel) {
@@ -33,18 +33,16 @@ export default function Product(product: ProductViewModel) {
       className={`relative rounded-xl overflow-hidden shadow-md hover:shadow-sm transition cursor-pointer group ${pinnedClass}`}
     >
       {product.isPinned && (
-        <div className="absolute top-3 left-3 z-20 bg-purple-700/80 backdrop-blur-sm p-1.5 rounded-full shadow-lg">
+        <div className="absolute top-3 left-3 z-20 bg-purple-700/90 p-1.5 rounded-full shadow-lg">
           <Pin className="w-4 h-4 text-white" />
         </div>
       )}
 
-      {product.type !== "standard" && badge && (
-        <div
-          className={`absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-xs tracking-wide shadow-md backdrop-blur-sm ${badge} opacity-90`}
-        >
-          {translateProductType(product.type)}
-        </div>
-      )}
+      <div
+        className={`absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-xs tracking-wide border shadow-md ${badge}`}
+      >
+        {translateProductType(product.type)}
+      </div>
 
       <img
         src={getCatalogImagePath(product.merchant.id, product.pic_1)}

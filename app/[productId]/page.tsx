@@ -14,6 +14,7 @@ import {
 import ProductStatus from "./components/ProductStatus";
 import ProductStoryCardModal from "./components/ProductStoryCardModal";
 import { getBasePath } from "../helpers/path.helper";
+import { Breadcrumb } from "../components/Breadcrumb";
 
 export async function generateStaticParams() {
   const { items } = CatalogGetCommand.handle();
@@ -86,8 +87,10 @@ export default async function ProductPage({
   ].filter(Boolean) as string[];
 
   return (
-    <section className="max-w-5xl mx-auto flex flex-col">
-      <h1 className="text-5xl font-bold mb-5">{product.name}</h1>
+    <section className="max-w-5xl mx-auto flex flex-col space-y-6">
+      <Breadcrumb items={[{ label: product.name }]} />
+
+      <h1 className="text-5xl font-bold">{product.name}</h1>
 
       <ProductGallery
         productName={product.name}
@@ -107,7 +110,7 @@ export default async function ProductPage({
         country={product.merchant.country}
       />
 
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div className="space-y-3">
           <h2 className="text-2xl font-semibold">Descripción</h2>
           <p className="leading-relaxed">{product.description}</p>
@@ -121,7 +124,7 @@ export default async function ProductPage({
         </div>
       </div>
 
-      <div className="mt-10 max-w-2xl mx-auto text-center py-6 border-y border-gray-400 border-dashed space-y-2">
+      <div className="mt-10 mb-10 max-w-2xl mx-auto text-center py-6 border-y border-gray-400 border-dashed space-y-2">
         <h2 className="text-xl font-semibold uppercase">
           {translateProductType(product.type)}
         </h2>
@@ -137,7 +140,7 @@ export default async function ProductPage({
         specs={product.specs}
       />
 
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-5">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold">Publicado por</h2>
 
@@ -174,7 +177,7 @@ export default async function ProductPage({
       </div>
 
       <div className="flex justify-center">
-        <div className="max-w-full rounded-md bg-gray-200 mt-10 px-6 py-6 text-center text-sm text-gray-900">
+        <div className="max-w-3xl rounded-md mt-10 px-6 py-6 text-center text-sm text-gray-500">
           <p>
             <strong>Peru Guitar</strong> es una plataforma de anuncios
             clasificados. No participamos en la venta ni intermediamos en las

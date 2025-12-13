@@ -1,3 +1,4 @@
+import { Breadcrumb } from "../components/Breadcrumb";
 import { getBasePath } from "../helpers/path.helper";
 import PublishForm from "./components/PublishForm";
 import { StepCard } from "./components/StepCard";
@@ -26,7 +27,9 @@ export const metadata = {
 export default function Publish() {
   return (
     <section className="max-w-3xl space-y-10 py-12">
-      <div className="space-y-4 text-center">
+      <div className="space-y-4">
+        <Breadcrumb items={[{ label: "Publicar" }]} />
+
         <h1 className="text-3xl font-bold">Publica tu instrumento</h1>
 
         <p className="text-lg text-gray-700">

@@ -46,7 +46,7 @@ ref: _${getBasePath(productId)}_`
   };
 
   return (
-    <section className="max-w-5xl mx-auto px-4 mt-20 mb-10">
+    <section className="max-w-5xl mx-auto px-4 mt-5 mb-10">
       <div
         className="flex flex-col md:flex-row 
       items-center md:items-center 

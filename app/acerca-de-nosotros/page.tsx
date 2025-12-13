@@ -1,3 +1,5 @@
+import { Breadcrumb } from "../components/Breadcrumb";
+
 export const metadata = {
   title: "Acerca de nosotros",
   description:
@@ -7,6 +9,8 @@ export const metadata = {
 export default function AboutUs() {
   return (
     <section className="max-w-3xl space-y-6 py-12">
+      <Breadcrumb items={[{ label: "Acerca de nosotros" }]} />
+
       <h1 className="text-3xl font-bold">Acerca de Peru Guitar</h1>
 
       <p className="leading-relaxed">

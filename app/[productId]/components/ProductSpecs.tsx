@@ -13,7 +13,7 @@ export default function ProductSpecs({
   model,
 }: ProductSpecsProps) {
   return (
-    <section className="mt-10">
+    <section>
       <h2 className="text-2xl font-semibold mb-4">Especificaciones</h2>
 
       <div className="bg-gray-800 rounded-xl p-8 shadow-lg">

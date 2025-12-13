@@ -1,4 +1,5 @@
 import { CatalogGetCommand } from "../commands/catalog/index.command";
+import { Breadcrumb } from "../components/Breadcrumb";
 import { ProductHeader } from "./components/ProductHeader";
 import ProductListing from "./components/ProductListing";
 
@@ -22,6 +23,8 @@ export default function Listing() {
 
   return (
     <section className="mx-auto w-7xl space-y-6 px-4 py-12">
+      <Breadcrumb items={[{ label: "Listing" }]} />
+
       <h1 className="text-3xl font-bold">Listing</h1>
       <ProductHeader
         total={total}
