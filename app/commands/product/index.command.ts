@@ -36,6 +36,7 @@ export class ProductGetCommand {
       id: p.id,
       category: p.category,
       name: p.name,
+      type: p.type,
       brand,
       model: p.model,
       status: p.status,

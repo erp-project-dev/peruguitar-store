@@ -8,12 +8,19 @@ import { Eye, ArrowUpDown, Pin } from "lucide-react";
 import {
   getCatalogImagePath,
   translateProductStatus,
+  translateProductType,
 } from "@/app/helpers/product.helper";
 
 import ProductDetails from "./ProductDetails";
 import { ProductViewModel } from "@/app/commands/catalog/index.type";
 
-type SortKey = "name" | "price" | "statusScore" | "publishDate" | "isPinned";
+type SortKey =
+  | "name"
+  | "type"
+  | "price"
+  | "statusScore"
+  | "publishDate"
+  | "isPinned";
 type SortDir = "asc" | "desc";
 
 export default function ProductListing({
@@ -59,6 +66,7 @@ export default function ProductListing({
         <colgroup>
           <col style={{ width: 64 }} />
           <col />
+          <col style={{ width: 120 }} />
           <col style={{ width: 80 }} />
           <col style={{ width: 100 }} />
           <col style={{ width: 160 }} />
@@ -77,6 +85,15 @@ export default function ProductListing({
                 className="flex w-full items-center gap-1 cursor-pointer"
               >
                 Nombre <ArrowUpDown size={14} />
+              </button>
+            </th>
+
+            <th>
+              <button
+                onClick={() => toggleSort("type")}
+                className="flex w-full items-center gap-1 cursor-pointer"
+              >
+                Cualidad <ArrowUpDown size={14} />
               </button>
             </th>
 
@@ -163,6 +180,10 @@ export default function ProductListing({
                         {product.merchant.fullName}
                       </span>
                     </div>
+                  </td>
+
+                  <td className="text-slate-100">
+                    {translateProductType(product.type)}
                   </td>
 
                   <td className="text-center text-slate-100">

@@ -3,16 +3,29 @@ import Link from "next/link";
 import { Pin } from "lucide-react";
 
 import { ProductViewModel } from "@/app/commands/catalog/index.type";
-
 import {
   getCatalogImagePath,
-  translateProductStatus,
+  translateProductType,
 } from "@/app/helpers/product.helper";
+
+const PRODUCT_TYPE_BADGE = {
+  standard: "bg-slate-600 text-white",
+  high_end: "bg-amber-600 text-white",
+  signature: "bg-indigo-600 text-white",
+  rare: "bg-rose-600 text-white",
+  discontinued: "bg-gray-800 text-white",
+  limited: "bg-emerald-600 text-white",
+  vintage: "bg-orange-700 text-white",
+  handcrafted: "bg-teal-700 text-white",
+  boutique: "bg-purple-700 text-white",
+};
 
 export default function Product(product: ProductViewModel) {
   const pinnedClass = product.isPinned
     ? "border-2 border-dashed border-purple-700 shadow-purple-200"
     : "";
+
+  const badge = PRODUCT_TYPE_BADGE[product.type];
 
   return (
     <Link
@@ -25,6 +38,14 @@ export default function Product(product: ProductViewModel) {
         </div>
       )}
 
+      {product.type !== "standard" && badge && (
+        <div
+          className={`absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-xs tracking-wide shadow-md backdrop-blur-sm ${badge} opacity-90`}
+        >
+          {translateProductType(product.type)}
+        </div>
+      )}
+
       <img
         src={getCatalogImagePath(product.merchant.id, product.pic_1)}
         alt={product.name}
@@ -32,24 +53,18 @@ export default function Product(product: ProductViewModel) {
       />
 
       <div className="absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/70 via-black/40 to-transparent">
-        <h2 className="text-white font-semibold text-lg mb-1 drop-shadow-md">
-          {product.name}
-        </h2>
+        <div className="relative h-14">
+          <h2 className="absolute bottom-0 left-0 right-24 text-white font-semibold text-lg leading-none line-clamp-2 drop-shadow-md">
+            {product.name}
+          </h2>
 
-        <div className="flex items-center gap-3 drop-shadow-md">
-          <p className="text-yellow-400 font-bold text-xl whitespace-nowrap">
+          <p className="absolute bottom-0 right-0 inline-flex items-end text-yellow-400 font-bold text-lg leading-none whitespace-nowrap drop-shadow-md tabular-nums">
             {product.price.toLocaleString("es-PE", {
               minimumFractionDigits: 0,
               currency: product.currency,
               style: "currency",
             })}
           </p>
-
-          <span className="text-gray-300">-</span>
-
-          <span className="text-green-300 text-sm font-medium whitespace-nowrap">
-            {translateProductStatus(product.status)}
-          </span>
         </div>
       </div>
     </Link>

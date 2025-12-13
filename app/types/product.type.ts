@@ -4,6 +4,16 @@ export type ProductCurrency = "USD" | "PEN";
 export type PublishType = "standard" | "premium";
 export type ProductStatus = "new" | "like_new";
 export type PriceType = "fixed" | "negotiable";
+export type ProductType =
+  | "standard"
+  | "high_end"
+  | "signature"
+  | "rare"
+  | "discontinued"
+  | "limited"
+  | "vintage"
+  | "handcrafted"
+  | "boutique";
 
 export type Category =
   | "guitar"
@@ -16,6 +26,8 @@ export interface Product {
   id: string;
   category: Category;
   name: string;
+
+  type: ProductType;
   brand: string;
   model: string;
 

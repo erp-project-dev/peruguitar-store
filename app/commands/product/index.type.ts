@@ -1,10 +1,15 @@
-import { PriceType, ProductCurrency } from "@/app/types/product.type";
+import {
+  PriceType,
+  ProductCurrency,
+  ProductType,
+} from "@/app/types/product.type";
 import { GuitarSpecs } from "@/app/types/spec.type";
 
 export interface ProductPageViewModel {
   id: string;
   category: string;
   name: string;
+  type: ProductType;
   brand: { id: string; name: string };
   model: string;
   status: string;
