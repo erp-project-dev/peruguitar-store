@@ -100,6 +100,7 @@ export default async function ProductPage({
         price={product.price}
         priceType={product.priceType}
         whatsapp={product.merchant.whatsapp}
+        country={product.merchant.country}
       />
 
       <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">

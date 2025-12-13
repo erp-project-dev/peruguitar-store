@@ -1,6 +1,7 @@
 "use client";
 
 import { sendClarityEvent } from "@/app/helpers/clarity.helper";
+import { getInternationalPhone } from "@/app/helpers/merchant.helper";
 import { getBasePath } from "@/app/helpers/path.helper";
 import { ProductCurrency } from "@/app/types/product.type";
 
@@ -11,6 +12,7 @@ interface ProductCallToActionProps {
   currency: ProductCurrency;
   price: number;
   whatsapp: string;
+  country: string;
   priceType: "fixed" | "negotiable";
 }
 
@@ -21,6 +23,7 @@ export default function ProductCallToAction({
   currency,
   price,
   whatsapp,
+  country,
   priceType,
 }: ProductCallToActionProps) {
   const handleClick = () => {
@@ -35,7 +38,9 @@ Hola ${merchantName}, estoy interesado en *${productName}* que encontré en *Per
 ref: _${getBasePath(productId)}_`
     );
 
-    const url = `https://wa.me/51${whatsapp}?text=${message}`;
+    const url = `https://wa.me/${getInternationalPhone(country, whatsapp, {
+      withPlus: false,
+    })}?text=${message}`;
 
     window.open(url, "_blank");
   };

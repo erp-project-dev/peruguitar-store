@@ -22,7 +22,7 @@ const SCHEMA = {
     id: z.string().min(1),
     name: z.string().min(1),
     last_name: z.string().min(1),
-    country: z.string().min(1),
+    country: z.enum(["Perú"]),
     state: z.string().min(1),
     city: z.string().min(1),
     whatsapp: z.number().int().min(100000000).max(999999999),
