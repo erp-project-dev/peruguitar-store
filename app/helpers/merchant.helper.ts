@@ -1,8 +1,8 @@
-export function getInternationalPhone(
+export function getWhatsappLink(
   country: string,
   phone: string,
-  options?: { withPlus?: boolean }
-): string | null {
+  message?: string
+): string {
   const normalizedCountry = country
     .toLowerCase()
     .normalize("NFD")
@@ -17,12 +17,15 @@ export function getInternationalPhone(
   };
 
   const callingCode = COUNTRY_CALLING_CODE[normalizedCountry];
-  if (!callingCode) return null;
 
   const cleanPhone = String(phone).replace(/\D/g, "");
-  if (!cleanPhone) return null;
+  const fullPhone = `${callingCode}${cleanPhone}`;
 
-  const prefix = options?.withPlus === false ? callingCode : `+${callingCode}`;
+  if (!message) {
+    return `https://wa.me/${fullPhone}`;
+  }
 
-  return `${prefix}${cleanPhone}`;
+  return `https://wa.me/${fullPhone}?text=${encodeURIComponent(
+    message.trim()
+  )}`;
 }

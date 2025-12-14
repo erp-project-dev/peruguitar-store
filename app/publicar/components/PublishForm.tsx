@@ -1,6 +1,7 @@
 "use client";
 
 import { SettingGetCommand } from "@/app/commands/settings/index.command";
+import { getWhatsappLink } from "@/app/helpers/merchant.helper";
 
 export default function PublishForm() {
   const WHATSAPP_NUMBER = SettingGetCommand.handle().publishNumber;
@@ -27,20 +28,16 @@ export default function PublishForm() {
     const message = `
 Hola, te escribe *${merchantName}*. Deseo publicar un instrumento en Peru Guitar.
 
-• *Modelo:* ${productName}  
-• *Precio:* S/ ${productPrice}
+- *Modelo:* ${productName}  
+- *Precio:* S/ ${productPrice}
 
 Confirmo que mi instrumento cumple con los criterios de exclusividad de Peru Guitar  
 (_gama alta, boutique, rareza o modelo rebuscado_).
 
-Quedo atento(a) a tus indicaciones para continuar.
+Quedo atento a tus indicaciones para continuar.
     `.trim();
 
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      message
-    )}`;
-
-    window.open(whatsappUrl, "_blank");
+    window.open(getWhatsappLink("peru", WHATSAPP_NUMBER, message), "_blank");
   };
 
   return (

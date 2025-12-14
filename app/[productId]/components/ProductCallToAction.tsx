@@ -1,7 +1,7 @@
 "use client";
 
 import { sendClarityEvent } from "@/app/helpers/clarity.helper";
-import { getInternationalPhone } from "@/app/helpers/merchant.helper";
+import { getWhatsappLink } from "@/app/helpers/merchant.helper";
 import { getBasePath } from "@/app/helpers/path.helper";
 import { ProductCurrency } from "@/app/types/product.type";
 
@@ -31,18 +31,12 @@ export default function ProductCallToAction({
 
     sendClarityEvent("whatsapp_click");
 
-    const message = encodeURIComponent(
-      `
+    const message = `
 Hola ${merchantName}, estoy interesado en *${productName}* que encontré en *Peru Guitar*. ¿Sigue disponible?
 
-ref: _${getBasePath(productId)}_`
-    );
+ref: _${getBasePath(productId)}_`;
 
-    const url = `https://wa.me/${getInternationalPhone(country, whatsapp, {
-      withPlus: false,
-    })}?text=${message}`;
-
-    window.open(url, "_blank");
+    window.open(getWhatsappLink(country, whatsapp, message), "_blank");
   };
 
   return (
