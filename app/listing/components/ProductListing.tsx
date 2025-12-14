@@ -3,12 +3,12 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+
 import { Eye, ArrowUpDown, Pin } from "lucide-react";
 
 import {
   getCatalogImagePath,
   translateProductStatus,
-  translateProductType,
 } from "@/app/helpers/product.helper";
 
 import ProductDetails from "./ProductDetails";
@@ -174,7 +174,7 @@ export default function ProductListing({
                     </div>
 
                     <div className="text-xs uppercase text-slate-400">
-                      {product.brand} / {product.model}
+                      {product.brand.name} / {product.model}
                       <span className="mx-1 opacity-40">—</span>
                       <span className="text-slate-500">
                         {product.merchant.fullName}
@@ -182,9 +182,7 @@ export default function ProductListing({
                     </div>
                   </td>
 
-                  <td className="text-slate-100">
-                    {translateProductType(product.type)}
-                  </td>
+                  <td className="text-slate-100">{product.type.name}</td>
 
                   <td className="text-center text-slate-100">
                     {
