@@ -4,7 +4,7 @@ import { ProductPageViewModel } from "./index.type";
 
 export class ProductGetCommand {
   static handle(id: string): ProductPageViewModel {
-    const { Merchants, Catalog, Brands } = DATA;
+    const { Merchants, Catalog, Brands, Types } = DATA;
 
     const p = Catalog.find(
       (item) => item.id === id && item.is_enabled === true
@@ -32,11 +32,19 @@ export class ProductGetCommand {
       );
     }
 
+    const type = Types.find((tp) => tp.id === p.type);
+
+    if (!type) {
+      throw new Error(
+        `DATA ERROR: Type not found for product ${p.id} (type: ${p.type})`
+      );
+    }
+
     return {
       id: p.id,
       category: p.category,
       name: p.name,
-      type: p.type,
+      type,
       brand,
       model: p.model,
       status: p.status,

@@ -1,4 +1,6 @@
-import { ProductCurrency, ProductType } from "@/app/types/product.type";
+import { Brand } from "@/app/types/brand.type";
+import { ProductType } from "@/app/types/product-type";
+import { ProductCurrency } from "@/app/types/product.type";
 import { GuitarSpecs } from "@/app/types/spec.type";
 
 export interface ProductViewModel {
@@ -6,7 +8,7 @@ export interface ProductViewModel {
   category: string;
   name: string;
   type: ProductType;
-  brand: string;
+  brand: Brand;
   model: string;
   status: string;
   statusScore: number;

@@ -1,31 +1,49 @@
 import DATA from "@/app/data";
-import { CatalogViewModel, ProductViewModel } from "./index.type";
 import { Product } from "@/app/types/product.type";
+import { CatalogViewModel, ProductViewModel } from "./index.type";
 
-type SortType = "latest" | "oldest" | "random";
+export type SortType = "latest" | "oldest" | "price_desc" | "price_asc";
 
-export interface CatalogHandlerProps {
+export interface CatalogGetCommandProps {
   sort?: SortType;
+  brand?: string | null;
+  type?: string | null;
+  minPrice?: number | null;
+  maxPrice?: number | null;
 }
 
 export class CatalogGetCommand {
-  static handle(props: CatalogHandlerProps = {}): CatalogViewModel {
-    const { Merchants, Catalog } = DATA;
+  static handle(props: CatalogGetCommandProps = {}): CatalogViewModel {
+    const { Merchants, Catalog, Brands, Types } = DATA;
 
-    const sortType = props.sort ?? "random";
+    const sortType: SortType = props.sort ?? "latest";
 
     const pinnedItems = Catalog.filter((p) => p.is_enabled && p.is_pinned);
-    const standardItems = Catalog.filter(
-      (p) => p.is_enabled && !p.is_pinned
-    ).sort((a, b) => this.sortItems(a, b, sortType));
+
+    const standardItems = Catalog.filter((p) => p.is_enabled && !p.is_pinned)
+      .sort((a, b) => this.sortItems(a, b, sortType))
+      .filter(this.buildFilter(props));
 
     const items: ProductViewModel[] = [...pinnedItems, ...standardItems].map(
       (p) => {
         const merchant = Merchants.find((x) => x.id === p.merchant_id);
-
         if (!merchant) {
           throw new Error(
             `DATA ERROR: Merchant not found for product ${p.id} (merchant_id: ${p.merchant_id})`
+          );
+        }
+
+        const brand = Brands.find((b) => b.id === p.brand);
+        if (!brand) {
+          throw new Error(
+            `DATA ERROR: Brand not found for product ${p.id} (brand: ${p.brand})`
+          );
+        }
+
+        const type = Types.find((tp) => tp.id === p.type);
+        if (!type) {
+          throw new Error(
+            `DATA ERROR: Type not found for product ${p.id} (type: ${p.type})`
           );
         }
 
@@ -33,8 +51,8 @@ export class CatalogGetCommand {
           id: p.id,
           category: p.category,
           name: p.name,
-          type: p.type,
-          brand: p.brand,
+          type,
+          brand,
           model: p.model,
           status: p.status,
           statusScore: p.status_score,
@@ -68,6 +86,37 @@ export class CatalogGetCommand {
     };
   }
 
+  static buildFilter(props: CatalogGetCommandProps) {
+    console.info(props);
+    return (item: Product) => {
+      if (props.brand && item.brand !== props.brand) {
+        return false;
+      }
+
+      if (props.type && item.type !== props.type) {
+        return false;
+      }
+
+      if (
+        props.minPrice !== null &&
+        props.minPrice !== undefined &&
+        item.price < props.minPrice
+      ) {
+        return false;
+      }
+
+      if (
+        props.maxPrice !== null &&
+        props.maxPrice !== undefined &&
+        item.price > props.maxPrice
+      ) {
+        return false;
+      }
+
+      return true;
+    };
+  }
+
   static sortItems(a: Product, b: Product, sortType: SortType) {
     const dateA = new Date(a.publish_date).getTime();
     const dateB = new Date(b.publish_date).getTime();
@@ -80,6 +129,14 @@ export class CatalogGetCommand {
       return dateA - dateB;
     }
 
-    return Math.random() - 0.5;
+    if (sortType === "price_desc") {
+      return b.price - a.price;
+    }
+
+    if (sortType === "price_asc") {
+      return a.price - b.price;
+    }
+
+    return 0;
   }
 }

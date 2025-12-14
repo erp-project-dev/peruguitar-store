@@ -6,11 +6,7 @@ import { ProductGetCommand } from "@/app/commands/product/index.command";
 import ProductGallery from "./components/ProductGallery";
 import ProductCallToAction from "./components/ProductCallToAction";
 import ProductSpecs from "./components/ProductSpecs";
-import {
-  explainProductType,
-  getCatalogImagePath,
-  translateProductType,
-} from "../helpers/product.helper";
+import { getCatalogImagePath } from "../helpers/product.helper";
 import ProductStatus from "./components/ProductStatus";
 import ProductStoryCardModal from "./components/ProductStoryCardModal";
 import { getBasePath } from "../helpers/path.helper";
@@ -125,12 +121,10 @@ export default async function ProductPage({
       </div>
 
       <div className="mt-10 mb-10 max-w-2xl mx-auto text-center py-6 border-y border-gray-400 border-dashed space-y-2">
-        <h2 className="text-xl font-semibold uppercase">
-          {translateProductType(product.type)}
-        </h2>
+        <h2 className="text-xl font-semibold uppercase">{product.type.name}</h2>
 
         <p className="text-gray-600 leading-relaxed italic">
-          {explainProductType(product.type)}
+          {product.type.description}
         </p>
       </div>
 

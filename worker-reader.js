@@ -14,6 +14,7 @@ const SHEET_NAMES = {
   MERCHANTS: "Merchants",
   CATALOG: "Catalog",
   BRANDS: "Brands",
+  TYPES: "Types",
   SETTINGS: "Settings",
 };
 
@@ -32,6 +33,12 @@ const SCHEMA = {
   [SHEET_NAMES.BRANDS]: z.object({
     id: z.string().min(1),
     name: z.string().min(1),
+  }),
+
+  [SHEET_NAMES.TYPES]: z.object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    description: z.string().min(1),
   }),
 
   [SHEET_NAMES.CATALOG]: z.object({
@@ -95,6 +102,7 @@ const SCHEMA = {
 const SCHEMA_UNIQUES = {
   [SHEET_NAMES.MERCHANTS]: ["id", "whatsapp"],
   [SHEET_NAMES.BRANDS]: ["id"],
+  [SHEET_NAMES.TYPES]: ["id"],
   [SHEET_NAMES.CATALOG]: ["id"],
   [SHEET_NAMES.SETTINGS]: ["id"],
 };
@@ -263,6 +271,7 @@ function createDataJson(result) {
       Merchants: await _readSheet(SHEET_NAMES.MERCHANTS),
       Catalog: await _readSheet(SHEET_NAMES.CATALOG),
       Brands: await _readSheet(SHEET_NAMES.BRANDS),
+      Types: await _readSheet(SHEET_NAMES.TYPES),
       Settings: await _readSheet(SHEET_NAMES.SETTINGS),
     };
 

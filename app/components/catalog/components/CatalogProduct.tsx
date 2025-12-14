@@ -3,10 +3,7 @@ import Link from "next/link";
 import { Pin } from "lucide-react";
 
 import { ProductViewModel } from "@/app/commands/catalog/index.type";
-import {
-  getCatalogImagePath,
-  translateProductType,
-} from "@/app/helpers/product.helper";
+import { getCatalogImagePath } from "@/app/helpers/product.helper";
 
 const PRODUCT_TYPE_BADGE = {
   standard: "bg-slate-600/90 text-white border-slate-700",
@@ -20,12 +17,12 @@ const PRODUCT_TYPE_BADGE = {
   boutique: "bg-purple-700/90 text-white border-purple-800",
 };
 
-export default function Product(product: ProductViewModel) {
+export default function CatalogProduct(product: ProductViewModel) {
   const pinnedClass = product.isPinned
     ? "border-2 border-dashed border-purple-700 shadow-purple-200"
     : "";
 
-  const badge = PRODUCT_TYPE_BADGE[product.type];
+  const badge = PRODUCT_TYPE_BADGE[product.type.id];
 
   return (
     <Link
@@ -41,7 +38,7 @@ export default function Product(product: ProductViewModel) {
       <div
         className={`absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-xs tracking-wide border shadow-md ${badge}`}
       >
-        {translateProductType(product.type)}
+        {product.type.name}
       </div>
 
       <img
