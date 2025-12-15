@@ -7,6 +7,7 @@ import {
   SortType,
 } from "@/app/commands/catalog/index.command";
 
+import CatalogFilterSelect from "./components/CatalogFilterSelect";
 import CatalogFilterItem from "./components/CatalogFilterItem";
 
 interface CatalogFilterOptions {
@@ -21,11 +22,6 @@ interface CatalogFiltersProps {
   maxPrice: number;
   onChange: (filters: CatalogGetCommandProps) => void;
 }
-
-const DEFAULT_FILTER_OPTIONS: CatalogFilterOptions = {
-  label: "Cualquiera",
-  value: "",
-};
 
 export function generatePriceRange(
   minPrice: number,
@@ -118,91 +114,81 @@ export default function CatalogFilters({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3 focus:outline-none focus:ring-1 focus:ring-gray-600">
+    <div className="flex flex-wrap justify-center items-center gap-3 focus:outline-none focus:ring-1 focus:ring-gray-600">
       <CatalogFilterItem label="Ordenar por">
-        <select
+        <CatalogFilterSelect
+          options={[
+            { label: "Más recientes", value: "latest" },
+            { label: "Más antiguos", value: "oldest" },
+            { label: "Mayor precio", value: "price_desc" },
+            { label: "Menor precio", value: "price_asc" },
+          ]}
           value={sort}
-          onChange={(e) => {
-            const value = e.target.value as SortType;
-            setSort(value);
-            notifyChange({ sort: value });
+          onChange={(value) => {
+            const sortValue = value as SortType;
+            setSort(sortValue);
+            notifyChange({ sort: sortValue });
           }}
-          className="bg-transparent outline-none"
-        >
-          <option value="latest">Más recientes</option>
-          <option value="oldest">Más antiguos</option>
-          <option value="price_desc">Mayor precio</option>
-          <option value="price_asc">Menor precio</option>
-        </select>
+          width={120}
+          mobileTitle="Ordenamiento"
+        />
       </CatalogFilterItem>
 
       <CatalogFilterItem label="Marcas">
-        <select
-          value={brand ?? ""}
-          onChange={(e) => {
-            const value = e.target.value || null;
-            setBrand(value);
-            notifyChange({ brand: value });
+        <CatalogFilterSelect
+          options={brands}
+          value={brand}
+          onChange={(value) => {
+            const v = value || null;
+            setBrand(v);
+            notifyChange({ brand: v });
           }}
-          className="bg-transparent outline-none"
-        >
-          {[DEFAULT_FILTER_OPTIONS, ...brands].map(({ label, value }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
+          placeholder="Cualquiera"
+          width={120}
+          mobileTitle="Marcas"
+        />
       </CatalogFilterItem>
 
       <CatalogFilterItem label="Cualidad">
-        <select
-          value={type ?? ""}
-          onChange={(e) => {
-            const value = e.target.value || null;
-            setType(value);
-            notifyChange({ type: value });
+        <CatalogFilterSelect
+          options={types}
+          value={type}
+          onChange={(value) => {
+            const v = value || null;
+            setType(v);
+            notifyChange({ type: v });
           }}
-          className="bg-transparent outline-none"
-        >
-          {[DEFAULT_FILTER_OPTIONS, ...types].map(({ label, value }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
+          placeholder="Cualquiera"
+          width={140}
+          mobileTitle="Cualidad"
+        />
       </CatalogFilterItem>
 
-      <CatalogFilterItem label="Rango de precio (S/)">
-        <select
-          value={rangePrice ?? ""}
-          onChange={(e) => {
-            const value = e.target.value || null;
+      <CatalogFilterItem label="Rango en (S/)">
+        <CatalogFilterSelect
+          options={generatePriceRange(minPrice, maxPrice)}
+          value={rangePrice}
+          onChange={(value) => {
+            const v = value || null;
 
-            let minPrice = null;
-            let maxPrice = null;
+            let min = null;
+            let max = null;
 
-            setRangePrice(value);
+            setRangePrice(v);
 
-            if (value) {
-              [minPrice, maxPrice] = value.split(":").map(Number);
+            if (v) {
+              [min, max] = v.split(":").map(Number);
             }
 
             notifyChange({
-              minPrice,
-              maxPrice,
+              minPrice: min,
+              maxPrice: max,
             });
           }}
-          className="bg-transparent outline-none"
-        >
-          {[
-            DEFAULT_FILTER_OPTIONS,
-            ...generatePriceRange(minPrice, maxPrice),
-          ].map(({ label, value }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
+          placeholder="Cualquiera"
+          width={200}
+          mobileTitle="Rango de precio"
+        />
       </CatalogFilterItem>
 
       {hasActiveFilters && (
