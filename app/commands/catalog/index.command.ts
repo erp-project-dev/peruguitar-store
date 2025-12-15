@@ -87,7 +87,6 @@ export class CatalogGetCommand {
   }
 
   static buildFilter(props: CatalogGetCommandProps) {
-    console.info(props);
     return (item: Product) => {
       if (props.brand && item.brand !== props.brand) {
         return false;
