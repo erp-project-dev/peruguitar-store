@@ -16,7 +16,7 @@ export default function ProductPhoto({ merchantId, pics }: ProductPhotoProps) {
   const [mainImg, setMainImg] = useState(pics[0]);
 
   return (
-    <section className="flex flex-col items-center gap-6 relative">
+    <section className="flex flex-col items-center gap-4 relative">
       <div className="w-full bg-black/20 rounded-xl flex items-center justify-center relative">
         <img
           src={getCatalogImagePath(merchantId, mainImg)}
@@ -26,7 +26,7 @@ export default function ProductPhoto({ merchantId, pics }: ProductPhotoProps) {
 
       {pics.length > 1 && (
         <div className="w-full flex justify-center">
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 max-w-fit">
+          <div className="grid grid-cols-6 gap-3 max-w-fit">
             {pics.map((img) => (
               <button
                 key={img}
