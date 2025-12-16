@@ -1,16 +1,15 @@
-import { Calendar, MapPin } from "lucide-react";
-
 import { CatalogGetCommand } from "@/app/commands/catalog/index.command";
 import { ProductGetCommand } from "@/app/commands/product/index.command";
 
-import ProductGallery from "./components/ProductGallery";
-import ProductCallToAction from "./components/ProductCallToAction";
-import ProductSpecs from "./components/ProductSpecs";
 import { getCatalogImagePath } from "../helpers/product.helper";
-import ProductStatus from "./components/ProductStatus";
-import ProductStoryCardModal from "./components/ProductStoryCardModal";
 import { getBasePath } from "../helpers/path.helper";
+
+import ProductPhoto from "./components/ProductPhoto";
+import ProductSpecs from "./components/ProductSpecs";
+
 import { Breadcrumb } from "../components/Breadcrumb";
+import ProductCallToAction from "./components/ProductCallToAction/ProductCallToAction";
+import ProductDisclaimer from "./components/ProductDisclaimer";
 
 export async function generateStaticParams() {
   const { items } = CatalogGetCommand.handle();
@@ -83,104 +82,47 @@ export default async function ProductPage({
   ].filter(Boolean) as string[];
 
   return (
-    <section className="max-w-5xl mx-auto flex flex-col space-y-6">
+    <section className="max-w-7xl mx-auto flex flex-col space-y-8">
       <Breadcrumb items={[{ label: product.name }]} />
 
-      <h1 className="text-5xl font-bold">{product.name}</h1>
-
-      <ProductGallery
-        productName={product.name}
-        price={product.price}
-        merchantId={product.merchant.id}
-        pics={pics}
-      />
-
-      <ProductCallToAction
-        merchantName={product.merchant.firstName}
-        productId={product.id}
-        productName={product.name}
-        currency={product.currency}
-        price={product.price}
-        priceType={product.priceType}
-        whatsapp={product.merchant.whatsapp}
-        country={product.merchant.country}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="space-y-3">
-          <h2 className="text-2xl font-semibold">Descripción</h2>
-          <p className="leading-relaxed">{product.description}</p>
-        </div>
-
-        <div className="space-y-3">
-          <ProductStatus
-            status={product.status}
-            statusScore={product.statusScore}
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-10">
+        <div className="space-y-8">
+          <ProductPhoto
+            productName={product.name}
+            price={product.price}
+            merchantId={product.merchant.id}
+            pics={pics}
           />
-        </div>
-      </div>
 
-      <div className="mt-10 mb-10 max-w-2xl mx-auto text-center py-6 border-y border-gray-400 border-dashed space-y-2">
-        <h2 className="text-xl font-semibold uppercase">{product.type.name}</h2>
-
-        <p className="text-gray-600 leading-relaxed italic">
-          {product.type.description}
-        </p>
-      </div>
-
-      <ProductSpecs
-        model={product.model}
-        brand={product.brand.name}
-        specs={product.specs}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-5">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold">Publicado por</h2>
-
-          <p>
-            {product.merchant.fullName} (@{product.merchant.id})
-          </p>
-
-          <div className="flex items-center gap-2 text-base">
-            <MapPin className="w-5 h-5" />
-            <span>
-              {product.merchant.country}, {product.merchant.state},{" "}
-              {product.merchant.city}
-            </span>
+          <div className="block md:hidden">
+            <ProductCallToAction product={product} />
           </div>
 
-          <div className="flex items-center gap-2 text-base">
-            <Calendar className="w-5 h-5" />
-            <span>
-              Desde el {product.publishDate.toLocaleDateString("es-PE")}
-            </span>
+          <div className="space-y-3">
+            <h2 className="text-2xl font-semibold">Descripción</h2>
+            <p className="leading-relaxed text-gray-800">
+              {product.description}
+            </p>
           </div>
 
-          <p className="italic text-gray-600"></p>
+          <div className="space-y-3">
+            <h2 className="text-2xl font-semibold">Especificaciones</h2>
+            <ProductSpecs
+              model={product.model}
+              brand={product.brand.name}
+              specs={product.specs}
+            />
+          </div>
         </div>
 
-        <div className="flex justify-center md:justify-center">
-          <ProductStoryCardModal
-            imageCardUrl={getCatalogImagePath(
-              product.merchant.id,
-              product.card_pic
-            )}
-          />
+        <div className="relative hidden md:block">
+          <div className="md:sticky md:top-28">
+            <ProductCallToAction product={product} />
+          </div>
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <div className="max-w-3xl rounded-md mt-10 px-6 py-6 text-center text-sm text-gray-500">
-          <p>
-            <strong>Peru Guitar</strong> es una plataforma de anuncios
-            clasificados. No participamos en la venta ni intermediamos en las
-            transacciones de los productos publicados. La responsabilidad de la
-            compra y venta recae exclusivamente en el <strong>comprador</strong>{" "}
-            y el <strong>vendedor</strong>.
-          </p>
-        </div>
-      </div>
+      <ProductDisclaimer />
     </section>
   );
 }

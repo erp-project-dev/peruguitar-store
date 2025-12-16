@@ -1,5 +1,8 @@
 // -----------------------------
 // Paths
+
+import { PriceType } from "../types/product.type";
+
 // -----------------------------
 export function getCatalogImagePath(
   username: string,
@@ -62,4 +65,17 @@ export function translateProductSpec(spec: string): string {
   };
 
   return map[spec] ?? spec.replace(/_/g, " ");
+}
+
+export function translatePriceType(type: PriceType): string {
+  switch (type) {
+    case "fixed":
+      return "Precio fijo";
+
+    case "negotiable":
+      return "Precio negociable";
+
+    default:
+      return type;
+  }
 }

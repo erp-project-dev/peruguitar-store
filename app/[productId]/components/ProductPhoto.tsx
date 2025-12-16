@@ -5,17 +5,14 @@
 import { useState } from "react";
 import { getCatalogImagePath } from "@/app/helpers/product.helper";
 
-interface ProductGalleryProps {
+interface ProductPhotoProps {
   merchantId: string;
   pics: string[];
   productName: string;
   price: number;
 }
 
-export default function ProductGallery({
-  merchantId,
-  pics,
-}: ProductGalleryProps) {
+export default function ProductPhoto({ merchantId, pics }: ProductPhotoProps) {
   const [mainImg, setMainImg] = useState(pics[0]);
 
   return (
@@ -23,7 +20,7 @@ export default function ProductGallery({
       <div className="w-full bg-black/20 rounded-xl flex items-center justify-center relative">
         <img
           src={getCatalogImagePath(merchantId, mainImg)}
-          className="max-h-[600px] w-full object-contain rounded-xl"
+          className="max-h-[800px] w-full object-contain rounded-xl"
         />
       </div>
 
