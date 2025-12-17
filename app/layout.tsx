@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 
 import { Geist, Geist_Mono } from "next/font/google";
 
-import NavBar from "./components/navbar/NavBar";
-import Footer from "./components/Footer";
+import Navbar from "@/features/components/Navbar/Navbar";
+import Footer from "@/features/components/Footer";
+import ClarityInitializer from "@/features/components/Clarity";
 
-import ClarityInitializer from "./components/Clarity";
+import { getBasePath } from "@/features/helpers/path.helper";
 
-import { getBasePath } from "./helpers/path.helper";
-import { SettingGetCommand } from "./commands/settings/index.command";
+import { SettingGetCommand } from "@/features/commands/settings/index.command";
 
 import "./globals.css";
 
@@ -55,7 +55,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased select-none`}
       >
         <ClarityInitializer />
-        <NavBar />
+        <Navbar />
         <div className="flex mt-10 mb-10 items-center justify-center px-8">
           {children}
         </div>

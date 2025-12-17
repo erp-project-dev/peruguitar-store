@@ -1,4 +1,4 @@
-import { SettingGetCommand } from "../commands/settings/index.command";
+import { SettingGetCommand } from "@/features/commands/settings/index.command";
 
 export function getBasePath(src: string = "") {
   const { website } = SettingGetCommand.handle();

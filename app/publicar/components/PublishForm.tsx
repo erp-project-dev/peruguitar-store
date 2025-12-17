@@ -1,7 +1,7 @@
 "use client";
 
-import { SettingGetCommand } from "@/app/commands/settings/index.command";
-import { getWhatsappLink } from "@/app/helpers/merchant.helper";
+import { SettingGetCommand } from "@/features/commands/settings/index.command";
+import { getWhatsappLink } from "@/features/helpers/merchant.helper";
 
 export default function PublishForm() {
   const WHATSAPP_NUMBER = SettingGetCommand.handle().publishNumber;

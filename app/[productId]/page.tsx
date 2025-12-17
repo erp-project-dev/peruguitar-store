@@ -1,16 +1,15 @@
-import { CatalogGetCommand } from "@/app/commands/catalog/index.command";
-import { ProductGetCommand } from "@/app/commands/product/index.command";
+import { CatalogGetCommand } from "@/features/commands/catalog/index.command";
+import { ProductGetCommand } from "@/features/commands/product/index.command";
 
-import { getCatalogImagePath } from "../helpers/product.helper";
-import { getBasePath } from "../helpers/path.helper";
+import { getCatalogImagePath } from "@/features/helpers/product.helper";
+import { getBasePath } from "@/features/helpers/path.helper";
 
 import ProductPhoto from "./components/ProductPhoto";
 import ProductSpecs from "./components/ProductSpecs";
 
-import { Breadcrumb } from "../components/Breadcrumb";
+import { Breadcrumb } from "@/features/components/Breadcrumb";
 import ProductCallToAction from "./components/ProductCallToAction/ProductCallToAction";
 import ProductDisclaimer from "./components/ProductDisclaimer";
-import Catalog from "../components/catalog/Catalog";
 import ProductSimilarLising from "./components/ProductSimilarListing";
 
 export async function generateStaticParams() {

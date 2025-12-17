@@ -1,5 +1,6 @@
-import { CatalogGetCommand } from "../commands/catalog/index.command";
-import { Breadcrumb } from "../components/Breadcrumb";
+import { CatalogGetCommand } from "@/features/commands/catalog/index.command";
+import { Breadcrumb } from "@/features/components/Breadcrumb";
+
 import { ProductHeader } from "./components/ProductHeader";
 import ProductListing from "./components/ProductListing";
 

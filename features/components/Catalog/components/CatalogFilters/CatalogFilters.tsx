@@ -5,7 +5,7 @@ import { useState } from "react";
 import {
   CatalogGetCommandProps,
   SortType,
-} from "@/app/commands/catalog/index.command";
+} from "@/features//commands/catalog/index.command";
 
 import CatalogFilterSelect from "./components/CatalogFilterSelect";
 import CatalogFilterItem from "./components/CatalogFilterItem";

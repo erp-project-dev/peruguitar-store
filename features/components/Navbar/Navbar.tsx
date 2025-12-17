@@ -8,7 +8,7 @@ import Image from "next/image";
 import logo from "@/app/assets/logo.png";
 import { NAV_LINKS } from "./menu";
 
-export default function NavBar() {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   // -------------------------------

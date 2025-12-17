@@ -1,5 +1,7 @@
 import DATA from "@/app/data";
-import { Product } from "@/app/types/product.type";
+
+import { Product } from "@/features/types/product.type";
+
 import { CatalogViewModel, ProductViewModel } from "./index.type";
 
 export type SortType =

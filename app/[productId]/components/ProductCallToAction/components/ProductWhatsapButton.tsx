@@ -1,9 +1,10 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
-import { sendClarityEvent } from "@/app/helpers/clarity.helper";
-import { getBasePath } from "@/app/helpers/path.helper";
-import { getWhatsappLink } from "@/app/helpers/merchant.helper";
+
+import { sendClarityEvent } from "@/features/helpers/clarity.helper";
+import { getBasePath } from "@/features/helpers/path.helper";
+import { getWhatsappLink } from "@/features/helpers/merchant.helper";
 
 interface ProductWhatsappButtonProps {
   phoneNumber: string;

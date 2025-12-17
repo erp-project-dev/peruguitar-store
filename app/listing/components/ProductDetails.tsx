@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { ProductViewModel } from "@/app/commands/catalog/index.type";
-import { getCatalogImagePath } from "@/app/helpers/product.helper";
+
+import { ProductViewModel } from "@/features/commands/catalog/index.type";
+import { getCatalogImagePath } from "@/features/helpers/product.helper";
 
 export default function ProductDetails({
   product,
@@ -42,7 +43,7 @@ export default function ProductDetails({
         {Object.entries(product.specs).map(([key, value]) => (
           <div key={key} className="text-slate-800">
             <span className="text-slate-600">{key}</span>:{" "}
-            <span>{value ?? "--"}</span>
+            <span>{String(value) ?? "--"}</span>
           </div>
         ))}
       </div>

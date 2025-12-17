@@ -1,4 +1,4 @@
-import Tooltip from "@/app/components/Tooltip";
+import Tooltip from "@/features/components/Tooltip";
 
 interface ProductStatusInfoProps {
   statusLabel: string;

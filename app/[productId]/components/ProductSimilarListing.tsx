@@ -1,5 +1,5 @@
-import { CatalogGetCommand } from "@/app/commands/catalog/index.command";
-import CatalogProduct from "@/app/components/catalog/components/CatalogProduct";
+import { CatalogGetCommand } from "@/features/commands/catalog/index.command";
+import CatalogProduct from "@/features/components/Catalog/components/CatalogProduct";
 
 interface ProductSimilarLisingProps {
   excludedProductId: string;

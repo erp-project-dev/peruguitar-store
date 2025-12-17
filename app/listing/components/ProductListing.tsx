@@ -9,10 +9,10 @@ import { Eye, ArrowUpDown, Pin } from "lucide-react";
 import {
   getCatalogImagePath,
   translateProductStatus,
-} from "@/app/helpers/product.helper";
+} from "@/features/helpers/product.helper";
+import { ProductViewModel } from "@/features/commands/catalog/index.type";
 
 import ProductDetails from "./ProductDetails";
-import { ProductViewModel } from "@/app/commands/catalog/index.type";
 
 type SortKey =
   | "name"

@@ -1,4 +1,4 @@
-import { SettingGetCommand } from "@/app/commands/settings/index.command";
+import { SettingGetCommand } from "@/features/commands/settings/index.command";
 import { Instagram, UsersRound } from "lucide-react";
 
 const { instagram, whatsappLinks } = SettingGetCommand.handle();

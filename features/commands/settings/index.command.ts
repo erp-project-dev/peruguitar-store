@@ -1,4 +1,5 @@
 import DATA from "@/app/data";
+
 import { SettingsViewModel } from "./index.type";
 
 export class SettingGetCommand {

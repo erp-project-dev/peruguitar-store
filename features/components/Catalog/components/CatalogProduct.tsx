@@ -2,8 +2,8 @@
 import Link from "next/link";
 import { Pin } from "lucide-react";
 
-import { ProductViewModel } from "@/app/commands/catalog/index.type";
-import { getCatalogImagePath } from "@/app/helpers/product.helper";
+import { ProductViewModel } from "@/features/commands/catalog/index.type";
+import { getCatalogImagePath } from "@/features/helpers/product.helper";
 
 interface CatalogProductProps {
   product: ProductViewModel;

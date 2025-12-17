@@ -1,5 +1,5 @@
-import { translateProductSpec } from "@/app/helpers/product.helper";
-import { GuitarSpecs } from "@/app/types/spec.type";
+import { translateProductSpec } from "@/features/helpers/product.helper";
+import { GuitarSpecs } from "@/features/types/spec.type";
 
 interface ProductSpecsProps {
   specs: GuitarSpecs;

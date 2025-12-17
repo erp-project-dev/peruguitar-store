@@ -2,8 +2,8 @@ export const dynamic = "force-static";
 
 import type { MetadataRoute } from "next";
 
-import { CatalogGetCommand } from "./commands/catalog/index.command";
-import { getBasePath } from "./helpers/path.helper";
+import { CatalogGetCommand } from "@/features/commands/catalog/index.command";
+import { getBasePath } from "@/features/helpers/path.helper";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const { items } = CatalogGetCommand.handle({ sort: "latest" });

@@ -6,12 +6,12 @@ import {
   CatalogGetCommand,
   CatalogGetCommandProps,
   SortType,
-} from "@/app/commands/catalog/index.command";
-import { BrandGetCommand } from "@/app/commands/brand/index.command";
-import { ProductTypeGetCommand } from "@/app/commands/types/index.command";
+} from "@/features/commands/catalog/index.command";
+import { BrandGetCommand } from "@/features/commands/brand/index.command";
+import { ProductTypeGetCommand } from "@/features/commands/types/index.command";
 
-import CatalogProduct from "./components/CatalogProduct";
-import CatalogFilters from "./components/CatalogFilters/CatalogFilters";
+import CatalogProduct from "@/features/components/Catalog/components/CatalogProduct";
+import CatalogFilters from "@/features/components/Catalog/components/CatalogFilters/CatalogFilters";
 
 export interface CatalogProps {
   sort?: SortType;

@@ -1,5 +1,7 @@
 import DATA from "@/app/data";
-import { Brand } from "@/app/types/brand.type";
+
+import { Brand } from "@/features/types/brand.type";
+
 import { CatalogGetCommand } from "../catalog/index.command";
 
 interface BrandGetCommandProps {

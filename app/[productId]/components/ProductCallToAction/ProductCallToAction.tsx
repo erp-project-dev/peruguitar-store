@@ -1,10 +1,10 @@
-import { ProductPageViewModel } from "@/app/commands/product/index.type";
+import { ProductPageViewModel } from "@/features/commands/product/index.type";
 import {
   getCatalogImagePath,
   translatePriceType,
   translateProductStatus,
   translateStatusScore,
-} from "@/app/helpers/product.helper";
+} from "@/features/helpers/product.helper";
 
 import ProductStoryCard from "./components/ProductStoryCard";
 import ProductWhatsappButton from "./components/ProductWhatsapButton";

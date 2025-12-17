@@ -2,9 +2,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { X, Download } from "lucide-react";
-import Tooltip from "@/app/components/Tooltip";
+
+import Tooltip from "@/features/components/Tooltip";
 
 interface ProductStoryCardProps {
   imageCardUrl: string;

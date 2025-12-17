@@ -1,5 +1,6 @@
-import { Breadcrumb } from "../components/Breadcrumb";
-import { getBasePath } from "../helpers/path.helper";
+import { Breadcrumb } from "@/features/components/Breadcrumb";
+import { getBasePath } from "@/features/helpers/path.helper";
+
 import PublishForm from "./components/PublishForm";
 import { StepCard } from "./components/StepCard";
 

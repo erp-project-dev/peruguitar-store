@@ -1,4 +1,4 @@
-import { Breadcrumb } from "../components/Breadcrumb";
+import { Breadcrumb } from "@/features/components/Breadcrumb";
 
 export const metadata = {
   title: "Acerca de nosotros",

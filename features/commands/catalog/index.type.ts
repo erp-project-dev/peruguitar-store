@@ -1,13 +1,14 @@
-import { ProductType } from "@/app/types/product-type";
-import { PriceType, ProductCurrency } from "@/app/types/product.type";
-import { GuitarSpecs } from "@/app/types/spec.type";
+import { Brand } from "@/features/types/brand.type";
+import { ProductType } from "@/features/types/product-type";
+import { ProductCurrency } from "@/features/types/product.type";
+import { GuitarSpecs } from "@/features/types/spec.type";
 
-export interface ProductPageViewModel {
+export interface ProductViewModel {
   id: string;
   category: string;
   name: string;
   type: ProductType;
-  brand: { id: string; name: string };
+  brand: Brand;
   model: string;
   status: string;
   statusScore: number;
@@ -18,28 +19,27 @@ export interface ProductPageViewModel {
   pic_2?: string;
   pic_3?: string;
   pic_4?: string;
-  pic_5?: string;
   pic_6?: string;
   card_pic: string;
 
   currency: ProductCurrency;
   price: number;
-  priceType: PriceType;
 
   publishDate: Date;
   publishType: string;
 
-  is_enabled: boolean;
+  isPinned: boolean;
+  isEnabled: boolean;
 
   merchant: {
     id: string;
     fullName: string;
-    firstName: string;
-    country: string;
-    state: string;
-    city: string;
-    lastName: string;
     whatsapp: string;
     instagram: string;
   };
+}
+
+export interface CatalogViewModel {
+  total: number;
+  items: ProductViewModel[];
 }
