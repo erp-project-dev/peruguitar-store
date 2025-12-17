@@ -56,7 +56,7 @@ export default function RootLayout({
       >
         <ClarityInitializer />
         <NavBar />
-        <div className="flex mt-30 mb-10 items-center justify-center px-8">
+        <div className="flex mt-10 mb-10 items-center justify-center px-8">
           {children}
         </div>
         <Footer />

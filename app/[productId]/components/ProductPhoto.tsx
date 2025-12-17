@@ -36,7 +36,7 @@ export default function ProductPhoto({ merchantId, pics }: ProductPhotoProps) {
                   border transition-all duration-200
                   ${
                     img === mainImg
-                      ? "border-black shadow-md"
+                      ? "border-black border-dashed shadow-md"
                       : "border-gray-300 hover:border-black/60 hover:shadow"
                   }
                 `}

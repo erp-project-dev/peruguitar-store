@@ -16,6 +16,7 @@ interface CatalogFilterOptions {
 }
 
 interface CatalogFiltersProps {
+  defaultSort?: SortType;
   brands: CatalogFilterOptions[];
   types: CatalogFilterOptions[];
   minPrice: number;
@@ -72,13 +73,14 @@ export function generatePriceRange(
 }
 
 export default function CatalogFilters({
+  defaultSort = "latest",
   brands,
   types,
   onChange,
   minPrice,
   maxPrice,
 }: CatalogFiltersProps) {
-  const [sort, setSort] = useState<SortType>("latest");
+  const [sort, setSort] = useState<SortType>(defaultSort);
   const [brand, setBrand] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
   const [rangePrice, setRangePrice] = useState<string | null>(null);
@@ -114,7 +116,7 @@ export default function CatalogFilters({
   };
 
   return (
-    <div className="flex flex-wrap justify-center items-center gap-3 focus:outline-none focus:ring-1 focus:ring-gray-600">
+    <div className="hidden md:flex flex-wrap justify-center items-center gap-3 focus:outline-none focus:ring-1 focus:ring-gray-600">
       <CatalogFilterItem label="Ordenar por">
         <CatalogFilterSelect
           options={[

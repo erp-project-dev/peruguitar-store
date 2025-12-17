@@ -21,9 +21,8 @@ export default function NavBar() {
     "block text-lg hover:text-yellow-400 transition flex items-center gap-2";
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[#171717] text-white shadow-md">
+    <nav className="w-full z-50 bg-black text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* LOGO */}
         <Link href="/" className="flex items-center">
           <Image
             src={logo}
@@ -33,7 +32,6 @@ export default function NavBar() {
           />
         </Link>
 
-        {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center space-x-8">
           {NAV_LINKS.map((item) => {
             const Comp = item.external ? "a" : Link;
@@ -53,7 +51,6 @@ export default function NavBar() {
           })}
         </div>
 
-        {/* MOBILE MENU BUTTON */}
         <button
           className="md:hidden hover:opacity-80 transition"
           onClick={() => setOpen(!open)}

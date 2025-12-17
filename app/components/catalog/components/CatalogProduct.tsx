@@ -5,61 +5,75 @@ import { Pin } from "lucide-react";
 import { ProductViewModel } from "@/app/commands/catalog/index.type";
 import { getCatalogImagePath } from "@/app/helpers/product.helper";
 
+interface CatalogProductProps {
+  product: ProductViewModel;
+  ignorePinned: boolean;
+}
+
 const PRODUCT_TYPE_BADGE = {
-  standard: "bg-slate-600/90 text-white border-slate-700",
-  high_end: "bg-amber-600/90 text-white border-amber-700",
-  signature: "bg-indigo-600/90 text-white border-indigo-700",
-  rare: "bg-rose-600/90 text-white border-rose-700",
-  discontinued: "bg-gray-800/90 text-white border-gray-900",
-  limited: "bg-emerald-600/90 text-white border-emerald-700",
-  vintage: "bg-orange-700/90 text-white border-orange-800",
-  handcrafted: "bg-teal-700/90 text-white border-teal-800",
-  boutique: "bg-purple-700/90 text-white border-purple-800",
+  standard: "bg-slate-600 text-white",
+  high_end: "bg-amber-600 text-white",
+  signature: "bg-indigo-600 text-white",
+  rare: "bg-rose-600 text-white",
+  discontinued: "bg-gray-800 text-white",
+  limited: "bg-emerald-600 text-white",
+  vintage: "bg-orange-700 text-white",
+  handcrafted: "bg-teal-700 text-white",
+  boutique: "bg-purple-700 text-white",
 };
 
-export default function CatalogProduct(product: ProductViewModel) {
-  const pinnedClass = product.isPinned
-    ? "border-2 border-dashed border-purple-700 shadow-purple-200"
-    : "";
-
-  const badge = PRODUCT_TYPE_BADGE[product.type.id];
+export default function CatalogProduct({
+  product,
+  ignorePinned,
+}: CatalogProductProps) {
+  const showPinned = product.isPinned && !ignorePinned;
+  const badgeClass = PRODUCT_TYPE_BADGE[product.type.id];
+  const titleClass = showPinned ? "text-purple-700" : "text-neutral-900";
 
   return (
     <Link
       href={product.id}
-      className={`relative rounded-xl overflow-hidden shadow-md hover:shadow-sm transition cursor-pointer group ${pinnedClass}`}
+      className={`p-2 md:p-4 group block cursor-pointer rounded-2xl bg-white/35 hover:bg-white transition-shadow duration-300 hover:shadow-lg ${
+        showPinned ? "md:outline-2 md:outline-purple-600 md:outline-dashed" : ""
+      }`}
     >
-      {product.isPinned && (
-        <div className="absolute top-3 left-3 z-20 bg-purple-700/90 p-1.5 rounded-full shadow-lg">
-          <Pin className="w-4 h-4 text-white" />
-        </div>
-      )}
+      <div className="relative overflow-hidden rounded-xl">
+        {showPinned && (
+          <div className="absolute top-2 left-2 z-10 bg-purple-600 p-1.5 rounded-full">
+            <Pin className="w-4 h-4 text-white" />
+          </div>
+        )}
 
-      <div
-        className={`absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-xs tracking-wide border shadow-md ${badge}`}
-      >
-        {product.type.name}
+        <img
+          src={getCatalogImagePath(product.merchant.id, product.pic_1)}
+          alt={product.name}
+          className="w-full aspect-7/6 object-cover transition-transform duration-300 group-hover:scale-[1.1]"
+        />
       </div>
 
-      <img
-        src={getCatalogImagePath(product.merchant.id, product.pic_1)}
-        alt={product.name}
-        className="w-full h-auto 2xl:h-[450px] xl:h-[350px] md:h-[350px] sm:h-[350px] object-cover group-hover:scale-105 transition-transform duration-500"
-      />
+      <div className="space-y-1 py-4">
+        <div className="text-[11px] md:text-xs uppercase tracking-wide text-neutral-500">
+          {product.brand.name}
+        </div>
 
-      <div className="absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/70 via-black/40 to-transparent">
-        <div className="relative h-14">
-          <h2 className="absolute bottom-0 left-0 right-24 text-white font-semibold text-lg leading-none line-clamp-2 drop-shadow-md">
-            {product.name}
-          </h2>
+        <h2
+          className={`text-base md:text-lg font-semibold leading-snug line-clamp-2 ${titleClass}`}
+        >
+          {product.name}
+        </h2>
 
-          <p className="absolute bottom-0 right-0 inline-flex items-end text-yellow-400 font-bold text-lg leading-none whitespace-nowrap drop-shadow-md tabular-nums">
-            {product.price.toLocaleString("es-PE", {
-              minimumFractionDigits: 0,
-              currency: product.currency,
-              style: "currency",
-            })}
-          </p>
+        <div
+          className={`inline-block text-[11px] md:text-xs px-2 py-1 rounded-md font-medium ${badgeClass}`}
+        >
+          {product.type.name}
+        </div>
+
+        <div className="pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums">
+          {product.price.toLocaleString("es-PE", {
+            minimumFractionDigits: 0,
+            currency: product.currency,
+            style: "currency",
+          })}
         </div>
       </div>
     </Link>

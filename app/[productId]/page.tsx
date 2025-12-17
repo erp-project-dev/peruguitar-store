@@ -10,6 +10,8 @@ import ProductSpecs from "./components/ProductSpecs";
 import { Breadcrumb } from "../components/Breadcrumb";
 import ProductCallToAction from "./components/ProductCallToAction/ProductCallToAction";
 import ProductDisclaimer from "./components/ProductDisclaimer";
+import Catalog from "../components/catalog/Catalog";
+import ProductSimilarLising from "./components/ProductSimilarListing";
 
 export async function generateStaticParams() {
   const { items } = CatalogGetCommand.handle();
@@ -116,11 +118,13 @@ export default async function ProductPage({
         </div>
 
         <div className="relative hidden md:block">
-          <div className="md:sticky md:top-28">
+          <div className="md:sticky md:top-5">
             <ProductCallToAction product={product} />
           </div>
         </div>
       </div>
+
+      <ProductSimilarLising excludedProductId={product.id} />
 
       <ProductDisclaimer />
     </section>
