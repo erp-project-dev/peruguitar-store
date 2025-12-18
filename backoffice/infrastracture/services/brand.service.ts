@@ -1,11 +1,10 @@
-import { Service } from "./interfaces/service.interface";
 import { MongoRepository } from "../repositories/mongo.repository";
 import { ApplicationError } from "../shared/error";
 import { toSlug } from "../helpers/slug.helper";
 import { Brand } from "../domain/brand.entity";
 import { BrandSchema } from "../schema/brand.schema";
 
-export class BrandService implements Service {
+export class BrandService {
   private repository = new MongoRepository<Brand>("brands", BrandSchema);
 
   async findById(id: string): Promise<Brand> {

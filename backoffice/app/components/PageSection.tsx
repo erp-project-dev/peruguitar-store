@@ -6,6 +6,7 @@ type PageSectionProps = {
   description?: string;
   children: ReactNode;
   loading?: boolean;
+  actions?: ReactNode;
 };
 
 export default function PageSection({
@@ -13,6 +14,7 @@ export default function PageSection({
   description,
   children,
   loading = false,
+  actions,
 }: PageSectionProps) {
   useEffect(() => {
     const el = document.getElementById("page-content");
@@ -27,20 +29,22 @@ export default function PageSection({
 
   return (
     <main className="ml-64 flex-1 bg-neutral-100 text-neutral-900 h-screen flex flex-col">
-      {/* HEADER */}
       <header className="sticky top-0 z-30 bg-neutral-100 border-b border-neutral-200">
-        <div className="px-6 pt-6 pb-4">
-          <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+        <div className="px-6 py-4 flex items-center justify-between gap-4">
+          <div className="flex flex-col justify-center">
+            <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
 
-          {description && (
-            <p className="mt-2 max-w-3xl text-sm text-neutral-600">
-              {description}
-            </p>
-          )}
+            {description && (
+              <p className="mt-1 max-w-3xl text-sm text-neutral-600">
+                {description}
+              </p>
+            )}
+          </div>
+
+          {actions && <div className="flex items-center gap-2">{actions}</div>}
         </div>
       </header>
 
-      {/* CONTENT */}
       <section
         id="page-content"
         className="relative flex-1 overflow-y-auto p-6"

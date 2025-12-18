@@ -1,10 +1,9 @@
-import { Service } from "./interfaces/service.interface";
 import { MongoRepository } from "../repositories/mongo.repository";
 import { ApplicationError } from "../shared/error";
 import { Setting } from "../domain/setting.entity";
 import { SettingSchema } from "../schema/setting.schema";
 
-export class SettingService implements Service {
+export class SettingService {
   private repository = new MongoRepository<Setting>("settings", SettingSchema);
 
   async findById(id: string): Promise<Setting> {

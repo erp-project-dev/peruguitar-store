@@ -70,6 +70,7 @@ export default function TableBody<T extends { _id: string }>({
       {data.map((row) => (
         <DataTableRow<T>
           key={row._id}
+          showActions={canEdit || canInsert || canRemove}
           row={row}
           columns={columns}
           isEditing={row._id === editingId}

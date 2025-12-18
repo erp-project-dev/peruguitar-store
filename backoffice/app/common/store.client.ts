@@ -10,12 +10,15 @@ function isOptions(value: any): value is RequestOptions {
   return value && typeof value === "object" && "cacheTtlSeconds" in value;
 }
 
+function isFilePayload(payload?: any): payload is File[] {
+  return (
+    Array.isArray(payload) && payload.length > 0 && payload[0] instanceof File
+  );
+}
+
 export class StoreClient {
   private static readonly ENDPOINT = "/api/store";
 
-  /* -------------------------
-   * Cache helpers
-   * ------------------------- */
   private getCacheKey(payload: IncomeRequest): string {
     return `store:${payload.command}:${payload.id ?? "global"}`;
   }
@@ -29,12 +32,7 @@ export class StoreClient {
     try {
       const { value, expiresAt, ttlSeconds } = JSON.parse(raw);
 
-      if (requestedTtl < ttlSeconds) {
-        localStorage.removeItem(key);
-        return null;
-      }
-
-      if (Date.now() > expiresAt) {
+      if (requestedTtl < ttlSeconds || Date.now() > expiresAt) {
         localStorage.removeItem(key);
         return null;
       }
@@ -59,9 +57,6 @@ export class StoreClient {
     );
   }
 
-  /* -------------------------
-   * Core request
-   * ------------------------- */
   private async request<R>(
     payload: IncomeRequest,
     options?: RequestOptions
@@ -74,11 +69,28 @@ export class StoreClient {
       if (cached !== null) return cached;
     }
 
-    const res = await fetch(StoreClient.ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    let res: Response;
+
+    if (isFilePayload(payload.payload)) {
+      const form = new FormData();
+      form.append("command", payload.command);
+      if (payload.id) form.append("id", payload.id);
+
+      payload.payload.forEach((file) => {
+        form.append("payload", file);
+      });
+
+      res = await fetch(StoreClient.ENDPOINT, {
+        method: "POST",
+        body: form,
+      });
+    } else {
+      res = await fetch(StoreClient.ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }
 
     const response = await res.json();
 
@@ -93,24 +105,17 @@ export class StoreClient {
     return response.data as R;
   }
 
-  /* -------------------------
-   * Public API (COMMAND-BASED)
-   * ------------------------- */
-
   execute<R>(command: StoreCommand, options?: RequestOptions): Promise<R>;
-
   execute<R>(
     command: StoreCommand,
     id: string,
     options?: RequestOptions
   ): Promise<R>;
-
   execute<R>(
     command: StoreCommand,
     payload: any,
     options?: RequestOptions
   ): Promise<R>;
-
   execute<R>(
     command: StoreCommand,
     id: string,

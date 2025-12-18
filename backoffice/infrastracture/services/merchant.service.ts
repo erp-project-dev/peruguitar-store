@@ -1,11 +1,10 @@
-import { Service } from "./interfaces/service.interface";
 import { Merchant } from "../domain/merchant.entity";
 import { MongoRepository } from "../repositories/mongo.repository";
 import { ApplicationError } from "../shared/error";
 import { toSlug } from "../helpers/slug.helper";
 import { MerchantSchema } from "../schema/merchant.schema";
 
-export class MerchantService implements Service {
+export class MerchantService {
   private repository = new MongoRepository<Merchant>(
     "merchants",
     MerchantSchema

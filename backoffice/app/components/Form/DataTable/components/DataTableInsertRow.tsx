@@ -38,7 +38,7 @@ export default function DataTableInsertRow<T>({
       {columns.map((col) => (
         <td
           key={String(col.key)}
-          className={`px-4 py-2 ${alignClass(col.align)}`}
+          className={`px-4 py-2 truncate ${alignClass(col.align)}`}
         >
           {inserting && col.editable ? (
             col.values ? (

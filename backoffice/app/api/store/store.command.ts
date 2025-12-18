@@ -13,6 +13,9 @@ export enum StoreCommand {
   CatalogUpdate = "catalog.update",
   CatalogRemove = "catalog.remove",
 
+  // CATALOG IMAGES
+  CatalogSetImages = "catalog.set_images",
+
   // BRAND
   BrandFindAll = "brand.find_all",
   BrandFindById = "brand.find_by_id",

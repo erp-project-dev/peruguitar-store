@@ -9,7 +9,7 @@ import { StoreCommand } from "@/app/api/store/store.command";
 
 import { Merchant } from "@/infrastracture/domain/merchant.entity";
 import DataTable from "../components/Form/DataTable/DataTable";
-import { CITIES, COUNTRIES, STATES } from "../common/location.data";
+import { CITIES, COUNTRIES, STATES } from "../common/data/location.data";
 
 const storeClient = new StoreClient();
 

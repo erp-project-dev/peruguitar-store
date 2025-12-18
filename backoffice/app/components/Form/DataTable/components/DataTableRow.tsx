@@ -5,6 +5,7 @@ import { alignClass } from "../helpers";
 import { Column } from "../DataTable";
 
 interface DataTableRowProps<T extends { _id: string }> {
+  showActions: boolean;
   row: T;
   columns: Column<T>[];
   isEditing: boolean;
@@ -20,6 +21,7 @@ interface DataTableRowProps<T extends { _id: string }> {
 }
 
 export default function DataTableRow<T extends { _id: string }>({
+  showActions,
   row,
   columns,
   isEditing,
@@ -41,7 +43,7 @@ export default function DataTableRow<T extends { _id: string }>({
         return (
           <td
             key={String(col.key)}
-            className={`px-4 py-2 truncate ${alignClass(col.align)}`}
+            className={`px-4 py-4 truncate ${alignClass(col.align)}`}
           >
             {isEditing && col.editable ? (
               col.values ? (
@@ -72,44 +74,46 @@ export default function DataTableRow<T extends { _id: string }>({
         );
       })}
 
-      <td className="px-4 py-2 text-right">
-        {!isEditing ? (
-          <div className="inline-flex gap-1">
-            {canEdit && (
+      {showActions && (
+        <td className="px-4 py-4 text-right">
+          {!isEditing ? (
+            <div className="inline-flex gap-1">
+              {canEdit && (
+                <button
+                  onClick={onEdit}
+                  className="p-2 rounded hover:bg-neutral-100"
+                >
+                  <Pencil size={16} />
+                </button>
+              )}
+              {canRemove && (
+                <button
+                  onClick={onRemove}
+                  className="p-2 rounded hover:bg-red-50 text-red-600"
+                >
+                  <Trash size={16} />
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="inline-flex gap-1">
               <button
-                onClick={onEdit}
-                className="p-2 rounded hover:bg-neutral-100"
+                onClick={onSave}
+                disabled={loading}
+                className="p-2 rounded hover:bg-green-50 text-green-600"
               >
-                <Pencil size={16} />
+                <Save size={16} />
               </button>
-            )}
-            {canRemove && (
               <button
-                onClick={onRemove}
+                onClick={onCancel}
                 className="p-2 rounded hover:bg-red-50 text-red-600"
               >
-                <Trash size={16} />
+                <X size={16} />
               </button>
-            )}
-          </div>
-        ) : (
-          <div className="inline-flex gap-1">
-            <button
-              onClick={onSave}
-              disabled={loading}
-              className="p-2 rounded hover:bg-green-50 text-green-600"
-            >
-              <Save size={16} />
-            </button>
-            <button
-              onClick={onCancel}
-              className="p-2 rounded hover:bg-red-50 text-red-600"
-            >
-              <X size={16} />
-            </button>
-          </div>
-        )}
-      </td>
+            </div>
+          )}
+        </td>
+      )}
     </tr>
   );
 }

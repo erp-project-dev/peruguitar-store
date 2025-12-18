@@ -6,20 +6,16 @@ import { ProductTypeService } from "@/infrastracture/services/product-type.servi
 import { SettingService } from "@/infrastracture/services/setting.service";
 
 import { StoreCommand } from "./store.command";
+import { ProductService } from "@/infrastracture/services/product.service";
 
 type CommandHandler = (id?: string, payload?: any) => Promise<any>;
 
+const productService = new ProductService();
 const merchantService = new MerchantService();
 const brandService = new BrandService();
 const productTypeService = new ProductTypeService();
 const settingService = new SettingService();
 const storeMetricsService = new StoreMetricsService();
-
-const notImplemented = (command: StoreCommand): CommandHandler => {
-  return async () => {
-    throw new Error(`Command not implemented: ${command}`);
-  };
-};
 
 export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   // MERCHANT
@@ -60,13 +56,15 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
     settingService.update(id as string, payload),
   [StoreCommand.SettingRemove]: (id) => settingService.remove(id as string),
 
+  // PRODUCT
+  [StoreCommand.CatalogFindAll]: () => productService.findAll(),
+  [StoreCommand.CatalogFindById]: (id) => productService.findById(id as string),
+  [StoreCommand.CatalogCreate]: (_id, payload) =>
+    productService.create(payload),
+  [StoreCommand.CatalogUpdate]: (id, payload) =>
+    productService.update(id as string, payload),
+  [StoreCommand.CatalogRemove]: (id) => productService.remove(id as string),
+
   // STORE METRICS
   [StoreCommand.StoreMetricsFind]: () => storeMetricsService.find(),
-
-  // CATALOG (NOT IMPLEMENTED)
-  [StoreCommand.CatalogFindAll]: notImplemented(StoreCommand.CatalogFindAll),
-  [StoreCommand.CatalogFindById]: notImplemented(StoreCommand.CatalogFindById),
-  [StoreCommand.CatalogCreate]: notImplemented(StoreCommand.CatalogCreate),
-  [StoreCommand.CatalogUpdate]: notImplemented(StoreCommand.CatalogUpdate),
-  [StoreCommand.CatalogRemove]: notImplemented(StoreCommand.CatalogRemove),
 };

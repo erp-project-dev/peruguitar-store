@@ -1,11 +1,10 @@
-import { Service } from "./interfaces/service.interface";
 import { MongoRepository } from "../repositories/mongo.repository";
 import { ApplicationError } from "../shared/error";
 import { toSlug } from "../helpers/slug.helper";
 import { ProductType } from "../domain/product-type.entity";
 import { ProductTypeSchema } from "../schema/product-type.schema";
 
-export class ProductTypeService implements Service {
+export class ProductTypeService {
   private repository = new MongoRepository<ProductType>(
     "types",
     ProductTypeSchema
