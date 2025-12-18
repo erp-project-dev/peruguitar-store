@@ -30,6 +30,8 @@ export type Column<T> = {
   values?: SelectOption[];
   defaultValue?: string;
 
+  truncate?: boolean;
+
   render?: (value: T[keyof T], row: T) => React.ReactNode;
 };
 

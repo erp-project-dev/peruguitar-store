@@ -1,3 +1,5 @@
+import { BaseEntity } from "./base.entity";
+
 export interface GuitarSpecs {
   release_year: number | null;
   origin: string | null;
@@ -20,9 +22,7 @@ export interface GuitarSpecs {
   hardware_color: string | null;
 }
 
-export interface Product {
-  _id: string;
-
+export interface Product extends BaseEntity {
   category: string;
 
   brand_id: string;

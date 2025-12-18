@@ -39,11 +39,14 @@ export default function DataTableRow<T extends { _id: string }>({
     <tr className="border-t border-neutral-100 hover:bg-neutral-50">
       {columns.map((col) => {
         const value = row[col.key];
+        const hasTruncated = col.truncate === undefined ? true : col.truncate;
 
         return (
           <td
             key={String(col.key)}
-            className={`px-4 py-4 truncate ${alignClass(col.align)}`}
+            className={`px-4 py-4 ${
+              hasTruncated ? "truncate" : ""
+            } ${alignClass(col.align)}`}
           >
             {isEditing && col.editable ? (
               col.values ? (

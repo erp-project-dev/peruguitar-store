@@ -1,4 +1,5 @@
-export interface Brand {
-  _id: string;
+import { BaseEntity } from "./base.entity";
+
+export interface Brand extends BaseEntity {
   name: string;
 }

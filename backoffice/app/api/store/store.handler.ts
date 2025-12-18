@@ -7,10 +7,15 @@ import { SettingService } from "@/infrastracture/services/setting.service";
 
 import { StoreCommand } from "./store.command";
 import { ProductService } from "@/infrastracture/services/product.service";
+import { ProductImageAttachService } from "@/infrastracture/services/product-image-attach.service";
+import { ProductImageRemoveService } from "@/infrastracture/services/product-image-remove.service";
 
 type CommandHandler = (id?: string, payload?: any) => Promise<any>;
 
 const productService = new ProductService();
+const productImageAttachService = new ProductImageAttachService();
+const productImageRemoveService = new ProductImageRemoveService();
+
 const merchantService = new MerchantService();
 const brandService = new BrandService();
 const productTypeService = new ProductTypeService();
@@ -64,6 +69,12 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   [StoreCommand.CatalogUpdate]: (id, payload) =>
     productService.update(id as string, payload),
   [StoreCommand.CatalogRemove]: (id) => productService.remove(id as string),
+
+  // PRODUCT > IMAGES
+  [StoreCommand.CatalogAttachImages]: (id, files) =>
+    productImageAttachService.attach(id as string, files),
+  [StoreCommand.CatalogRemoveImage]: (id, { image }) =>
+    productImageRemoveService.remove(id as string, image),
 
   // STORE METRICS
   [StoreCommand.StoreMetricsFind]: () => storeMetricsService.find(),

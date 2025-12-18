@@ -1,5 +1,6 @@
-export interface Merchant {
-  _id: string;
+import { BaseEntity } from "./base.entity";
+
+export interface Merchant extends BaseEntity {
   email: string;
   name: string;
   last_name: string;

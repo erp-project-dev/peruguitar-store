@@ -79,7 +79,9 @@ export default function Merchants() {
             label: "ID",
             width: 140,
             render: (value) => (
-              <span className="text-xs text-neutral-400">{value}</span>
+              <span className="text-xs text-neutral-400">
+                {value as string}
+              </span>
             ),
           },
           {
@@ -134,7 +136,7 @@ export default function Merchants() {
                   href={`mailto:${value}`}
                   className="text-neutral-700 hover:underline"
                 >
-                  {value}
+                  {value as string}
                 </a>
               ) : null,
           },
@@ -151,7 +153,7 @@ export default function Merchants() {
                   rel="noopener noreferrer"
                   className="text-neutral-700 hover:underline"
                 >
-                  {value}
+                  {value as string}
                 </a>
               ) : null,
           },
@@ -167,7 +169,7 @@ export default function Merchants() {
                   rel="noopener noreferrer"
                   className="text-neutral-700 hover:underline"
                 >
-                  {value}
+                  {value as string}
                 </a>
               ) : null,
           },

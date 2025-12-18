@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { BaseSchema } from "./base.schema";
 
 export const GuitarSpecsSchema = z.object({
   release_year: z.number().int().nullable(),
@@ -22,8 +23,26 @@ export const GuitarSpecsSchema = z.object({
   hardware_color: z.string().nullable(),
 });
 
+export const ProductImagesSchema = z
+  .array(
+    z
+      .string()
+      .min(1)
+      .refine(
+        (v) =>
+          [".jpg", ".jpeg", ".png", ".webp", ".gif"].some((ext) =>
+            v.toLowerCase().trim().endsWith(ext)
+          ),
+        {
+          message: "Invalid image format",
+        }
+      )
+  )
+  .max(6)
+  .default([]);
+
 export const ProductSchema = z.object({
-  _id: z.string().min(1, "_id is required"),
+  ...BaseSchema,
 
   category: z.string().min(1, "Category is required"),
 
@@ -45,8 +64,7 @@ export const ProductSchema = z.object({
   priceType: z.string().min(1),
 
   specs: GuitarSpecsSchema,
-
-  images: z.array(z.string()).default([]),
+  images: ProductImagesSchema,
 
   is_enabled: z.boolean(),
   is_pinned: z.boolean(),

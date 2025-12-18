@@ -8,16 +8,10 @@ import { Save, Undo, Image as ImageIcon } from "lucide-react";
 
 import PageSection from "@/app/components/PageSection";
 import Button from "@/app/components/Form/Button";
-import Input from "@/app/components/Form/Input";
-import Select from "@/app/components/Form/Select";
-import { Field } from "@/app/components/Form/Field";
 
 import { StoreClient } from "@/app/common/store.client";
 import { StoreCommand } from "@/app/api/store/store.command";
 
-import { Brand } from "@/infrastracture/domain/brand.entity";
-import { ProductType } from "@/infrastracture/domain/product-type.entity";
-import { Merchant } from "@/infrastracture/domain/merchant.entity";
 import { Product } from "@/infrastracture/domain/product.entity";
 
 import {
@@ -26,11 +20,13 @@ import {
   PRODUCT_CONDITIONS,
   PRODUCT_SCORES,
 } from "@/app/common/data";
-import Switch from "@/app/components/Form/Switch";
+import ProductInfo from "./components/ProductInfo";
+import ProductImageAttach from "./components/ProductImageAttach";
+import ProductImageList from "./components/ProductImageList";
 
 const storeClient = new StoreClient();
 
-type ProductCreate = {
+export type ProductCreate = {
   brand_id: string;
   merchant_id: string;
   type_id: string;
@@ -71,9 +67,6 @@ export default function EditProductPage() {
   const router = useRouter();
 
   const [form, setForm] = useState(emptyForm);
-  const [brands, setBrands] = useState<Brand[]>([]);
-  const [types, setTypes] = useState<ProductType[]>([]);
-  const [merchants, setMerchants] = useState<Merchant[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -82,20 +75,11 @@ export default function EditProductPage() {
       try {
         setLoading(true);
 
-        const [product, brandsData, typesData, merchantsData] =
-          await Promise.all([
-            storeClient.execute<Product>(
-              StoreCommand.CatalogFindById,
-              productId
-            ),
-            storeClient.execute<Brand[]>(StoreCommand.BrandFindAll),
-            storeClient.execute<ProductType[]>(StoreCommand.ProductTypeFindAll),
-            storeClient.execute<Merchant[]>(StoreCommand.MerchantFindAll),
-          ]);
+        const product = await storeClient.execute<Product>(
+          StoreCommand.CatalogFindById,
+          productId
+        );
 
-        setBrands(brandsData);
-        setTypes(typesData);
-        setMerchants(merchantsData);
         setImages(product.images);
 
         setForm({
@@ -124,7 +108,7 @@ export default function EditProductPage() {
     if (productId) fetchAll();
   }, [productId]);
 
-  const update = (key: keyof typeof emptyForm, value: any) => {
+  const update = (key: keyof ProductCreate, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -162,6 +146,50 @@ export default function EditProductPage() {
     }
   };
 
+  const handleImagesAttach = async (files: File[]) => {
+    if (!files.length) return;
+
+    try {
+      setLoading(true);
+
+      const updated = await storeClient.execute<string[]>(
+        StoreCommand.CatalogAttachImages,
+        productId,
+        files
+      );
+
+      setImages(updated);
+
+      toast.success("Images attached");
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Error attaching images";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOnRemoveImage = async (image: string) => {
+    try {
+      setLoading(true);
+
+      const updated = await storeClient.execute<string[]>(
+        StoreCommand.CatalogRemoveImage,
+        productId,
+        { image }
+      );
+
+      setImages(updated);
+
+      toast.success("Image removed");
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Error removing image";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <PageSection
       title="Edit product"
@@ -191,160 +219,18 @@ export default function EditProductPage() {
       }
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* LEFT — FORM */}
         <div className="lg:col-span-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Field label="Name">
-              <Input
-                value={form.name}
-                onChange={(e) => update("name", e.target.value)}
-              />
-            </Field>
-
-            <Field label="Type">
-              <Select
-                value={form.type_id}
-                onChange={(e) => update("type_id", e.target.value)}
-                options={types.map((t) => ({
-                  label: t.name,
-                  value: t._id,
-                }))}
-              />
-            </Field>
-
-            <Field label="Brand">
-              <Select
-                value={form.brand_id}
-                onChange={(e) => update("brand_id", e.target.value)}
-                options={brands.map((b) => ({
-                  label: b.name,
-                  value: b._id,
-                }))}
-              />
-            </Field>
-
-            <Field label="Model">
-              <Input
-                value={form.model}
-                onChange={(e) => update("model", e.target.value)}
-              />
-            </Field>
-
-            <Field label="Condition">
-              <Select
-                value={form.condition}
-                onChange={(e) => update("condition", e.target.value)}
-                options={PRODUCT_CONDITIONS.map((c) => ({
-                  label: c,
-                  value: c,
-                }))}
-              />
-            </Field>
-
-            <Field label="Score">
-              <Select
-                value={String(form.condition_score)}
-                onChange={(e) =>
-                  update("condition_score", Number(e.target.value))
-                }
-                options={PRODUCT_SCORES.map((s) => ({
-                  label: `${s}/5`,
-                  value: String(s),
-                }))}
-              />
-            </Field>
-
-            <Field label="Currency">
-              <Select
-                value={form.currency}
-                onChange={(e) => update("currency", e.target.value)}
-                options={CURRENCIES.map((c) => ({
-                  label: c,
-                  value: c,
-                }))}
-              />
-            </Field>
-
-            <Field label="Price">
-              <Input
-                type="number"
-                value={form.price}
-                onChange={(e) => update("price", Number(e.target.value))}
-              />
-            </Field>
-
-            <Field label="Price type">
-              <Select
-                value={form.priceType}
-                onChange={(e) => update("priceType", e.target.value)}
-                options={PRODUCT_PRICE_TYPES.map((pt) => ({
-                  label: pt,
-                  value: pt,
-                }))}
-              />
-            </Field>
-
-            <Field label="Merchant">
-              <Select
-                value={form.merchant_id}
-                onChange={(e) => update("merchant_id", e.target.value)}
-                options={merchants.map((m) => ({
-                  label: m._id,
-                  value: m._id,
-                }))}
-              />
-            </Field>
-
-            <Field label="Enabled">
-              <Switch
-                value={form.is_enabled}
-                onChange={(v) => update("is_enabled", v)}
-              />
-            </Field>
-
-            <Field label="Pinned">
-              <Switch
-                value={form.is_pinned}
-                onChange={(v) => update("is_pinned", v)}
-              />
-            </Field>
-
-            <Field label="Description" full>
-              <Input
-                type="textarea"
-                rows={4}
-                value={form.description}
-                onChange={(e) => update("description", e.target.value)}
-              />
-            </Field>
-
-            <Field label="Specs (JSON)" full>
-              <Input
-                type="textarea"
-                rows={8}
-                className="font-mono text-xs"
-                value={form.specs_raw}
-                onChange={(e) => update("specs_raw", e.target.value)}
-              />
-            </Field>
-          </div>
+          <ProductInfo form={form} onUpdate={update} />
         </div>
 
         {/* RIGHT — IMAGES */}
         <div className="flex flex-col gap-4">
-          <div className="h-24 rounded-lg border border-dashed border-neutral-300 bg-neutral-50" />
+          <ProductImageAttach
+            onSelect={handleImagesAttach}
+            max={6 - images.length}
+          />
 
-          {images.map((image, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white p-3"
-            >
-              <div className="flex h-14 w-14 items-center justify-center rounded-md bg-neutral-100">
-                <ImageIcon className="h-6 w-6 text-neutral-400" />
-              </div>
-              <span className="text-xs text-neutral-500">{image}</span>
-            </div>
-          ))}
+          <ProductImageList images={images} onRemove={handleOnRemoveImage} />
         </div>
       </div>
     </PageSection>

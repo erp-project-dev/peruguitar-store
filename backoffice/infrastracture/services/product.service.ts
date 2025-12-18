@@ -25,7 +25,7 @@ export class ProductService {
       _id: id,
       category: "guitar",
       images: [],
-      is_enabled: true,
+      is_enabled: false,
       is_pinned: false,
       publish_date: new Date().toISOString(),
     });
@@ -33,11 +33,6 @@ export class ProductService {
 
   async update(id: string, entry: Partial<Product>): Promise<Product> {
     return this.repository.update(id, entry);
-  }
-
-  async setImages(id: string, images: File[]): Promise<string[]> {
-    console.info(images);
-    return [];
   }
 
   private async validateUniqueId(id: string): Promise<void> {

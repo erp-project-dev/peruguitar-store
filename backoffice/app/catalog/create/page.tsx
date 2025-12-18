@@ -182,6 +182,7 @@ export default function CreateProductPage() {
 
         <Field label="Condition">
           <Select
+            placeholder="Select condition"
             value={form.condition}
             onChange={(e) => update("condition", e.target.value)}
             options={PRODUCT_CONDITIONS.map((c) => ({ label: c, value: c }))}
@@ -190,6 +191,7 @@ export default function CreateProductPage() {
 
         <Field label="Score">
           <Select
+            placeholder="Select score"
             value={String(form.condition_score)}
             onChange={(e) => update("condition_score", Number(e.target.value))}
             options={PRODUCT_SCORES.map((s) => ({
@@ -201,6 +203,7 @@ export default function CreateProductPage() {
 
         <Field label="Currency">
           <Select
+            placeholder="Select currency"
             value={form.currency}
             onChange={(e) => update("currency", e.target.value)}
             options={CURRENCIES.map((c) => ({ label: c, value: c }))}
@@ -217,6 +220,7 @@ export default function CreateProductPage() {
 
         <Field label="Price type">
           <Select
+            placeholder="Select price type"
             value={form.priceType}
             onChange={(e) => update("priceType", e.target.value)}
             options={PRODUCT_PRICE_TYPES.map((pt) => ({
@@ -228,6 +232,7 @@ export default function CreateProductPage() {
 
         <Field label="Merchant">
           <Select
+            placeholder="Select merchants"
             value={form.merchant_id}
             onChange={(e) => update("merchant_id", e.target.value)}
             options={merchants.map((m) => ({ label: m._id, value: m._id }))}

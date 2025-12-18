@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
-import { Pin, PinOff, Check, X, Plus } from "lucide-react";
+import { Pin, PinOff, Check, X, Plus, ImageOff, Image } from "lucide-react";
 
 import PageSection from "@/app/components/PageSection";
 import { StoreClient } from "@/app/common/store.client";
@@ -13,6 +13,7 @@ import { StoreCommand } from "@/app/api/store/store.command";
 import DataTable from "../components/Form/DataTable/DataTable";
 import { Product } from "@/infrastracture/domain/product.entity";
 import Button from "../components/Form/Button";
+import Tooltip from "../components/Tooltip";
 
 const storeClient = new StoreClient();
 
@@ -61,7 +62,7 @@ export default function Catalog() {
           icon={Plus}
           size="lg"
         >
-          New producto
+          New product
         </Button>
       }
     >
@@ -133,6 +134,7 @@ export default function Catalog() {
             key: "condition",
             label: "Condition",
             width: 140,
+            sortable: true,
           },
 
           {
@@ -140,9 +142,26 @@ export default function Catalog() {
             label: "Score",
             width: 100,
             align: "center",
+            sortable: true,
             render: (value) => (
               <span className="text-sm">{value as number}/5</span>
             ),
+          },
+
+          {
+            key: "images",
+            label: "Images",
+            width: 90,
+            align: "center",
+            truncate: false,
+            render: (value) =>
+              Array.isArray(value) && value.length > 0 ? (
+                <Tooltip label={`${value.length} images`}>
+                  <Image className="h-6 w-6 text-black-600 mx-auto" />
+                </Tooltip>
+              ) : (
+                <ImageOff className="h-6 w-6 text-neutral-400 mx-auto" />
+              ),
           },
 
           {
@@ -150,11 +169,12 @@ export default function Catalog() {
             label: "Pinned",
             width: 90,
             align: "center",
+            sortable: true,
             render: (value) =>
               value ? (
-                <Pin className="h-4 w-4 text-yellow-500 mx-auto" />
+                <Pin className="h-6 w-6 text-yellow-500 mx-auto" />
               ) : (
-                <PinOff className="h-4 w-4 text-neutral-300 mx-auto" />
+                <PinOff className="h-6 w-6 text-neutral-300 mx-auto" />
               ),
           },
 
@@ -163,11 +183,12 @@ export default function Catalog() {
             label: "Enabled",
             width: 90,
             align: "center",
+            sortable: true,
             render: (value) =>
               value ? (
-                <Check className="h-4 w-4 text-green-600 mx-auto" />
+                <Check className="h-6 w-6 text-green-600 mx-auto" />
               ) : (
-                <X className="h-4 w-4 text-red-500 mx-auto" />
+                <X className="h-6 w-6 text-red-500 mx-auto" />
               ),
           },
         ]}

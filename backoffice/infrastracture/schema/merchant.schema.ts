@@ -1,7 +1,8 @@
 import { z } from "zod";
+import { BaseSchema } from "./base.schema";
 
 export const MerchantSchema = z.object({
-  _id: z.string(),
+  ...BaseSchema,
   email: z.string().email(),
   name: z.string().min(1),
   last_name: z.string().min(1),

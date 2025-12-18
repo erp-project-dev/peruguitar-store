@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Db, Filter, Document } from "mongodb";
 import { ZodError, ZodObject } from "zod";
-import { getDbInstance } from "@/infrastracture/repositories/database";
-import { ApplicationError } from "../shared/error";
 
-function getZodMessage(error: ZodError): string {
-  const issue = error.issues[0];
-  if (!issue) return "Invalid entry";
-  return `${issue.path}: ${issue.message}`;
-}
+import { getDbInstance } from "@/infrastracture/repositories/database";
+
+import { ApplicationError } from "../shared/error";
+import { getZodMessage } from "../helpers/zod.helper";
+
+type CreateData<T> = Omit<T, "created_at" | "updated_at">;
+type UpdateData<T> = Partial<Omit<T, "_id" | "created_at" | "updated_at">>;
 
 export class MongoRepository<T extends Document> {
   constructor(
@@ -39,17 +39,26 @@ export class MongoRepository<T extends Document> {
 
   async findAll(): Promise<T[]> {
     const col = await this.collection();
-    return col.find({} as Filter<T>).toArray() as Promise<T[]>;
+    return col.find().sort({ created_at: -1 }).toArray() as Promise<T[]>;
   }
 
-  async create(data: T & { _id: string }): Promise<T> {
+  /**
+   * CREATE
+   * - created_at is set here
+   */
+  async create(data: CreateData<T>): Promise<T> {
     try {
-      this.validator.parse(data);
+      const entity = {
+        ...data,
+        created_at: new Date(),
+      } as any;
+
+      this.validator.parse(entity);
 
       const col = await this.collection();
-      await col.insertOne(data as any);
+      await col.insertOne(entity as any);
 
-      return data;
+      return entity;
     } catch (e) {
       if (e instanceof ZodError) {
         throw new ApplicationError("schema-invalid", getZodMessage(e));
@@ -58,13 +67,22 @@ export class MongoRepository<T extends Document> {
     }
   }
 
-  async update(id: string, data: Partial<T>): Promise<T> {
+  /**
+   * UPDATE
+   * - updated_at is set here
+   */
+  async update(id: string, data: UpdateData<T>): Promise<T> {
     try {
-      this.validator.partial().parse({ _id: id, ...(data as any) });
+      const payload = {
+        ...data,
+        updated_at: new Date(),
+      };
+
+      this.validator.partial().parse({ _id: id, ...payload });
 
       const col = await this.collection();
       const result = await col.updateOne({ _id: id } as Filter<T>, {
-        $set: data,
+        $set: payload as any,
       });
 
       if (result.matchedCount === 0) {

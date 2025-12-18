@@ -1,6 +1,7 @@
 import { z } from "zod";
+import { BaseSchema } from "./base.schema";
 
 export const SettingSchema = z.object({
-  _id: z.string(),
+  ...BaseSchema,
   value: z.string(),
 });
