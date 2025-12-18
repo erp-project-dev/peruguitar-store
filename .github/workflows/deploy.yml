@@ -30,6 +30,7 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB: ${{ secrets.MONGODB_DB }}
+          NODE_OPTIONS: --openssl-legacy-provider
 
       - name: Generate cards from images
         working-directory: ./frontoffice
