@@ -21,19 +21,22 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm ci
+        working-directory: ./frontoffice
+        run: npm install
 
-      - name: Generate data.json from Google Sheets
+      - name: Generate data.json
+        working-directory: ./frontoffice
         run: npm run task:read
         env:
-          GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
-          GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
-          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB: ${{ secrets.MONGODB_DB }}
 
       - name: Generate cards from images
+        working-directory: ./frontoffice
         run: npm run task:cards
 
       - name: Build Next.js (static export)
+        working-directory: ./frontoffice
         run: npm run build
 
       - name: Deploy to GitHub Pages
@@ -41,4 +44,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./out
+          publish_dir: ./frontoffice/out
