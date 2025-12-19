@@ -4,7 +4,14 @@ import fs from "fs/promises";
 import crypto from "crypto";
 
 import { Db } from "mongodb";
+
 import { getDbInstance } from "../repositories/database";
+import { RELEASE_DATE_KEY, RELEASE_VERSION_KEY } from "../shared/constants";
+import { Setting } from "../domain/setting.entity";
+import { Product } from "../domain/product.entity";
+import { Merchant } from "../domain/merchant.entity";
+import { Brand } from "../domain/brand.entity";
+import { ProductType } from "../domain/product-type.entity";
 
 const EXCLUDED_COLUMNS = ["email"];
 
@@ -24,38 +31,88 @@ export class DataSyncService {
     const db = await getDbInstance();
 
     const collections = await this.getCollections(db);
+    const { releaseVersion, releaseDate } = this.getNextRelease(
+      collections.settings
+    );
 
-    const result = {
+    const payload = {
+      meta: {
+        release_version: releaseVersion,
+        release_date: releaseDate,
+      },
       Merchants: this.normalize(collections.merchants),
       Catalog: this.normalize(collections.catalog),
       Brands: this.normalize(collections.brands),
       Types: this.normalize(collections.types),
-      Settings: this.normalize(collections.settings),
+      Settings: this.normalizeSettings(collections.settings),
     };
 
+    const encrypted = this.encrypt(JSON.stringify(payload));
+
     await this.ensureDirectory();
-
-    const encrypted = this.encrypt(JSON.stringify(result));
-
     await this.writeEncrypted(encrypted);
+
+    await this.confirmRelease(db, releaseVersion, releaseDate);
   }
 
   private async getCollections(db: Db) {
     const [catalog, merchants, brands, settings, types] = await Promise.all([
-      db.collection("catalog").find({ is_enabled: true }).toArray(),
-      db.collection("merchants").find().toArray(),
-      db.collection("brands").find().toArray(),
-      db.collection("settings").find().toArray(),
-      db.collection("types").find().toArray(),
+      db.collection<Product>("catalog").find({ is_enabled: true }).toArray(),
+      db.collection<Merchant>("merchants").find().toArray(),
+      db.collection<Brand>("brands").find().toArray(),
+      db.collection<Setting>("settings").find().toArray(),
+      db.collection<ProductType>("types").find().toArray(),
     ]);
 
     return { catalog, merchants, brands, settings, types };
   }
 
+  private getNextRelease(settings: Setting[]): {
+    releaseVersion: string;
+    releaseDate: string;
+  } {
+    const releaseVersion = this.getNextReleaseVersion(
+      settings.find((s) => s._id === RELEASE_VERSION_KEY)?.value ?? "1.0.0"
+    );
+
+    const releaseDate =
+      settings.find((s) => s._id === RELEASE_DATE_KEY)?.value ??
+      new Date().toUTCString();
+
+    return {
+      releaseVersion,
+      releaseDate,
+    };
+  }
+
+  private getNextReleaseVersion(currentVersion: string) {
+    const parts = currentVersion.split(".").map(Number);
+    return `${parts[0]}.${parts[1]}.${parts[2] + 1}`;
+  }
+
+  private async confirmRelease(
+    db: Db,
+    newReleaseVersion: string,
+    newReleaseDate: string
+  ): Promise<void> {
+    const collection = db.collection<Setting>("settings");
+
+    await collection.updateOne(
+      { _id: RELEASE_VERSION_KEY },
+      { $set: { value: newReleaseVersion } },
+      { upsert: true }
+    );
+
+    await collection.updateOne(
+      { _id: RELEASE_DATE_KEY },
+      { $set: { value: newReleaseDate } },
+      { upsert: true }
+    );
+  }
+
   private normalize(docs: any[]) {
     return docs.map((doc) => {
       const { _id, ...rest } = doc;
-
       const clean: any = { id: _id };
 
       for (const [key, value] of Object.entries(rest)) {
@@ -68,9 +125,17 @@ export class DataSyncService {
     });
   }
 
-  // -------------------------------------------
-  // ENCRYPTION (INLINE)
-  // -------------------------------------------
+  private normalizeSettings(docs: any[]) {
+    return docs
+      .filter(
+        (s) => s._id !== RELEASE_DATE_KEY && s._id !== RELEASE_VERSION_KEY
+      )
+      .map(({ _id, ...rest }) => ({
+        id: _id,
+        ...rest,
+      }));
+  }
+
   private encrypt(plainText: string): string {
     const iv = crypto.randomBytes(this.ivLength);
     const key = crypto.createHash("sha256").update(this.secret).digest();
@@ -85,16 +150,12 @@ export class DataSyncService {
     return `${iv.toString("hex")}:${encrypted.toString("hex")}`;
   }
 
-  // -------------------------------------------
-  // FILE SYSTEM
-  // -------------------------------------------
   private async ensureDirectory(): Promise<void> {
     await fs.mkdir(this.destinationDirectory, { recursive: true });
   }
 
   private async writeEncrypted(payload: string): Promise<void> {
     const filePath = path.join(this.destinationDirectory, this.outputFile);
-
     await fs.writeFile(filePath, payload, "utf8");
   }
 }

@@ -37,9 +37,10 @@ export class MongoRepository<T extends Document> {
     return entity;
   }
 
-  async findAll(): Promise<T[]> {
+  async findAll(filter: Filter<T> = {}): Promise<T[]> {
     const col = await this.collection();
-    return col.find().sort({ created_at: -1 }).toArray() as Promise<T[]>;
+
+    return col.find(filter).sort({ created_at: -1 }).toArray() as Promise<T[]>;
   }
 
   /**
