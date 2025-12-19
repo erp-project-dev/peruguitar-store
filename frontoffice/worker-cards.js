@@ -4,7 +4,7 @@ import { createCanvas, loadImage } from "canvas";
 import logger from "./worker-logger.js";
 
 // Load DB
-const dbPath = "./data.json";
+const dbPath = "./app/db/store.json";
 const db = JSON.parse(readFileSync(dbPath, "utf8"));
 const Catalog = db.Catalog;
 
