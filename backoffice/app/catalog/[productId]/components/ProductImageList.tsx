@@ -3,7 +3,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { getImagePath } from "@/app/common/helpers/product.helper";
+import { getPublicImagePath } from "@/app/common/helpers/product.helper";
 import { Trash2, ChevronUp, ChevronDown, Check } from "lucide-react";
 
 type Props = {
@@ -49,7 +49,7 @@ export default function ProductImageList({
         >
           <div className="h-24 w-24 overflow-hidden rounded-md bg-neutral-100">
             <img
-              src={getImagePath(image)}
+              src={getPublicImagePath(image)}
               className="h-full w-full object-cover"
             />
           </div>

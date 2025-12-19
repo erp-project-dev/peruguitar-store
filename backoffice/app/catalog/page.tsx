@@ -26,7 +26,7 @@ import { StoreCommand } from "@/app/api/store/store.command";
 import DataTable from "../components/Form/DataTable/DataTable";
 import Button from "../components/Form/Button";
 import Tooltip from "../components/Tooltip";
-import { getImagePath } from "../common/helpers/product.helper";
+import { getPublicImagePath } from "../common/helpers/product.helper";
 
 const storeClient = new StoreClient();
 
@@ -93,7 +93,7 @@ export default function Catalog() {
                 <div className="w-full h-20 overflow-hidden rounded-md bg-neutral-100 flex items-center justify-center">
                   {hasImage ? (
                     <img
-                      src={getImagePath(value[0])}
+                      src={getPublicImagePath(value[0])}
                       className="h-full w-full object-cover"
                     />
                   ) : (

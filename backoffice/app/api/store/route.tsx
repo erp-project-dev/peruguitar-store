@@ -11,29 +11,20 @@ export async function POST(req: Request) {
   try {
     const contentType = req.headers.get("content-type") || "";
 
-    if (contentType.includes("multipart/form-data")) {
-      return handleMultipart(req);
-    }
+    const response = await (contentType.includes("multipart/form-data")
+      ? handleMultipart(req)
+      : handleJson(req));
 
-    return handleJson(req);
+    return response;
   } catch (error: any) {
     if (error instanceof ApplicationError) {
       return NextResponse.json(
         { error: error.message, code: error.code },
         {
-          status:
-            error.code === "taken"
-              ? 409
-              : error.code === "not-found"
-              ? 404
-              : error.code === "schema-invalid"
-              ? 400
-              : 400,
+          status: 400,
         }
       );
     }
-
-    console.error("[STORE_API_ERROR]", error);
 
     return NextResponse.json(
       { error: "Internal server error" },

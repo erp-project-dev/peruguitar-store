@@ -22,6 +22,7 @@ import Select from "@/app/components/Form/Select";
 import Switch from "@/app/components/Form/Switch";
 
 import { ProductCreate } from "../page";
+import { InputJson } from "@/app/components/Form/InputJson/InputJson";
 
 const storeClient = new StoreClient();
 
@@ -191,12 +192,12 @@ export default function ProductInfo({ form, onUpdate }: Props) {
       </Field>
 
       <Field label="Specs (JSON)" full>
-        <Input
-          type="textarea"
-          rows={8}
+        <InputJson
           className="font-mono text-xs"
+          placeholder='{ "body_wood": "Mahogany" }'
           value={form.specs_raw}
-          onChange={(e: any) => onUpdate("specs_raw", e.target.value)}
+          onChange={(value) => onUpdate("specs_raw", value)}
+          rootLabel="Guitar Specs"
         />
       </Field>
     </div>

@@ -6,6 +6,7 @@ import { getDbInstance } from "@/infrastracture/repositories/database";
 
 import { ApplicationError } from "../shared/error";
 import { getZodMessage } from "../helpers/zod.helper";
+import { BaseEntity } from "../domain/base.entity";
 
 type CreateData<T> = Omit<T, "created_at" | "updated_at">;
 type UpdateData<T> = Partial<Omit<T, "_id" | "created_at" | "updated_at">>;
@@ -16,7 +17,7 @@ export class MongoRepository<T extends Document> {
     private readonly validator: ZodObject
   ) {}
 
-  async collection() {
+  private async collection() {
     const db: Db = await getDbInstance();
     return db.collection<T>(this.collectionName);
   }
@@ -43,47 +44,32 @@ export class MongoRepository<T extends Document> {
     return col.find(filter).sort({ created_at: -1 }).toArray() as Promise<T[]>;
   }
 
-  /**
-   * CREATE
-   * - created_at is set here
-   */
   async create(data: CreateData<T>): Promise<T> {
     try {
-      const entity = {
-        ...data,
-        created_at: new Date(),
-      } as any;
-
-      this.validator.parse(entity);
+      const entry = this.prepareEntry(data, "insert");
+      this.validator.parse(entry);
 
       const col = await this.collection();
-      await col.insertOne(entity as any);
+      await col.insertOne(entry as any);
 
-      return entity;
+      return entry as T;
     } catch (e) {
       if (e instanceof ZodError) {
         throw new ApplicationError("schema-invalid", getZodMessage(e));
       }
+
       throw e;
     }
   }
 
-  /**
-   * UPDATE
-   * - updated_at is set here
-   */
   async update(id: string, data: UpdateData<T>): Promise<T> {
     try {
-      const payload = {
-        ...data,
-        updated_at: new Date(),
-      };
-
-      this.validator.partial().parse({ _id: id, ...payload });
+      const entry = this.prepareEntry({ ...data, _id: id }, "update");
+      this.validator.partial().parse(entry);
 
       const col = await this.collection();
       const result = await col.updateOne({ _id: id } as Filter<T>, {
-        $set: payload as any,
+        $set: entry as any,
       });
 
       if (result.matchedCount === 0) {
@@ -134,5 +120,20 @@ export class MongoRepository<T extends Document> {
     });
 
     return !exists;
+  }
+
+  private prepareEntry(entry: Partial<BaseEntity>, type: "insert" | "update") {
+    const newEntry = { ...entry };
+
+    if (type === "insert") {
+      newEntry.created_at = new Date();
+    }
+
+    if (type === "update") {
+      newEntry.updated_at = new Date();
+      delete newEntry.created_at;
+    }
+
+    return newEntry;
   }
 }

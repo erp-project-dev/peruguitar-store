@@ -7,9 +7,6 @@ import { toast } from "sonner";
 
 import PageSection from "@/app/components/PageSection";
 import Button from "@/app/components/Form/Button";
-import Input from "@/app/components/Form/Input";
-import Select from "@/app/components/Form/Select";
-import { Field } from "@/app/components/Form/Field";
 
 import { Save, Undo } from "lucide-react";
 
@@ -27,6 +24,9 @@ import {
   PRODUCT_CONDITIONS,
   PRODUCT_SCORES,
 } from "@/app/common/data";
+
+import ProductCreateInfo from "./components/ProductCreateInfo";
+import ProductPromptHelp from "./components/ProductPromptHelp";
 
 const storeClient = new StoreClient();
 
@@ -130,6 +130,7 @@ export default function CreateProductPage() {
           >
             Cancel
           </Button>
+
           <Button
             variant="success"
             size="lg"
@@ -142,117 +143,30 @@ export default function CreateProductPage() {
         </>
       }
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Field label="Name">
-          <Input
-            value={form.name}
-            onChange={(e) => update("name", e.target.value)}
-          />
-        </Field>
-
-        <Field label="Type">
-          <Select
-            value={form.type_id}
-            placeholder="Select type"
-            onChange={(e) => update("type_id", e.target.value)}
-            options={types.map((t) => ({ label: t.name, value: t._id }))}
-          />
-        </Field>
-
-        <Field label="Brand">
-          <Select
-            value={form.brand_id}
-            placeholder="Select brand"
-            onChange={(e) => update("brand_id", e.target.value)}
-            options={brands.map((b) => ({ label: b.name, value: b._id }))}
-          />
-        </Field>
-
-        <Field label="Model">
-          <Input
-            value={form.model}
-            onChange={(e) => update("model", e.target.value)}
-          />
-        </Field>
-
-        <Field label="Condition">
-          <Select
-            placeholder="Select condition"
-            value={form.condition}
-            onChange={(e) => update("condition", e.target.value)}
-            options={PRODUCT_CONDITIONS.map((c) => ({ label: c, value: c }))}
-          />
-        </Field>
-
-        <Field label="Score">
-          <Select
-            placeholder="Select score"
-            value={String(form.condition_score)}
-            onChange={(e) => update("condition_score", Number(e.target.value))}
-            options={PRODUCT_SCORES.map((s) => ({
-              label: `${s}/5`,
-              value: String(s),
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <ProductCreateInfo
+            form={form}
+            onUpdate={update}
+            types={types.map((t) => ({ label: t.name, value: t._id }))}
+            brands={brands.map((b) => ({ label: b.name, value: b._id }))}
+            merchants={merchants.map((m) => ({
+              label: m._id,
+              value: m._id,
             }))}
           />
-        </Field>
+        </div>
 
-        <Field label="Currency">
-          <Select
-            placeholder="Select currency"
-            value={form.currency}
-            onChange={(e) => update("currency", e.target.value)}
-            options={CURRENCIES.map((c) => ({ label: c, value: c }))}
-          />
-        </Field>
-
-        <Field label="Price">
-          <Input
-            type="number"
-            value={form.price}
-            onChange={(e) => update("price", Number(e.target.value))}
-          />
-        </Field>
-
-        <Field label="Price type">
-          <Select
-            placeholder="Select price type"
-            value={form.priceType}
-            onChange={(e) => update("priceType", e.target.value)}
-            options={PRODUCT_PRICE_TYPES.map((pt) => ({
-              label: pt,
-              value: pt,
+        <div className="flex flex-col gap-4">
+          <ProductPromptHelp
+            brands={brands.map((b) => ({ label: b.name, value: b._id }))}
+            types={types.map((t) => ({
+              label: t.name,
+              value: t._id,
+              description: t.description,
             }))}
           />
-        </Field>
-
-        <Field label="Merchant">
-          <Select
-            placeholder="Select merchants"
-            value={form.merchant_id}
-            onChange={(e) => update("merchant_id", e.target.value)}
-            options={merchants.map((m) => ({ label: m._id, value: m._id }))}
-          />
-        </Field>
-
-        <Field label="Description" full>
-          <Input
-            type="textarea"
-            rows={4}
-            value={form.description}
-            onChange={(e) => update("description", e.target.value)}
-          />
-        </Field>
-
-        <Field label="Specs (JSON)" full>
-          <Input
-            type="textarea"
-            rows={8}
-            className="font-mono text-xs"
-            placeholder='{ "body_wood": "Mahogany" }'
-            value={form.specs_raw}
-            onChange={(e) => update("specs_raw", e.target.value)}
-          />
-        </Field>
+        </div>
       </div>
     </PageSection>
   );

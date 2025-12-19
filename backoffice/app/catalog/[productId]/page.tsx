@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Save, Undo } from "lucide-react";
+import { Eye, Save, Undo } from "lucide-react";
 
 import PageSection from "@/app/components/PageSection";
 import Button from "@/app/components/Form/Button";
@@ -23,6 +23,7 @@ import {
 import ProductInfo from "./components/ProductInfo";
 import ProductImageAttach from "./components/ProductImageAttach";
 import ProductImageList from "./components/ProductImageList";
+import { getPublicPath } from "@/app/common/helpers/product.helper";
 
 const storeClient = new StoreClient();
 
@@ -215,7 +216,7 @@ export default function EditProductPage() {
   return (
     <PageSection
       title="Edit product"
-      description="Update product information"
+      description={"Update product information"}
       loading={loading}
       actions={
         <>
@@ -226,6 +227,16 @@ export default function EditProductPage() {
             disabled={loading}
           >
             Cancel
+          </Button>
+
+          <Button
+            size="lg"
+            icon={Eye}
+            onClick={() => router.push(getPublicPath(productId))}
+            disabled={loading}
+            variant="info"
+          >
+            Visit product page
           </Button>
 
           <Button

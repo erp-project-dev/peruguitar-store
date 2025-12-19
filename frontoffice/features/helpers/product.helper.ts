@@ -3,14 +3,10 @@
 
 import { PriceType } from "../types/product.type";
 
-// -----------------------------
 export function getCatalogImagePath(filename: string): string {
   return `/catalog/${filename}`;
 }
 
-// -----------------------------
-// Product status
-// -----------------------------
 export function translateProductCondition(status: string): string {
   const map: Record<string, string> = {
     new: "Nuevo",
@@ -20,9 +16,6 @@ export function translateProductCondition(status: string): string {
   return map[status] ?? status;
 }
 
-// -----------------------------
-// Status score
-// -----------------------------
 export function translateProductConditionScore(score: number): string {
   const map: Record<number, string> = {
     5: "El producto se encuentra en excelente estado. Muy bien cuidado y con un desgaste mínimo o prácticamente imperceptible.",
@@ -35,9 +28,6 @@ export function translateProductConditionScore(score: number): string {
   return map[score] ?? "Sin información del estado.";
 }
 
-// -----------------------------
-// Product specs
-// -----------------------------
 export function translateProductSpec(spec: string): string {
   const map: Record<string, string> = {
     release_year: "Año de lanzamiento",

@@ -5,9 +5,7 @@ type InputType = "text" | "number" | "textarea";
 type InputProps = {
   type?: InputType;
   value?: string | number;
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onChange?: (value: string) => void;
   placeholder?: string;
   rows?: number;
   className?: string;
@@ -29,8 +27,8 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
           ref={ref as React.Ref<HTMLTextAreaElement>}
           rows={rows}
           value={value as string}
-          onChange={onChange}
           placeholder={placeholder}
+          onChange={(e) => onChange?.(e.target.value)}
           className={`${baseClasses} resize-y ${className}`}
         />
       );
@@ -41,8 +39,8 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
         ref={ref as React.Ref<HTMLInputElement>}
         type={type}
         value={value}
-        onChange={onChange}
         placeholder={placeholder}
+        onChange={(e) => onChange?.(e.target.value)}
         className={`${baseClasses} ${className}`}
       />
     );
