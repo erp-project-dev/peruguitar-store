@@ -33,6 +33,7 @@ export default function Listing() {
         maxPrice={maxPrice}
         avgPrice={avgPrice}
       />
+
       <ProductListing items={items} />
     </section>
   );

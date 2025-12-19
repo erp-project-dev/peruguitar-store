@@ -16,6 +16,7 @@ export enum StoreCommand {
   // CATALOG IMAGES
   CatalogAttachImages = "catalog.attach_images",
   CatalogRemoveImage = "catalog.remove_image",
+  CatalogReorderImages = "catalog.reorder_images",
 
   // BRAND
   BrandFindAll = "brand.find_all",

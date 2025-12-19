@@ -45,7 +45,7 @@ export default function CatalogProduct({
         )}
 
         <img
-          src={getCatalogImagePath(product.merchant.id, product.images[0])}
+          src={getCatalogImagePath(product.images[0])}
           alt={product.name}
           className="w-full aspect-7/6 object-cover transition-transform duration-300 group-hover:scale-[1.1]"
         />

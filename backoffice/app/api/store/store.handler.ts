@@ -10,12 +10,14 @@ import { ProductService } from "@/infrastracture/services/product.service";
 import { ProductImageAttachService } from "@/infrastracture/services/product-image-attach.service";
 import { ProductImageRemoveService } from "@/infrastracture/services/product-image-remove.service";
 import { DataSyncService } from "@/infrastracture/services/data-sync.service";
+import { ProductImageReorderService } from "@/infrastracture/services/product-image-reorder.service";
 
-type CommandHandler = (id?: string, payload?: any) => Promise<any>;
+type CommandHandler = (id?: any, payload?: any) => Promise<any>;
 
 const productService = new ProductService();
 const productImageAttachService = new ProductImageAttachService();
 const productImageRemoveService = new ProductImageRemoveService();
+const productImageReorderService = new ProductImageReorderService();
 
 const merchantService = new MerchantService();
 const brandService = new BrandService();
@@ -28,56 +30,54 @@ const dataSyncService = new DataSyncService();
 export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   // MERCHANT
   [StoreCommand.MerchantFindAll]: () => merchantService.findAll(),
-  [StoreCommand.MerchantFindById]: (id) =>
-    merchantService.findById(id as string),
+  [StoreCommand.MerchantFindById]: (id) => merchantService.findById(id),
   [StoreCommand.MerchantCreate]: (_id, payload) =>
     merchantService.create(payload),
   [StoreCommand.MerchantUpdate]: (id, payload) =>
-    merchantService.update(id as string, payload),
-  [StoreCommand.MerchantRemove]: (id) => merchantService.remove(id as string),
+    merchantService.update(id, payload),
+  [StoreCommand.MerchantRemove]: (id) => merchantService.remove(id),
 
   // BRAND
   [StoreCommand.BrandFindAll]: () => brandService.findAll(),
-  [StoreCommand.BrandFindById]: (id) => brandService.findById(id as string),
+  [StoreCommand.BrandFindById]: (id) => brandService.findById(id),
   [StoreCommand.BrandCreate]: (_id, payload) => brandService.create(payload),
-  [StoreCommand.BrandUpdate]: (id, payload) =>
-    brandService.update(id as string, payload),
-  [StoreCommand.BrandRemove]: (id) => brandService.remove(id as string),
+  [StoreCommand.BrandUpdate]: (id, payload) => brandService.update(id, payload),
+  [StoreCommand.BrandRemove]: (id) => brandService.remove(id),
 
   // PRODUCT TYPE
   [StoreCommand.ProductTypeFindAll]: () => productTypeService.findAll(),
-  [StoreCommand.ProductTypeFindById]: (id) =>
-    productTypeService.findById(id as string),
+  [StoreCommand.ProductTypeFindById]: (id) => productTypeService.findById(id),
   [StoreCommand.ProductTypeCreate]: (_id, payload) =>
     productTypeService.create(payload),
   [StoreCommand.ProductTypeUpdate]: (id, payload) =>
-    productTypeService.update(id as string, payload),
-  [StoreCommand.ProductTypeRemove]: (id) =>
-    productTypeService.remove(id as string),
+    productTypeService.update(id, payload),
+  [StoreCommand.ProductTypeRemove]: (id) => productTypeService.remove(id),
 
   // SETTING
   [StoreCommand.SettingFindAll]: () => settingService.findAll(),
-  [StoreCommand.SettingFindById]: (id) => settingService.findById(id as string),
+  [StoreCommand.SettingFindById]: (id) => settingService.findById(id),
   [StoreCommand.SettingCreate]: (_id, payload) =>
     settingService.create(payload),
   [StoreCommand.SettingUpdate]: (id, payload) =>
-    settingService.update(id as string, payload),
-  [StoreCommand.SettingRemove]: (id) => settingService.remove(id as string),
+    settingService.update(id, payload),
+  [StoreCommand.SettingRemove]: (id) => settingService.remove(id),
 
   // PRODUCT
   [StoreCommand.CatalogFindAll]: () => productService.findAll(),
-  [StoreCommand.CatalogFindById]: (id) => productService.findById(id as string),
+  [StoreCommand.CatalogFindById]: (id) => productService.findById(id),
   [StoreCommand.CatalogCreate]: (_id, payload) =>
     productService.create(payload),
   [StoreCommand.CatalogUpdate]: (id, payload) =>
-    productService.update(id as string, payload),
-  [StoreCommand.CatalogRemove]: (id) => productService.remove(id as string),
+    productService.update(id, payload),
+  [StoreCommand.CatalogRemove]: (id) => productService.remove(id),
 
   // PRODUCT > IMAGES
   [StoreCommand.CatalogAttachImages]: (id, files) =>
-    productImageAttachService.attach(id as string, files),
-  [StoreCommand.CatalogRemoveImage]: (id, { image }) =>
-    productImageRemoveService.remove(id as string, image),
+    productImageAttachService.attach(id, files),
+  [StoreCommand.CatalogRemoveImage]: (id, image) =>
+    productImageRemoveService.remove(id, image),
+  [StoreCommand.CatalogReorderImages]: (id, images) =>
+    productImageReorderService.handle(id, images),
 
   // STORE METRICS
   [StoreCommand.StoreMetricsFind]: () => storeMetricsService.find(),

@@ -17,7 +17,7 @@ export default function ProductDetails({
             className="relative aspect-square overflow-hidden rounded-md bg-slate-200"
           >
             <Image
-              src={getCatalogImagePath(product.merchant.id, src)}
+              src={getCatalogImagePath(src)}
               alt={product.name}
               fill
               className="object-cover"

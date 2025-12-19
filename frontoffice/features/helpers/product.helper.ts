@@ -4,11 +4,8 @@
 import { PriceType } from "../types/product.type";
 
 // -----------------------------
-export function getCatalogImagePath(
-  username: string,
-  filename: string
-): string {
-  return `/catalog/${username}/${filename}`;
+export function getCatalogImagePath(filename: string): string {
+  return `/catalog/${filename}`;
 }
 
 // -----------------------------

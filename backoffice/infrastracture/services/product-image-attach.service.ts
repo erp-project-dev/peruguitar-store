@@ -2,10 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import sharp from "sharp";
 
-import { MongoRepository } from "../repositories/mongo.repository";
-import { Product } from "../domain/product.entity";
-
-import { ProductImagesSchema, ProductSchema } from "../schema/product.schema";
+import { ProductImagesSchema } from "../schema/product.schema";
 import { ProductService } from "./product.service";
 import { ZodError } from "zod";
 import { ApplicationError } from "../shared/error";
@@ -23,11 +20,6 @@ export class ProductImageAttachService {
     PUBLIC_MERCHANT_DIRECTORY
   );
 
-  private readonly repository = new MongoRepository<Product>(
-    "catalog",
-    ProductSchema
-  );
-
   private readonly productService = new ProductService();
   private readonly optzRatio = 0.05;
 
@@ -35,7 +27,12 @@ export class ProductImageAttachService {
     const product = await this.productService.findById(productId);
 
     // 01. Prepare + validate images
-    const newImages = this.prepareNewImages(productId, files);
+    const newImages = this.prepareNewImages(
+      product.merchant_id,
+      productId,
+      files
+    );
+
     const images = [...product.images, ...newImages.map((i) => i.newName)];
 
     this.validateImages(images);
@@ -47,7 +44,7 @@ export class ProductImageAttachService {
     await this.moveImages(product.merchant_id, newImages);
 
     // 04. Persist product images
-    await this.repository.update(productId, { images });
+    await this.productService.update(productId, { images });
 
     return images;
   }
@@ -63,13 +60,17 @@ export class ProductImageAttachService {
     }
   }
 
-  private prepareNewImages(productId: string, files: File[]): NewImageFile[] {
+  private prepareNewImages(
+    merchantId: string,
+    productId: string,
+    files: File[]
+  ): NewImageFile[] {
     return files.map((file) => {
       const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
       const shortId = crypto.randomUUID().split("-")[0];
 
       return {
-        newName: `${productId}-${shortId}.${extension}`,
+        newName: `${merchantId}/${productId}-${shortId}.${extension}`,
         file,
       };
     });
@@ -79,13 +80,8 @@ export class ProductImageAttachService {
     merchantId: string,
     files: NewImageFile[]
   ): Promise<void> {
-    const merchantDirectory = path.join(
-      this.publicCatalogDirectory,
-      merchantId
-    );
-
     for (const { newName, file } of files) {
-      const destinationPath = path.join(merchantDirectory, newName);
+      const destinationPath = path.join(this.publicCatalogDirectory, newName);
 
       const originalBuffer = Buffer.from(await file.arrayBuffer());
       const originalSize = originalBuffer.length;

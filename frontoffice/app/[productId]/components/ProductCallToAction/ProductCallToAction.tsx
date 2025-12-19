@@ -62,10 +62,7 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
           />
 
           <ProductStoryCard
-            imageCardUrl={getCatalogImagePath(
-              product.merchant.id,
-              product.card_pic
-            )}
+            imageCardUrl={getCatalogImagePath(product.card_pic)}
           />
         </div>
       </div>

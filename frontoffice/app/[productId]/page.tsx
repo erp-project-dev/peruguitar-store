@@ -38,9 +38,7 @@ export async function generateMetadata({
         description: product.description,
         images: [
           {
-            url: getBasePath(
-              getCatalogImagePath(product.merchant.id, product.images[0])
-            ),
+            url: getBasePath(getCatalogImagePath(product.images[0])),
             width: 1200,
             height: 630,
           },
@@ -82,7 +80,6 @@ export default async function ProductPage({
           <ProductPhoto
             productName={product.name}
             price={product.price}
-            merchantId={product.merchant.id}
             pics={product.images}
           />
 

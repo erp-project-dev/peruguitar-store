@@ -1,19 +1,32 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
-import { Pin, PinOff, Check, X, Plus, ImageOff, Image } from "lucide-react";
+import {
+  Pin,
+  PinOff,
+  Check,
+  X,
+  Plus,
+  ImageOff,
+  Image,
+  ImageIcon,
+} from "lucide-react";
+
+import { Product } from "@/infrastracture/domain/product.entity";
 
 import PageSection from "@/app/components/PageSection";
 import { StoreClient } from "@/app/common/store.client";
 import { StoreCommand } from "@/app/api/store/store.command";
 
 import DataTable from "../components/Form/DataTable/DataTable";
-import { Product } from "@/infrastracture/domain/product.entity";
 import Button from "../components/Form/Button";
 import Tooltip from "../components/Tooltip";
+import { getImagePath } from "../common/helpers/product.helper";
 
 const storeClient = new StoreClient();
 
@@ -70,6 +83,28 @@ export default function Catalog() {
         data={products}
         columns={[
           {
+            key: "images",
+            label: "",
+            width: 110,
+            render: (value: string[]) => {
+              const hasImage = Array.isArray(value) && value.length > 0;
+
+              return (
+                <div className="w-full h-20 overflow-hidden rounded-md bg-neutral-100 flex items-center justify-center">
+                  {hasImage ? (
+                    <img
+                      src={getImagePath(value[0])}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <ImageIcon className="h-6 w-6 text-neutral-400" />
+                  )}
+                </div>
+              );
+            },
+          },
+
+          {
             key: "_id",
             label: "ID",
             width: 200,
@@ -107,9 +142,9 @@ export default function Catalog() {
             sortable: true,
             width: 160,
             align: "right",
-            render: (value, row) => (
+            render: (value: number, row) => (
               <span className="font-medium whitespace-nowrap">
-                {Number(value).toLocaleString("es-PE", {
+                {value.toLocaleString("es-PE", {
                   style: "currency",
                   currency: row.currency,
                   minimumFractionDigits: 2,
@@ -146,22 +181,6 @@ export default function Catalog() {
             render: (value) => (
               <span className="text-sm">{value as number}/5</span>
             ),
-          },
-
-          {
-            key: "images",
-            label: "Images",
-            width: 90,
-            align: "center",
-            truncate: false,
-            render: (value) =>
-              Array.isArray(value) && value.length > 0 ? (
-                <Tooltip label={`${value.length} images`}>
-                  <Image className="h-6 w-6 text-black-600 mx-auto" />
-                </Tooltip>
-              ) : (
-                <ImageOff className="h-6 w-6 text-neutral-400 mx-auto" />
-              ),
           },
 
           {

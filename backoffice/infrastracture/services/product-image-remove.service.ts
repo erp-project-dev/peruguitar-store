@@ -2,22 +2,14 @@
 import fs from "fs/promises";
 import path from "path";
 
-import { MongoRepository } from "../repositories/mongo.repository";
-import { Product } from "../domain/product.entity";
 import { ProductService } from "./product.service";
 import { ApplicationError } from "../shared/error";
 import { PUBLIC_MERCHANT_DIRECTORY } from "../shared/constants";
-import { ProductSchema } from "../schema/product.schema";
 
 export class ProductImageRemoveService {
   private readonly publicCatalogDirectory = path.resolve(
     process.cwd(),
     PUBLIC_MERCHANT_DIRECTORY
-  );
-
-  private readonly repository = new MongoRepository<Product>(
-    "catalog",
-    ProductSchema
   );
 
   private readonly productService = new ProductService();
@@ -32,18 +24,13 @@ export class ProductImageRemoveService {
       );
     }
 
-    const merchantDirectory = path.join(
-      this.publicCatalogDirectory,
-      product.merchant_id
-    );
-
-    const imagePath = path.join(merchantDirectory, imageName);
+    const imagePath = path.join(this.publicCatalogDirectory, imageName);
 
     await this.deleteFileIfExists(imagePath);
 
     const images = product.images.filter((img) => img !== imageName);
 
-    await this.repository.update(productId, { images });
+    await this.productService.update(productId, { images });
 
     return images;
   }

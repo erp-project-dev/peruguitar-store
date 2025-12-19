@@ -38,25 +38,18 @@ export function ProductHeader({
   ];
 
   return (
-    <header className="grid grid-cols-1 gap-4 sm:grid-cols-6">
-      {stats.map(({ label, value }, index) => {
-        const isTopRow = index < 3; // primeros 3
-        const colSpan = isTopRow ? "sm:col-span-2" : "sm:col-span-3";
-
+    <header className="grid grid-cols-2 gap-4">
+      {stats.map(({ label, value }) => {
         return (
           <div
             key={label}
-            className={`rounded-md border border-gray-200 bg-gray-100 px-6 py-5 text-center ${colSpan}`}
+            className={`rounded-md border border-gray-200 bg-gray-100 px-6 py-5 text-center`}
           >
             <div className="text-sm uppercase tracking-wide text-gray-500">
               {label}
             </div>
 
-            <div
-              className={`mt-1 font-semibold text-gray-900 ${
-                isTopRow ? "text-5xl" : "text-4xl"
-              }`}
-            >
+            <div className={"mt-1 font-semibold text-gray-900 text-4xl"}>
               {value}
             </div>
           </div>

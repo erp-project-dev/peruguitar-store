@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Save, Undo, Image as ImageIcon } from "lucide-react";
+import { Save, Undo } from "lucide-react";
 
 import PageSection from "@/app/components/PageSection";
 import Button from "@/app/components/Form/Button";
@@ -176,7 +176,7 @@ export default function EditProductPage() {
       const updated = await storeClient.execute<string[]>(
         StoreCommand.CatalogRemoveImage,
         productId,
-        { image }
+        image
       );
 
       setImages(updated);
@@ -184,6 +184,28 @@ export default function EditProductPage() {
       toast.success("Image removed");
     } catch (e) {
       const message = e instanceof Error ? e.message : "Error removing image";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOnReorder = async (images: string[]) => {
+    try {
+      setLoading(true);
+
+      const updated = await storeClient.execute<string[]>(
+        StoreCommand.CatalogReorderImages,
+        productId,
+        images
+      );
+
+      setImages(updated);
+
+      toast.success("Images reordered");
+    } catch (e) {
+      const message =
+        e instanceof Error ? e.message : "Error reordering images";
       toast.error(message);
     } finally {
       setLoading(false);
@@ -230,7 +252,11 @@ export default function EditProductPage() {
             max={6 - images.length}
           />
 
-          <ProductImageList images={images} onRemove={handleOnRemoveImage} />
+          <ProductImageList
+            onReorder={handleOnReorder}
+            images={images}
+            onRemove={handleOnRemoveImage}
+          />
         </div>
       </div>
     </PageSection>

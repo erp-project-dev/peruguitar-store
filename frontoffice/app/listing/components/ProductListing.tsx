@@ -144,20 +144,14 @@ export default function ProductListing({
                 >
                   <td className="px-2">
                     <a
-                      href={getCatalogImagePath(
-                        product.merchant.id,
-                        product.card_pic
-                      )}
+                      href={getCatalogImagePath(product.card_pic)}
                       download
                       onClick={(e) => e.stopPropagation()}
                       className="relative inline-block h-12 w-12 overflow-hidden rounded bg-slate-700"
                       title="Descargar card"
                     >
                       <Image
-                        src={getCatalogImagePath(
-                          product.merchant.id,
-                          product.images[0]
-                        )}
+                        src={getCatalogImagePath(product.images[0])}
                         alt={product.name}
                         fill
                         className="object-cover"

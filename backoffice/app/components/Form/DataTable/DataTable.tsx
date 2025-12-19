@@ -32,7 +32,7 @@ export type Column<T> = {
 
   truncate?: boolean;
 
-  render?: (value: T[keyof T], row: T) => React.ReactNode;
+  render?: (value: any, row: T) => React.ReactNode;
 };
 
 export type DataTableProps<T extends { _id: string; editable?: boolean }> = {

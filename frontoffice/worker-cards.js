@@ -108,20 +108,25 @@ function drawBrand(ctx) {
   ctx.textAlign = "left";
 }
 
-// CARD GENERATOR (always overwrites)
+// CARD GENERATOR
 async function generateCard(product, stats) {
   const merchantId = product.merchant_id;
-  const pic = product.images[0];
+  if (!merchantId || !product.images?.length) return;
 
-  const inputPath = path.join("public/catalog", merchantId, pic);
+  // image already comes as merchantId/filename.jpg
+  const rawPic = product.images[0];
+  const pic = rawPic.includes("/") ? rawPic : `${merchantId}/${rawPic}`;
+
+  const inputPath = path.join("public/catalog", pic);
+
   const lastDot = pic.lastIndexOf(".");
   const base = lastDot > 0 ? pic.slice(0, lastDot) : pic;
   const ext = lastDot > 0 ? pic.slice(lastDot) : "";
 
   const outputName = `${base}-card${ext}`;
-  const outputPath = path.join("public/catalog", merchantId, outputName);
+  const outputPath = path.join("public/catalog", outputName);
 
-  const nameCol = outputName.padEnd(60, " ");
+  const nameCol = outputName.padEnd(70, " ");
 
   try {
     if (!existsSync(inputPath)) {
@@ -130,7 +135,6 @@ async function generateCard(product, stats) {
       return;
     }
 
-    // Always generate → overwrite
     const canvas = createCanvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext("2d");
     const img = await loadImage(path.resolve(inputPath));
@@ -143,7 +147,7 @@ async function generateCard(product, stats) {
 
     writeFileSync(outputPath, canvas.toBuffer("image/jpeg", { quality: 0.9 }));
 
-    // Update product card pic in DB
+    // Save full path (merchantId/xxx-card.jpg)
     product.card_pic = outputName;
 
     logger.success(`${nameCol} CREATED`);
@@ -154,14 +158,13 @@ async function generateCard(product, stats) {
   }
 }
 
-// MAIN EXECUTION
+// MAIN
 (async () => {
   logger.start("Cards Generator");
 
   const grouped = {};
   const globalStats = { created: 0, errors: 0 };
 
-  // Group products by merchant
   for (const product of Catalog) {
     if (!product.is_enabled) continue;
     const m = product.merchant_id;

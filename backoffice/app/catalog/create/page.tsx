@@ -10,7 +10,6 @@ import Button from "@/app/components/Form/Button";
 import Input from "@/app/components/Form/Input";
 import Select from "@/app/components/Form/Select";
 import { Field } from "@/app/components/Form/Field";
-import Switch from "@/app/components/Form/Switch";
 
 import { Save, Undo } from "lucide-react";
 
@@ -44,8 +43,6 @@ const emptyForm = {
   price: 0,
   priceType: PRODUCT_PRICE_TYPES[0],
   specs_raw: "",
-  is_enabled: true,
-  is_pinned: false,
 };
 
 export default function CreateProductPage() {
@@ -100,8 +97,6 @@ export default function CreateProductPage() {
         price: form.price,
         priceType: form.priceType,
         specs,
-        is_enabled: form.is_enabled,
-        is_pinned: form.is_pinned,
       };
 
       const created = await storeClient.execute<Product>(
@@ -236,20 +231,6 @@ export default function CreateProductPage() {
             value={form.merchant_id}
             onChange={(e) => update("merchant_id", e.target.value)}
             options={merchants.map((m) => ({ label: m._id, value: m._id }))}
-          />
-        </Field>
-
-        <Field label="Enabled">
-          <Switch
-            value={form.is_enabled}
-            onChange={(v) => update("is_enabled", v)}
-          />
-        </Field>
-
-        <Field label="Pinned">
-          <Switch
-            value={form.is_pinned}
-            onChange={(v) => update("is_pinned", v)}
           />
         </Field>
 
