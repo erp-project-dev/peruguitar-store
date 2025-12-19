@@ -28,9 +28,7 @@ jobs:
         working-directory: ./frontoffice
         run: npm run task:read
         env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          MONGODB_DB: ${{ secrets.MONGODB_DB }}
-          NODE_OPTIONS: --openssl-legacy-provider
+          DATA_SYNC_SECRET: ${{ secrets.DATA_SYNC_SECRET }}
 
       - name: Generate cards from images
         working-directory: ./frontoffice
