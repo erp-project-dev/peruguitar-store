@@ -1,4 +1,4 @@
-import DATA from "@/app/data";
+import DATA from "@/app/store";
 
 import { ProductPageViewModel } from "./index.type";
 

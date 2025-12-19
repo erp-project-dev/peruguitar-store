@@ -1,90 +1,73 @@
 import "dotenv/config";
 
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
+
 import logger from "./worker-logger.js";
-import { writeFileSync } from "fs";
-import { MongoClient } from "mongodb";
 
-const { MONGODB_URI, MONGODB_DB } = process.env;
+const { DATA_SYNC_SECRET } = process.env;
 
-const EXCLUDED_COLUMNS = ["email"];
+if (!DATA_SYNC_SECRET) {
+  throw new Error("DATA_SYNC_SECRET is not defined");
+}
 
-const Collections = {
-  MERCHANTS: "merchants",
-  CATALOG: "catalog",
-  BRANDS: "brands",
-  TYPES: "types",
-  SETTINGS: "settings",
-};
+const sourceFile = path.resolve("./app/db/store.enc");
+const destinationFile = path.resolve("./app/db/store.json");
+
+const algorithm = "aes-256-cbc";
+const ivLength = 16;
 
 // -------------------------------------------
-// HELPERS
+// DECRYPT (MATCHES YOUR ENCRYPT LOGIC)
 // -------------------------------------------
-function stripExcludedFields(doc) {
-  const clean = {};
+function decrypt(payload) {
+  const [ivHex, encryptedHex] = payload.split(":");
 
-  for (const [key, value] of Object.entries(doc)) {
-    if (!EXCLUDED_COLUMNS.includes(key)) {
-      clean[key] = value;
-    }
+  if (!ivHex || !encryptedHex) {
+    throw new Error("Invalid encrypted file format");
   }
 
-  return clean;
-}
+  const iv = Buffer.from(ivHex, "hex");
+  const encrypted = Buffer.from(encryptedHex, "hex");
 
-async function readCollection(db, name, filter = {}) {
-  logger.info(`Reading collection: ${name}`);
+  if (iv.length !== ivLength) {
+    throw new Error("Invalid IV length");
+  }
 
-  const docs = await db.collection(name).find(filter).toArray();
+  const key = crypto.createHash("sha256").update(DATA_SYNC_SECRET).digest();
 
-  return docs.map((doc) => {
-    const { _id, ...rest } = doc;
+  const decipher = crypto.createDecipheriv(algorithm, key, iv);
 
-    return stripExcludedFields({
-      id: _id,
-      ...rest,
-    });
-  });
-}
+  const decrypted = Buffer.concat([
+    decipher.update(encrypted),
+    decipher.final(),
+  ]).toString("utf8");
 
-// -------------------------------------------
-// JSON WRITER
-// -------------------------------------------
-function createDataJson(result) {
-  writeFileSync("data.json", JSON.stringify(result, null, 2), "utf8");
-  logger.success("data.json created successfully");
+  return JSON.parse(decrypted);
 }
 
 // -------------------------------------------
 // MAIN
 // -------------------------------------------
 (async () => {
-  logger.start("DB Reader");
-
-  const client = new MongoClient(MONGODB_URI);
+  logger.start("Data Sync");
 
   try {
-    await client.connect();
-    logger.success("Connected to MongoDB");
+    if (!fs.existsSync(sourceFile)) {
+      throw new Error("store.enc not found");
+    }
 
-    const db = client.db(MONGODB_DB);
+    const encryptedPayload = fs.readFileSync(sourceFile, "utf8");
+    const store = decrypt(encryptedPayload);
 
-    const result = {
-      Merchants: await readCollection(db, Collections.MERCHANTS),
-      Catalog: await readCollection(db, Collections.CATALOG, {
-        is_enabled: true,
-      }),
-      Brands: await readCollection(db, Collections.BRANDS),
-      Types: await readCollection(db, Collections.TYPES),
-      Settings: await readCollection(db, Collections.SETTINGS),
-    };
+    fs.writeFileSync(destinationFile, JSON.stringify(store, null, 2), "utf8");
 
-    createDataJson(result);
+    logger.success("store.json generated successfully");
   } catch (err) {
     logger.error(err.message);
     process.exit(1);
-  } finally {
-    await client.close();
   }
 
-  logger.end("DB Reader");
+  logger.end("Data Sync");
 })();

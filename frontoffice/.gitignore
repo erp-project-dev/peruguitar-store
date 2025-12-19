@@ -32,7 +32,11 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
-data.json
+
+# Datasource
+/app/db/store.json
+/app/db/store.[**].json
+/app/db/store.[**].enc
 
 # vercel
 .vercel

@@ -9,6 +9,7 @@ import { StoreCommand } from "./store.command";
 import { ProductService } from "@/infrastracture/services/product.service";
 import { ProductImageAttachService } from "@/infrastracture/services/product-image-attach.service";
 import { ProductImageRemoveService } from "@/infrastracture/services/product-image-remove.service";
+import { DataSyncService } from "@/infrastracture/services/data-sync.service";
 
 type CommandHandler = (id?: string, payload?: any) => Promise<any>;
 
@@ -21,6 +22,8 @@ const brandService = new BrandService();
 const productTypeService = new ProductTypeService();
 const settingService = new SettingService();
 const storeMetricsService = new StoreMetricsService();
+
+const dataSyncService = new DataSyncService();
 
 export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   // MERCHANT
@@ -78,4 +81,7 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
 
   // STORE METRICS
   [StoreCommand.StoreMetricsFind]: () => storeMetricsService.find(),
+
+  // DATA SYNC
+  [StoreCommand.DatasyncHandle]: () => dataSyncService.handle(),
 };

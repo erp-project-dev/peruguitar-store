@@ -40,4 +40,7 @@ export enum StoreCommand {
 
   // STORE METRICS
   StoreMetricsFind = "store_metrics.find",
+
+  // SYNC DATA
+  DatasyncHandle = "data_sync.handle",
 }
