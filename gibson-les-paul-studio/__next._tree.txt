@@ -1,10 +1,10 @@
 :HL["/_next/static/chunks/24b20503e387e3f9.css","style"]
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/catalog/vanerabel/fender-telecaster-american-special-2013-1.jpg","image"]
-:HL["/catalog/jordisanmarti/prs-mccarty-usa-2016-dark-cherry-burst-1.jpg","image"]
-:HL["/catalog/lucianotello/silvertone-u1-1960-1.jpg","image"]
-:HL["/catalog/martincamasca/prs-se-custom-24-floyd-1.jpg","image"]
+:HL["/catalog/emiliocardenas/prs-513-25-aniversario-usa-1.jpg","image"]
+:HL["/catalog/erpproject/prs-mark-holcomb-7s-1.jpg","image"]
+:HL["/catalog/cesarneyra/musicman-jp6-1.jpg","image"]
 :HL["/catalog/jordisanmarti/jackson-soloist-sl1-usa-select-custom-1.jpg","image"]
+:HL["/catalog/martincamasca/custom-profesional-dimarzio-sperzel-1.jpg","image"]
 :HL["/catalog/santiagocasas/ltd-ec256-dimarzio-1.jpg","image"]
-0:{"buildId":"aI3lftSng9qmqZAYeyfjJ","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"gibson-les-paul-studio","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"KaRAR-omjCiNkTvd-mCLv","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"gibson-les-paul-studio","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
