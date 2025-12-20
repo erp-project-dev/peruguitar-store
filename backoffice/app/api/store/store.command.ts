@@ -1,4 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export enum StoreCommand {
+  // AUTH
+  AuthSignIn = "auth.sign_in",
+  AuthSignOut = "auth.sign_out",
+
+  // User
+  UserFindMe = "user.find_me",
+
   // MERCHANT
   MerchantFindAll = "merchant.find_all",
   MerchantFindById = "merchant.find_by_id",

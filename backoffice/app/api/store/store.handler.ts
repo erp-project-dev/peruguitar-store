@@ -1,87 +1,141 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { MerchantService } from "@/infrastracture/services/merchant.service";
-import { StoreMetricsService } from "@/infrastracture/services/store-metrics.service";
-import { BrandService } from "@/infrastracture/services/brand.service";
-import { ProductTypeService } from "@/infrastracture/services/product-type.service";
-import { SettingService } from "@/infrastracture/services/setting.service";
-
+import { SignInHook } from "./hooks/sign-in.hook";
+import { SignOutHook } from "./hooks/sign-out.hook";
 import { StoreCommand } from "./store.command";
-import { ProductService } from "@/infrastracture/services/product.service";
-import { ProductImageAttachService } from "@/infrastracture/services/product-image-attach.service";
-import { ProductImageRemoveService } from "@/infrastracture/services/product-image-remove.service";
-import { DataSyncService } from "@/infrastracture/services/data-sync.service";
-import { ProductImageReorderService } from "@/infrastracture/services/product-image-reorder.service";
 
-type CommandHandler = (id?: any, payload?: any) => Promise<any>;
-
-const productService = new ProductService();
-const productImageAttachService = new ProductImageAttachService();
-const productImageRemoveService = new ProductImageRemoveService();
-const productImageReorderService = new ProductImageReorderService();
-
-const merchantService = new MerchantService();
-const brandService = new BrandService();
-const productTypeService = new ProductTypeService();
-const settingService = new SettingService();
-const storeMetricsService = new StoreMetricsService();
-
-const dataSyncService = new DataSyncService();
+import {
+  authService,
+  userService,
+  merchantService,
+  brandService,
+  productTypeService,
+  settingService,
+  productService,
+  productImageAttachService,
+  productImageRemoveService,
+  productImageReorderService,
+  storeMetricsService,
+  dataSyncService,
+} from "./store.services";
+import { CommandHandler } from "./store.type";
 
 export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
+  // AUTH
+  [StoreCommand.AuthSignIn]: {
+    next: ({ email, password }) => authService.authenticate(email, password),
+    hooks: [{ hook: new SignInHook(), type: "next" }],
+  },
+  [StoreCommand.AuthSignOut]: {
+    hooks: [{ hook: new SignOutHook(), type: "next" }],
+  },
+
+  // USER
+  [StoreCommand.UserFindMe]: {
+    next: () => userService.me(),
+  },
+
   // MERCHANT
-  [StoreCommand.MerchantFindAll]: () => merchantService.findAll(),
-  [StoreCommand.MerchantFindById]: (id) => merchantService.findById(id),
-  [StoreCommand.MerchantCreate]: (_id, payload) =>
-    merchantService.create(payload),
-  [StoreCommand.MerchantUpdate]: (id, payload) =>
-    merchantService.update(id, payload),
-  [StoreCommand.MerchantRemove]: (id) => merchantService.remove(id),
+  [StoreCommand.MerchantFindAll]: {
+    next: () => merchantService.findAll(),
+  },
+  [StoreCommand.MerchantFindById]: {
+    next: (_p, id) => merchantService.findById(id!),
+  },
+  [StoreCommand.MerchantCreate]: {
+    next: (payload) => merchantService.create(payload),
+  },
+  [StoreCommand.MerchantUpdate]: {
+    next: (payload, id) => merchantService.update(id!, payload),
+  },
+  [StoreCommand.MerchantRemove]: {
+    next: (_p, id) => merchantService.remove(id!),
+  },
 
   // BRAND
-  [StoreCommand.BrandFindAll]: () => brandService.findAll(),
-  [StoreCommand.BrandFindById]: (id) => brandService.findById(id),
-  [StoreCommand.BrandCreate]: (_id, payload) => brandService.create(payload),
-  [StoreCommand.BrandUpdate]: (id, payload) => brandService.update(id, payload),
-  [StoreCommand.BrandRemove]: (id) => brandService.remove(id),
+  [StoreCommand.BrandFindAll]: {
+    next: () => brandService.findAll(),
+  },
+  [StoreCommand.BrandFindById]: {
+    next: (_p, id) => brandService.findById(id!),
+  },
+  [StoreCommand.BrandCreate]: {
+    next: (payload) => brandService.create(payload),
+  },
+  [StoreCommand.BrandUpdate]: {
+    next: (payload, id) => brandService.update(id!, payload),
+  },
+  [StoreCommand.BrandRemove]: {
+    next: (_p, id) => brandService.remove(id!),
+  },
 
   // PRODUCT TYPE
-  [StoreCommand.ProductTypeFindAll]: () => productTypeService.findAll(),
-  [StoreCommand.ProductTypeFindById]: (id) => productTypeService.findById(id),
-  [StoreCommand.ProductTypeCreate]: (_id, payload) =>
-    productTypeService.create(payload),
-  [StoreCommand.ProductTypeUpdate]: (id, payload) =>
-    productTypeService.update(id, payload),
-  [StoreCommand.ProductTypeRemove]: (id) => productTypeService.remove(id),
+  [StoreCommand.ProductTypeFindAll]: {
+    next: () => productTypeService.findAll(),
+  },
+  [StoreCommand.ProductTypeFindById]: {
+    next: (_p, id) => productTypeService.findById(id!),
+  },
+  [StoreCommand.ProductTypeCreate]: {
+    next: (payload) => productTypeService.create(payload),
+  },
+  [StoreCommand.ProductTypeUpdate]: {
+    next: (payload, id) => productTypeService.update(id!, payload),
+  },
+  [StoreCommand.ProductTypeRemove]: {
+    next: (_p, id) => productTypeService.remove(id!),
+  },
 
   // SETTING
-  [StoreCommand.SettingFindAll]: () => settingService.findAll(),
-  [StoreCommand.SettingFindById]: (id) => settingService.findById(id),
-  [StoreCommand.SettingCreate]: (_id, payload) =>
-    settingService.create(payload),
-  [StoreCommand.SettingUpdate]: (id, payload) =>
-    settingService.update(id, payload),
-  [StoreCommand.SettingRemove]: (id) => settingService.remove(id),
+  [StoreCommand.SettingFindAll]: {
+    next: () => settingService.findAll(),
+  },
+  [StoreCommand.SettingFindById]: {
+    next: (_p, id) => settingService.findById(id!),
+  },
+  [StoreCommand.SettingCreate]: {
+    next: (payload) => settingService.create(payload),
+  },
+  [StoreCommand.SettingUpdate]: {
+    next: (payload, id) => settingService.update(id!, payload),
+  },
+  [StoreCommand.SettingRemove]: {
+    next: (_p, id) => settingService.remove(id!),
+  },
 
   // PRODUCT
-  [StoreCommand.CatalogFindAll]: () => productService.findAll(),
-  [StoreCommand.CatalogFindById]: (id) => productService.findById(id),
-  [StoreCommand.CatalogCreate]: (_id, payload) =>
-    productService.create(payload),
-  [StoreCommand.CatalogUpdate]: (id, payload) =>
-    productService.update(id, payload),
-  [StoreCommand.CatalogRemove]: (id) => productService.remove(id),
+  [StoreCommand.CatalogFindAll]: {
+    next: () => productService.findAll(),
+  },
+  [StoreCommand.CatalogFindById]: {
+    next: (_p, id) => productService.findById(id!),
+  },
+  [StoreCommand.CatalogCreate]: {
+    next: (payload) => productService.create(payload),
+  },
+  [StoreCommand.CatalogUpdate]: {
+    next: (payload, id) => productService.update(id!, payload),
+  },
+  [StoreCommand.CatalogRemove]: {
+    next: (_p, id) => productService.remove(id!),
+  },
 
   // PRODUCT > IMAGES
-  [StoreCommand.CatalogAttachImages]: (id, files) =>
-    productImageAttachService.attach(id, files),
-  [StoreCommand.CatalogRemoveImage]: (id, image) =>
-    productImageRemoveService.remove(id, image),
-  [StoreCommand.CatalogReorderImages]: (id, images) =>
-    productImageReorderService.handle(id, images),
+  [StoreCommand.CatalogAttachImages]: {
+    next: (payload, id) => productImageAttachService.attach(id!, payload),
+  },
+  [StoreCommand.CatalogRemoveImage]: {
+    next: (payload, id) => productImageRemoveService.remove(id!, payload),
+  },
+  [StoreCommand.CatalogReorderImages]: {
+    next: (payload, id) => productImageReorderService.handle(id!, payload),
+  },
 
   // STORE METRICS
-  [StoreCommand.StoreMetricsFind]: () => storeMetricsService.find(),
+  [StoreCommand.StoreMetricsFind]: {
+    next: () => storeMetricsService.find(),
+  },
 
   // DATA SYNC
-  [StoreCommand.DatasyncHandle]: () => dataSyncService.handle(),
+  [StoreCommand.DatasyncHandle]: {
+    next: () => dataSyncService.handle(),
+  },
 };

@@ -2,7 +2,9 @@ type ApplicationErrorCode =
   | "not-found"
   | "schema-invalid"
   | "taken"
+  | "conflict"
   | "error"
+  | "unauthorized"
   | "forbidden";
 
 export class ApplicationError extends Error {

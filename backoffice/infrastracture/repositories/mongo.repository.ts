@@ -7,6 +7,7 @@ import { getDbInstance } from "@/infrastracture/repositories/database";
 import { ApplicationError } from "../shared/error";
 import { getZodMessage } from "../helpers/zod.helper";
 import { BaseEntity } from "../domain/base.entity";
+import { getAuthUser } from "../helpers/auth.helper";
 
 type CreateData<T> = Omit<T, "created_at" | "updated_at">;
 type UpdateData<T> = Partial<Omit<T, "_id" | "created_at" | "updated_at">>;
@@ -38,6 +39,20 @@ export class MongoRepository<T extends Document> {
     return entity;
   }
 
+  async findOne(filter: Filter<T>): Promise<T | null> {
+    const col = await this.collection();
+    const results = (await col.find(filter).limit(2).toArray()) as T[];
+
+    if (results.length > 1) {
+      throw new ApplicationError(
+        "conflict",
+        `${this.collectionName} query returned more than one result`
+      );
+    }
+
+    return results[0] ?? null;
+  }
+
   async findAll(filter: Filter<T> = {}): Promise<T[]> {
     const col = await this.collection();
 
@@ -46,7 +61,7 @@ export class MongoRepository<T extends Document> {
 
   async create(data: CreateData<T>): Promise<T> {
     try {
-      const entry = this.prepareEntry(data, "insert");
+      const entry = await this.prepareEntry(data, "insert");
       this.validator.parse(entry);
 
       const col = await this.collection();
@@ -64,7 +79,7 @@ export class MongoRepository<T extends Document> {
 
   async update(id: string, data: UpdateData<T>): Promise<T> {
     try {
-      const entry = this.prepareEntry({ ...data, _id: id }, "update");
+      const entry = await this.prepareEntry({ ...data, _id: id }, "update");
       this.validator.partial().parse(entry);
 
       const col = await this.collection();
@@ -122,16 +137,25 @@ export class MongoRepository<T extends Document> {
     return !exists;
   }
 
-  private prepareEntry(entry: Partial<BaseEntity>, type: "insert" | "update") {
+  private async prepareEntry(
+    entry: Partial<BaseEntity>,
+    type: "insert" | "update"
+  ) {
     const newEntry = { ...entry };
+    const currentUser = await getAuthUser();
+    const actor = currentUser?.id ?? "system";
 
     if (type === "insert") {
       newEntry.created_at = new Date();
+      newEntry.created_by = actor;
     }
 
     if (type === "update") {
       newEntry.updated_at = new Date();
+      newEntry.updated_by = actor;
+
       delete newEntry.created_at;
+      delete newEntry.created_by;
     }
 
     return newEntry;
