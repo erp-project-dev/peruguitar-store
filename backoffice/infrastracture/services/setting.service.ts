@@ -19,7 +19,7 @@ export class SettingService {
   async create(entry: Setting): Promise<Setting> {
     await this.validateUniqueId(entry._id);
 
-    return this.repository.create({ ...entry, isPrivate: false });
+    return this.repository.create({ ...entry, is_private: false });
   }
 
   async update(id: string, entry: Partial<Setting>): Promise<Setting> {

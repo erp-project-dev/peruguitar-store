@@ -37,7 +37,7 @@ export function DataSyncButton() {
   };
 
   return (
-    <Button size="lg" icon={RefreshCcw} onClick={handleSync}>
+    <Button variant="info" size="lg" icon={RefreshCcw} onClick={handleSync}>
       Sync Data
     </Button>
   );

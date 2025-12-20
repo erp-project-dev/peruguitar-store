@@ -13,7 +13,17 @@ import { Merchant } from "../domain/merchant.entity";
 import { Brand } from "../domain/brand.entity";
 import { ProductType } from "../domain/product-type.entity";
 
-const EXCLUDED_COLUMNS = ["email"];
+type EntityType = "merchants" | "catalog" | "brands" | "types" | "settings";
+
+const EXCLUDED_COLUMNS = [
+  "merchants.email",
+  "created_at",
+  "created_by",
+  "updated_at",
+  "updated_by",
+  "is_enabled",
+  "settings.is_private",
+];
 
 export class DataSyncService {
   private readonly destinationDirectory = path.resolve(
@@ -40,11 +50,14 @@ export class DataSyncService {
         release_version: releaseVersion,
         release_date: releaseDate,
       },
-      Merchants: this.normalize(collections.merchants),
-      Catalog: this.normalize(collections.catalog),
-      Brands: this.normalize(collections.brands),
-      Types: this.normalize(collections.types),
-      Settings: this.normalizeSettings(collections.settings),
+      Merchants: this.normalize(collections.merchants, "merchants"),
+      Catalog: this.normalize(collections.catalog, "catalog"),
+      Brands: this.normalize(collections.brands, "brands"),
+      Types: this.normalize(collections.types, "types"),
+      Settings: this.normalize(
+        collections.settings.filter((s) => !s.is_private),
+        "settings"
+      ),
     };
 
     const encrypted = this.encrypt(JSON.stringify(payload));
@@ -110,30 +123,30 @@ export class DataSyncService {
     );
   }
 
-  private normalize(docs: any[]) {
+  private normalize(docs: any[], entity: EntityType) {
+    const globalExcludes = new Set(
+      EXCLUDED_COLUMNS.filter((c) => !c.includes("."))
+    );
+
+    const entityExcludes = new Set(
+      EXCLUDED_COLUMNS.filter((c) => c.startsWith(`${entity}.`)).map(
+        (c) => c.split(".")[1]
+      )
+    );
+
     return docs.map((doc) => {
       const { _id, ...rest } = doc;
       const clean: any = { id: _id };
 
       for (const [key, value] of Object.entries(rest)) {
-        if (!EXCLUDED_COLUMNS.includes(key)) {
-          clean[key] = value;
-        }
+        if (globalExcludes.has(key)) continue;
+        if (entityExcludes.has(key)) continue;
+
+        clean[key] = value;
       }
 
       return clean;
     });
-  }
-
-  private normalizeSettings(docs: any[]) {
-    return docs
-      .filter(
-        (s) => s._id !== RELEASE_DATE_KEY && s._id !== RELEASE_VERSION_KEY
-      )
-      .map(({ _id, ...rest }) => ({
-        id: _id,
-        ...rest,
-      }));
   }
 
   private encrypt(plainText: string): string {
