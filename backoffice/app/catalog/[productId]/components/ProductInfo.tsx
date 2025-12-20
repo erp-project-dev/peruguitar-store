@@ -165,6 +165,7 @@ export default function ProductInfo({ form, onUpdate }: Props) {
             label: m._id,
             value: m._id,
           }))}
+          disabled
         />
       </Field>
 

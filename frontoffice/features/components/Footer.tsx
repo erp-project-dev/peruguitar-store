@@ -9,7 +9,7 @@ export default function Footer() {
   const { release_date, release_version } = MetalGetCommand.handle();
 
   return (
-    <footer className="w-full bg-neutral-200 text-neutral-600">
+    <footer className="w-full bg-white/35 text-neutral-600">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
           <span className="text-base font-medium text-neutral-800">
@@ -64,7 +64,7 @@ export default function Footer() {
           </div>
 
           <div className="space-y-3">
-            <p className="font-medium text-neutral-800">Proyecto</p>
+            <p className="font-medium text-neutral-800">Otros</p>
             <a
               href="https://instagram.com/erpprojectofficial"
               className="block hover:text-neutral-900"

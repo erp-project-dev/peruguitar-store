@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ImagePlus } from "lucide-react";
 import { toast } from "sonner";
+import Modal from "@/app/components/Modal/Modal";
+import ProductImageUploadPreview from "./components/ProductImageUploadPreview";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
@@ -11,8 +13,10 @@ type Props = {
   max?: number;
 };
 
-export default function ProductImageAttach({ onSelect, max = 6 }: Props) {
+export default function ProductImageUpload({ onSelect, max = 6 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [previewFiles, setPreviewFiles] = useState<File[] | null>(null);
 
   const openPicker = () => {
     if (max === 0) return;
@@ -35,7 +39,7 @@ export default function ProductImageAttach({ onSelect, max = 6 }: Props) {
       return;
     }
 
-    onSelect(valid);
+    setPreviewFiles(valid);
   };
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -73,6 +77,23 @@ export default function ProductImageAttach({ onSelect, max = 6 }: Props) {
           </span>
         </div>
       </div>
+
+      <Modal
+        title="Image Preview"
+        open={!!previewFiles}
+        onClose={() => setPreviewFiles(null)}
+        size="2xl"
+      >
+        {previewFiles && (
+          <ProductImageUploadPreview
+            files={previewFiles}
+            onSelect={(files) => {
+              onSelect(files);
+              setPreviewFiles(null);
+            }}
+          />
+        )}
+      </Modal>
     </>
   );
 }

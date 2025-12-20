@@ -12,14 +12,18 @@ type SelectProps = {
   options: Option[];
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 };
 
 const baseClasses =
-  "w-full rounded-md border border-neutral-300 bg-white px-3 py-2 pr-9 text-sm text-neutral-900 " +
+  "w-full rounded-md border border-neutral-300 px-3 py-2 pr-9 text-sm text-neutral-900 " +
   "transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900";
 
+const editableClasses = "bg-white";
+const readOnlyClasses = "bg-neutral-100 text-neutral-600 cursor-not-allowed";
+
 const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
-  { value, onChange, options, placeholder, className = "" },
+  { value, onChange, options, placeholder, className = "", disabled = false },
   ref
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,6 +44,8 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
   }, [options, search]);
 
   const selectOption = (opt: Option) => {
+    if (disabled) return;
+
     setOpen(false);
     setSearch("");
     setActiveIndex(-1);
@@ -52,6 +58,8 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
       ref={containerRef}
       className="relative"
       onBlur={(e) => {
+        if (disabled) return;
+
         if (!containerRef.current?.contains(e.relatedTarget as Node)) {
           setOpen(false);
           setSearch("");
@@ -63,14 +71,25 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
         ref={ref}
         value={search || selected?.label || ""}
         placeholder={placeholder}
-        onFocus={() => setOpen(true)}
-        onClick={() => setOpen(true)}
+        disabled={disabled}
+        aria-disabled={disabled}
+        onFocus={() => {
+          if (disabled) return;
+          setOpen(true);
+        }}
+        onClick={() => {
+          if (disabled) return;
+          setOpen(true);
+        }}
         onChange={(e) => {
+          if (disabled) return;
           setSearch(e.target.value);
           setOpen(true);
           setActiveIndex(0);
         }}
         onKeyDown={(e) => {
+          if (disabled) return;
+
           if (!open && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
             setOpen(true);
             setActiveIndex(0);
@@ -99,15 +118,21 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
             setActiveIndex(-1);
           }
         }}
-        className={`${baseClasses} ${className}`}
+        className={[
+          baseClasses,
+          disabled ? readOnlyClasses : editableClasses,
+          className,
+        ].join(" ")}
       />
 
       <ChevronDown
-        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400"
+        className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 ${
+          disabled ? "text-neutral-300" : "text-neutral-400"
+        }`}
         strokeWidth={2}
       />
 
-      {open && (
+      {open && !disabled && (
         <div className="absolute z-50 mt-1 max-h-56 w-full overflow-auto rounded-md border border-neutral-200 bg-white shadow-sm">
           {filteredOptions.length === 0 && (
             <div className="px-3 py-2 text-sm text-neutral-400">No results</div>

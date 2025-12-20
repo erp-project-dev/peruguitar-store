@@ -21,7 +21,7 @@ import {
   PRODUCT_SCORES,
 } from "@/app/common/data";
 import ProductInfo from "./components/ProductInfo";
-import ProductImageAttach from "./components/ProductImageAttach";
+import ProductImageUpload from "./components/ProductImageUpload/ProductImageUpload";
 import ProductImageList from "./components/ProductImageList";
 import { getPublicPath } from "@/app/common/helpers/product.helper";
 
@@ -226,7 +226,7 @@ export default function EditProductPage() {
             onClick={() => router.push("/catalog")}
             disabled={loading}
           >
-            Cancel
+            Back
           </Button>
 
           <Button
@@ -256,9 +256,8 @@ export default function EditProductPage() {
           <ProductInfo form={form} onUpdate={update} />
         </div>
 
-        {/* RIGHT — IMAGES */}
         <div className="flex flex-col gap-4">
-          <ProductImageAttach
+          <ProductImageUpload
             onSelect={handleImagesAttach}
             max={6 - images.length}
           />
