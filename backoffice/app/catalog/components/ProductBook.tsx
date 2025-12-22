@@ -11,6 +11,7 @@ import { CURRENCIES, PRODUCT_PRICE_TYPES } from "@/app/common/data";
 
 import { Merchant } from "@/infrastracture/domain/merchant.entity";
 import { ProductEntryForm } from "./ProductForm";
+import { InputMarkdown } from "@/app/components/Form/InputMarkdown/InputMarkdown";
 
 type Props = {
   mode: "insert" | "edit";
@@ -115,11 +116,10 @@ export default function ProductBookForm({
 
         {/* FULL DESCRIPTION */}
         <Field label="Full description" full>
-          <Input
-            type="textarea"
-            rows={6}
-            value={form.fullDescription ?? ""}
-            onChange={(value) => onUpdate("fullDescription", value)}
+          <InputMarkdown
+            className="font-mono text-xs"
+            value={form.fullDescription}
+            onChange={(v) => onUpdate("fullDescription", v)}
           />
         </Field>
 

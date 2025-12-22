@@ -11,7 +11,7 @@ import { Breadcrumb } from "@/features/components/Breadcrumb";
 import ProductCallToAction from "./components/ProductCallToAction/ProductCallToAction";
 import ProductDisclaimer from "./components/ProductDisclaimer";
 import ProductSimilarLising from "./components/ProductSimilarListing";
-import ProductFullDescription from "./components/ProductFullDescription";
+import ProductFullDescription from "./components/ProductFullDescription/ProductFullDescription";
 
 export async function generateStaticParams() {
   const { items } = CatalogGetCommand.handle();

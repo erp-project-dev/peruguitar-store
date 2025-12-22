@@ -4,6 +4,9 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
+import "./ProductFullDescription.css";
+import ReactMarkdown from "react-markdown";
+
 type Props = {
   text: string;
   collapsedHeight?: number;
@@ -36,15 +39,15 @@ export default function ProductFullDescription({
           maxHeight: open ? ref.current?.scrollHeight : collapsedHeight,
         }}
       >
-        <div ref={ref} className="whitespace-pre-line text-gray-800">
-          {text}
+        <div ref={ref} className="text-gray-800 markdown-preview">
+          <ReactMarkdown>{text}</ReactMarkdown>
         </div>
       </div>
 
       {canExpand && (
         <button
           onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-slate-900 cursor-pointer"
+          className="flex items-center gap-1 font-medium text-slate-600 hover:text-slate-900 cursor-pointer mt-2"
         >
           {open ? (
             <>

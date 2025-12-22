@@ -1,0 +1,117 @@
+/* =======================
+   HEADINGS (h3+ only)
+   NO COLORS
+   ======================= */
+
+.markdown-preview h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.markdown-preview h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+
+.markdown-preview h5,
+.markdown-preview h6 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* =======================
+   TEXT
+   NO COLORS
+   ======================= */
+
+.markdown-preview p {
+  margin: 0.65rem 0;
+  line-height: 1.7; /* mejor lectura en gris */
+}
+
+.markdown-preview strong {
+  font-weight: 600;
+}
+
+.markdown-preview em {
+  font-style: italic;
+}
+
+/* =======================
+   LISTS
+   GRAY FRIENDLY
+   ======================= */
+
+.markdown-preview ul,
+.markdown-preview ol {
+  margin: 0.65rem 0;
+  padding-left: 1.4rem;
+}
+
+.markdown-preview li {
+  margin: 0.35rem 0;
+  line-height: 1.6;
+}
+
+/* Unordered list marker */
+.markdown-preview ul li::marker {
+  content: "▸ ";
+  font-weight: 600;
+  color: #555; /* gris medio, no negro */
+}
+
+/* Ordered list marker */
+.markdown-preview ol li::marker {
+  font-weight: 600;
+  color: #555;
+}
+
+/* =======================
+   CODE
+   SOFT GRAY
+   ======================= */
+
+/* Inline code */
+.markdown-preview code {
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  background-color: red; /* gris suave */
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Code blocks */
+.markdown-preview pre {
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  overflow-x: auto;
+  background-color: #f0f0f0; /* se integra mejor al fondo gris */
+  border-radius: 6px;
+}
+
+.markdown-preview pre code {
+  padding: 0;
+  background: none;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+/* =======================
+   BLOCKQUOTE & HR
+   GRAY UI
+   ======================= */
+
+.markdown-preview blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid #222;
+}
+
+.markdown-preview hr {
+  margin: 1.4rem 0;
+  border: none;
+  border-top: 1px solid #aaa;
+}
