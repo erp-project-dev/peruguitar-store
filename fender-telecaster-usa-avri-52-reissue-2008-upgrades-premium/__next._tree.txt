@@ -1,10 +1,10 @@
-:HL["/_next/static/chunks/5ff27ccb1c8a3c1f.css","style"]
+:HL["/_next/static/chunks/9eb42ead3fb6a70c.css","style"]
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/catalog/cesarneyra/musicman-jp6-1.jpg","image"]
-:HL["/catalog/jordisanmarti/prs-mccarty-usa-2016-dark-cherry-burst-1.jpg","image"]
-:HL["/catalog/kikekluver/ibanez-jem777vbk-1989-1.jpg","image"]
+:HL["/catalog/emiliocardenas/prs-513-25-aniversario-usa-1.jpg","image"]
+:HL["/catalog/mariodiaz/gibson-les-paul-studio-1.jpg","image"]
 :HL["/catalog/martincamasca/custom-profesional-dimarzio-sperzel-1.jpg","image"]
-:HL["/catalog/jordisanmarti/jackson-soloist-sl1-usa-select-custom-1.jpg","image"]
-:HL["/catalog/ricardoroa/esp-e2-m1-made-in-japan-1.jpeg","image"]
-0:{"buildId":"lJYEqLTcqscUFHsi4eZN9","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"fender-telecaster-usa-avri-52-reissue-2008-upgrades-premium","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+:HL["/catalog/javierroman/gibson-les-paul-standard-50s-goldtop-2023-1.jpg","image"]
+:HL["/catalog/joseantoniorojas/steinberger-synapse-headless-guitar-1.jpg","image"]
+:HL["/catalog/salimvera/fender-american-ultra-1.jpg","image"]
+0:{"buildId":"YVg8CnVtK6awrrT5yDRUi","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"fender-telecaster-usa-avri-52-reissue-2008-upgrades-premium","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
