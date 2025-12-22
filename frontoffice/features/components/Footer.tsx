@@ -22,7 +22,7 @@ export default function Footer() {
           />
 
           <span className="text-sm text-neutral-500">
-            Marketplace exclusivo de guitarras eléctricas.
+            Marketplace exclusivo para guitarristas.
           </span>
         </div>
 

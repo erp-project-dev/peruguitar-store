@@ -12,7 +12,7 @@ export class SettingService {
 
   async findAll(): Promise<Setting[]> {
     return this.repository.findAll({
-      isPrivate: { $eq: false },
+      is_private: false,
     });
   }
 
