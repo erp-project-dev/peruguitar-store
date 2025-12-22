@@ -53,29 +53,32 @@ function drawGradient(ctx) {
   ctx.fillRect(0, HEIGHT - BOX_HEIGHT - 200, WIDTH, 200);
 }
 
-function drawTitle(ctx, text) {
+function drawTitle(ctx, text, { wordsPerLine = 4, maxLines = 3 } = {}) {
   ctx.fillStyle = "white";
   ctx.font = "bold 60px sans-serif";
 
   const words = text.split(" ");
   const lines = [];
-  let row = [];
 
-  for (const w of words) {
-    row.push(w);
-    if (row.length === 4) {
-      lines.push(row.join(" "));
-      row = [];
+  let index = 0;
+
+  while (index < words.length && lines.length < maxLines) {
+    const slice = words.slice(index, index + wordsPerLine);
+    index += wordsPerLine;
+
+    if (lines.length === maxLines - 1 && index < words.length) {
+      lines.push(slice.join(" ") + "…");
+      break;
     }
-  }
 
-  if (row.length) lines.push(row.join(" "));
+    lines.push(slice.join(" "));
+  }
 
   const startY = HEIGHT - 300;
 
-  lines.forEach((line, i) =>
-    ctx.fillText(line, MARGIN, startY + i * LINE_HEIGHT)
-  );
+  lines.forEach((line, i) => {
+    ctx.fillText(line, MARGIN, startY + i * LINE_HEIGHT);
+  });
 }
 
 function drawPrice(ctx, currency, price) {
