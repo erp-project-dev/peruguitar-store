@@ -28,7 +28,7 @@ export default function ProductWhatsappButton({
 
     const message = `
 Hola ${merchantName}, estoy interesado en *${productName}* que encontré en *Peru Guitar*. ¿Sigue disponible?
-ref: _${getBasePath(productId)}_
+ref: ${getBasePath(productId)}
 `;
 
     window.open(
