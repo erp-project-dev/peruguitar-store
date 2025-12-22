@@ -6,6 +6,7 @@ import {
   Settings,
   Tags,
   Layers,
+  Tag,
 } from "lucide-react";
 
 export const SIDEBAR_MENU = [
@@ -20,6 +21,12 @@ export const SIDEBAR_MENU = [
     label: "Merchants",
     icon: Users,
     path: "/merchants",
+  },
+  {
+    id: "categories",
+    label: "Categories",
+    icon: Tag,
+    path: "/categories",
   },
   {
     id: "catalog",

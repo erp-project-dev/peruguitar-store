@@ -30,6 +30,11 @@ export function translateProductConditionScore(score: number): string {
 
 export function translateProductSpec(spec: string): string {
   const map: Record<string, string> = {
+    /* ---------- Common ---------- */
+    brand: "Marca",
+    model: "Modelo",
+
+    /* ---------- Guitar specs ---------- */
     release_year: "Año de lanzamiento",
     origin: "Origen",
 
@@ -44,11 +49,18 @@ export function translateProductSpec(spec: string): string {
     number_of_strings: "Número de cuerdas",
 
     hand_orientation: "Orientación",
-
     color: "Color",
     bridge_type: "Puente",
     pickups: "Pastillas",
     hardware_color: "Color de herrajes",
+
+    /* ---------- Book specs ---------- */
+    language: "Idioma",
+    author: "Autor",
+    publisher: "Editorial",
+    pages: "Número de páginas",
+    format: "Formato",
+    isbn: "ISBN",
   };
 
   return map[spec] ?? spec.replace(/_/g, " ");

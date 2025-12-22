@@ -27,7 +27,7 @@ export default function CatalogProduct({
   ignorePinned,
 }: CatalogProductProps) {
   const showPinned = product.isPinned && !ignorePinned;
-  const badgeClass = PRODUCT_TYPE_BADGE[product.type.id];
+  const badgeClass = product.type ? PRODUCT_TYPE_BADGE[product.type.id] : "";
   const titleClass = showPinned ? "text-purple-700" : "text-neutral-900";
 
   return (
@@ -53,7 +53,7 @@ export default function CatalogProduct({
 
       <div className="space-y-1 py-4">
         <div className="text-[11px] md:text-xs uppercase tracking-wide text-neutral-500">
-          {product.brand.name}
+          {product.category.name}
         </div>
 
         <h2
@@ -62,11 +62,13 @@ export default function CatalogProduct({
           {product.name}
         </h2>
 
-        <div
-          className={`inline-block text-[11px] md:text-xs px-2 py-1 rounded-md font-medium ${badgeClass}`}
-        >
-          {product.type.name}
-        </div>
+        {product.type && (
+          <div
+            className={`inline-block text-[11px] md:text-xs px-2 py-1 rounded-md font-medium ${badgeClass}`}
+          >
+            {product.type.name}
+          </div>
+        )}
 
         <div className="pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums">
           {product.price.toLocaleString("es-PE", {

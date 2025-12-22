@@ -6,9 +6,12 @@ export type RequestOptions = {
   cacheTtlSeconds?: number;
 };
 
-function isOptions(value: any): value is RequestOptions {
-  return value && typeof value === "object" && "cacheTtlSeconds" in value;
-}
+type ExecuteArgs = {
+  id?: string;
+  payload?: any;
+  query?: Record<string, any>;
+  options?: RequestOptions;
+};
 
 function isFilePayload(payload?: any): payload is File[] {
   return (
@@ -19,8 +22,12 @@ function isFilePayload(payload?: any): payload is File[] {
 export class StoreClient {
   private static readonly ENDPOINT = "/api/store";
 
+  /* ---------------- cache helpers ---------------- */
+
   private getCacheKey(payload: IncomeRequest): string {
-    return `store:${payload.command}:${payload.id ?? "global"}`;
+    const queryKey = payload.query ? JSON.stringify(payload.query) : "no-query";
+
+    return `store:${payload.command}:${payload.id ?? "global"}:${queryKey}`;
   }
 
   private readCache<R>(key: string, requestedTtl?: number): R | null {
@@ -57,6 +64,8 @@ export class StoreClient {
     );
   }
 
+  /* ---------------- request ---------------- */
+
   private async request<R>(
     payload: IncomeRequest,
     options?: RequestOptions
@@ -71,8 +80,10 @@ export class StoreClient {
 
     let res: Response;
 
+    // ---------- FILE PAYLOAD ----------
     if (isFilePayload(payload.payload)) {
       const form = new FormData();
+
       form.append("command", payload.command);
       if (payload.id) form.append("id", payload.id);
 
@@ -84,7 +95,9 @@ export class StoreClient {
         method: "POST",
         body: form,
       });
-    } else {
+    }
+    // ---------- JSON PAYLOAD ----------
+    else {
       res = await fetch(StoreClient.ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,51 +118,19 @@ export class StoreClient {
     return response.data as R;
   }
 
-  execute<R>(command: StoreCommand, options?: RequestOptions): Promise<R>;
-  execute<R>(
-    command: StoreCommand,
-    id: string,
-    options?: RequestOptions
-  ): Promise<R>;
-  execute<R>(
-    command: StoreCommand,
-    payload: any,
-    options?: RequestOptions
-  ): Promise<R>;
-  execute<R>(
-    command: StoreCommand,
-    id: string,
-    payload: any,
-    options?: RequestOptions
-  ): Promise<R>;
+  /* ---------------- public API ---------------- */
 
   execute<R>(
     command: StoreCommand,
-    a?: string | any | RequestOptions,
-    b?: any | RequestOptions,
-    c?: RequestOptions
+    { id, payload, query, options }: ExecuteArgs = {}
   ): Promise<R> {
-    let payload: IncomeRequest;
-    let options: RequestOptions | undefined;
+    const income: IncomeRequest = {
+      command,
+      id,
+      payload,
+      query,
+    };
 
-    if (isOptions(a)) {
-      payload = { command };
-      options = a;
-    } else if (typeof a === "string" && b === undefined) {
-      payload = { command, id: a };
-    } else if (typeof a === "string" && isOptions(b)) {
-      payload = { command, id: a };
-      options = b;
-    } else if (typeof a === "string") {
-      payload = { command, id: a, payload: b };
-      options = c;
-    } else if (a !== undefined) {
-      payload = { command, payload: a };
-      options = b as RequestOptions | undefined;
-    } else {
-      payload = { command };
-    }
-
-    return this.request<R>(payload, options);
+    return this.request<R>(income, options);
   }
 }

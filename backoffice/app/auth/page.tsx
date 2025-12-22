@@ -31,8 +31,10 @@ export default function LoginPage() {
       setLoading(true);
 
       await storeClient.execute(StoreCommand.AuthSignIn, {
-        email: email.trim(),
-        password,
+        payload: {
+          email: email.trim(),
+          password,
+        },
       });
 
       localStorage.clear();

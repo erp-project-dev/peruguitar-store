@@ -1,19 +1,20 @@
 import { Brand } from "@/features/types/brand.type";
-import { ProductType } from "@/features/types/product-type";
+import { Category } from "@/features/types/category.type";
+import { ProductType } from "@/features/types/product-type.type";
 import { PriceType, ProductCurrency } from "@/features/types/product.type";
-import { GuitarSpecs } from "@/features/types/spec.type";
 
 export interface ProductPageViewModel {
   id: string;
-  category: string;
+  category: Category;
   name: string;
-  type: ProductType;
-  brand: Brand;
-  model: string;
+  type?: ProductType;
+  brand?: Brand;
+  model?: string;
   condition: string;
   conditionScore: number;
   description: string;
-  specs: GuitarSpecs;
+  fullDescription: string;
+  specs: Record<string, string>;
 
   images: string[];
   card_pic: string;
@@ -23,7 +24,6 @@ export interface ProductPageViewModel {
   priceType: PriceType;
 
   publishDate: Date;
-  publishType: string;
 
   merchant: {
     id: string;

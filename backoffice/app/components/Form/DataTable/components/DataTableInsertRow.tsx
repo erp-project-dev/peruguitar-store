@@ -1,19 +1,13 @@
 "use client";
 
 import { Plus, Save, X } from "lucide-react";
-
 import { alignClass } from "../helpers";
-import { SelectOption } from "../DataTable";
-
-interface InsertColumn<T> {
-  key: keyof T;
-  editable?: boolean;
-  align?: "left" | "center" | "right";
-  values?: SelectOption[];
-}
+import { Column } from "../DataTable";
+import DataTableMultipleInput from "./controls/DataTableMultipleInput";
+import DataTableSelect from "./controls/DataTableSelect";
 
 interface DataTableInsertRowProps<T> {
-  columns: InsertColumn<T>[];
+  columns: Column<T>[];
   inserting: boolean;
   insertDraft: Partial<T>;
   loading: boolean;
@@ -35,34 +29,48 @@ export default function DataTableInsertRow<T>({
 }: DataTableInsertRowProps<T>) {
   return (
     <tr className="border-b border-neutral-200 bg-neutral-50">
-      {columns.map((col) => (
-        <td
-          key={String(col.key)}
-          className={`px-4 py-2 truncate ${alignClass(col.align)}`}
-        >
-          {inserting && col.editable ? (
-            col.values ? (
-              <select
-                className="w-full rounded border border-neutral-300 px-2 py-1 text-sm bg-white"
-                value={String(insertDraft[col.key] ?? "")}
-                onChange={(e) => onChange(col.key, e.target.value)}
-              >
-                {col.values.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                className="w-full rounded border border-neutral-300 px-2 py-1 text-sm"
-                value={String(insertDraft[col.key] ?? "")}
-                onChange={(e) => onChange(col.key, e.target.value)}
-              />
-            )
-          ) : null}
-        </td>
-      ))}
+      {columns.map((col) => {
+        const rawValue = insertDraft[col.key];
+
+        return (
+          <td
+            key={String(col.key)}
+            className={`px-4 py-2 ${alignClass(col.align)}`}
+          >
+            {inserting &&
+            col.editable &&
+            (!col.editableOn || col.editableOn === "insert") ? (
+              col.values ? (
+                col.multiple ? (
+                  <DataTableMultipleInput
+                    options={col.values.map((v) => ({
+                      key: v.value,
+                      value: v.label,
+                    }))}
+                    onChange={(next) => onChange(col.key, next)}
+                    defaultValues={col.defaultValue as string[]}
+                  />
+                ) : (
+                  <DataTableSelect
+                    value={String(rawValue ?? "")}
+                    options={col.values.map((opt) => ({
+                      value: opt.value,
+                      label: opt.label,
+                    }))}
+                    onChange={(value) => onChange(col.key, value)}
+                  />
+                )
+              ) : (
+                <input
+                  className="w-full rounded border border-neutral-300 px-2 py-1 text-sm"
+                  value={String(rawValue ?? "")}
+                  onChange={(e) => onChange(col.key, e.target.value)}
+                />
+              )
+            ) : null}
+          </td>
+        );
+      })}
 
       <td className="px-4 py-2 text-right">
         {!inserting ? (

@@ -45,11 +45,13 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
         productName={product.name}
       />
 
-      <ProductConditionInfo
-        label={translateProductCondition(product.condition)}
-        description={translateProductConditionScore(product.conditionScore)}
-        score={product.conditionScore}
-      />
+      {product.conditionScore && (
+        <ProductConditionInfo
+          label={translateProductCondition(product.condition)}
+          description={translateProductConditionScore(product.conditionScore)}
+          score={product.conditionScore}
+        />
+      )}
 
       <div className="border-t border-b border-dashed border-gray-300 pt-4 pb-4">
         <div className="grid grid-cols-[3fr_1fr] items-center gap-4 text-sm text-gray-700">
@@ -67,10 +69,12 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
         </div>
       </div>
 
-      <p className="text-sm text-gray-600 leading-relaxed">
-        <strong className="uppercase">{product.type.name}</strong>:{" "}
-        {product.type.description}
-      </p>
+      {product.type && (
+        <p className="text-sm text-gray-600 leading-relaxed">
+          <strong className="uppercase">{product.type.name}</strong>:{" "}
+          {product.type.description}
+        </p>
+      )}
     </aside>
   );
 }

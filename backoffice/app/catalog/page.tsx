@@ -6,16 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
-import {
-  Pin,
-  PinOff,
-  Check,
-  X,
-  Plus,
-  ImageOff,
-  Image,
-  ImageIcon,
-} from "lucide-react";
+import { Pin, PinOff, Check, X, Plus, ImageIcon } from "lucide-react";
 
 import { Product } from "@/infrastracture/domain/product.entity";
 
@@ -25,7 +16,6 @@ import { StoreCommand } from "@/app/api/store/store.command";
 
 import DataTable from "../components/Form/DataTable/DataTable";
 import Button from "../components/Form/Button";
-import Tooltip from "../components/Tooltip";
 import { getPublicImagePath } from "../common/helpers/product.helper";
 
 const storeClient = new StoreClient();
@@ -59,7 +49,7 @@ export default function Catalog() {
   }, []);
 
   const handleRemove = async (id: string) => {
-    await storeClient.execute(StoreCommand.CatalogRemove, id);
+    await storeClient.execute(StoreCommand.CatalogRemove, { id });
     setProducts((prev) => prev.filter((s) => s._id !== id));
   };
 
@@ -116,10 +106,10 @@ export default function Catalog() {
           },
 
           {
-            key: "brand_id",
-            label: "Brand",
+            key: "category_id",
+            label: "Category",
             sortable: true,
-            width: 100,
+            width: 160,
           },
 
           {
@@ -134,6 +124,13 @@ export default function Catalog() {
                 {value as string}
               </a>
             ),
+          },
+
+          {
+            key: "brand_id",
+            label: "Brand",
+            sortable: true,
+            width: 100,
           },
 
           {
@@ -154,33 +151,9 @@ export default function Catalog() {
           },
 
           {
-            key: "type_id",
-            label: "Product type",
-            width: 140,
-          },
-
-          {
             key: "priceType",
             label: "Price type",
             width: 140,
-          },
-
-          {
-            key: "condition",
-            label: "Condition",
-            width: 140,
-            sortable: true,
-          },
-
-          {
-            key: "condition_score",
-            label: "Score",
-            width: 100,
-            align: "center",
-            sortable: true,
-            render: (value) => (
-              <span className="text-sm">{value as number}/5</span>
-            ),
           },
 
           {

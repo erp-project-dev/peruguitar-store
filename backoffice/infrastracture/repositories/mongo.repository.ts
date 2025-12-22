@@ -53,10 +53,39 @@ export class MongoRepository<T extends Document> {
     return results[0] ?? null;
   }
 
+  async isReferencedById<T>(
+    targetCollection: string,
+    key: keyof T,
+    id: string
+  ): Promise<boolean> {
+    const db: Db = await getDbInstance();
+    const col = db.collection<BaseEntity>(targetCollection);
+
+    const exists = await col.findOne({ [key]: id }, { projection: { _id: 1 } });
+
+    return Boolean(exists);
+  }
+
   async findAll(filter: Filter<T> = {}): Promise<T[]> {
     const col = await this.collection();
 
     return col.find(filter).sort({ created_at: -1 }).toArray() as Promise<T[]>;
+  }
+
+  async isReferencedInArray<T>(
+    targetCollection: string,
+    key: keyof T,
+    id: string
+  ): Promise<boolean> {
+    const db: Db = await getDbInstance();
+    const col = db.collection<BaseEntity>(targetCollection);
+
+    const exists = await col.findOne(
+      { [key as string]: id },
+      { projection: { _id: 1 } }
+    );
+
+    return Boolean(exists);
   }
 
   async create(data: CreateData<T>): Promise<T> {

@@ -1,31 +1,26 @@
-import { GuitarSpecs } from "./spec.type";
+import { CategoryId } from "./category.type";
 
 export type ProductCurrency = "USD" | "PEN";
-export type PublishType = "standard" | "premium";
 export type ProductCondition = "new" | "like_new";
 export type PriceType = "fixed" | "negotiable";
 
-export type Category =
-  | "guitar"
-  | "bass"
-  | "amplifier"
-  | "effects"
-  | "accessories";
-
 export interface Product {
   id: string;
-  category: Category;
+  category_id: CategoryId;
+
   name: string;
 
-  type_id: string;
-  brand_id: string;
+  type_id?: string;
+  brand_id?: string;
   model: string;
 
   condition: ProductCondition;
   condition_score: number;
 
   description: string;
-  specs: GuitarSpecs;
+  fullDescription: string;
+
+  specs: Record<string, string>;
 
   card_pic: string;
   images: string[];
@@ -35,7 +30,6 @@ export interface Product {
   priceType: PriceType;
 
   publish_date: string;
-  publish_type: PublishType;
 
   is_pinned: boolean;
 

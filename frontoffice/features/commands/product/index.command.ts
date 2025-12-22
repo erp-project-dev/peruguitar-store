@@ -4,7 +4,7 @@ import { ProductPageViewModel } from "./index.type";
 
 export class ProductGetCommand {
   static handle(id: string): ProductPageViewModel {
-    const { Merchants, Catalog, Brands, Types } = DATA;
+    const { Merchants, Catalog, Brands, Types, Categories } = DATA;
 
     const p = Catalog.find((item) => item.id === id);
 
@@ -15,7 +15,6 @@ export class ProductGetCommand {
     }
 
     const merchant = Merchants.find((m) => m.id === p.merchant_id);
-
     if (!merchant) {
       throw new Error(
         `DATA ERROR: Merchant not found for product ${p.id} (merchant_id: ${p.merchant_id})`
@@ -23,24 +22,18 @@ export class ProductGetCommand {
     }
 
     const brand = Brands.find((b) => b.id === p.brand_id);
-
-    if (!brand) {
-      throw new Error(
-        `DATA ERROR: Brand not found for product ${p.id} (brand: ${p.brand_id})`
-      );
-    }
-
     const type = Types.find((tp) => tp.id === p.type_id);
 
-    if (!type) {
+    const category = Categories.find((m) => m.id === p.category_id);
+    if (!category) {
       throw new Error(
-        `DATA ERROR: Type not found for product ${p.id} (type: ${p.type_id})`
+        `DATA ERROR: Category not found for product ${p.id} (category_id: ${p.category_id})`
       );
     }
 
     return {
       id: p.id,
-      category: p.category,
+      category,
       name: p.name,
       type,
       brand,
@@ -48,6 +41,7 @@ export class ProductGetCommand {
       condition: p.condition,
       conditionScore: p.condition_score,
       description: p.description,
+      fullDescription: p.fullDescription,
       specs: p.specs,
 
       images: p.images,
@@ -58,7 +52,6 @@ export class ProductGetCommand {
       priceType: p.priceType,
 
       publishDate: new Date(p.publish_date),
-      publishType: p.publish_type,
 
       merchant: {
         id: merchant.id,

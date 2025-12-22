@@ -1,27 +1,6 @@
 import { z } from "zod";
 import { BaseSchema } from "./base.schema";
-
-export const GuitarSpecsSchema = z.object({
-  release_year: z.number().int().nullable(),
-  origin: z.string().nullable(),
-
-  body_wood: z.string().nullable(),
-  body_finish: z.string().nullable(),
-  body_type: z.string().nullable(),
-
-  neck_wood: z.string().nullable(),
-  fingerboard_wood: z.string().nullable(),
-
-  scale_length_mm: z.number().nullable(),
-  number_of_strings: z.number().int().nullable(),
-
-  hand_orientation: z.enum(["right", "left"]).nullable(),
-
-  color: z.string().nullable(),
-  bridge_type: z.string().nullable(),
-  pickups: z.string().nullable(),
-  hardware_color: z.string().nullable(),
-});
+import { GuitarSpecsSchema, BookSpecsSchema } from "./product-specs.schema";
 
 export const ProductImagesSchema = z
   .array(
@@ -41,31 +20,63 @@ export const ProductImagesSchema = z
   .max(6)
   .default([]);
 
-export const ProductSchema = z.object({
-  ...BaseSchema,
+const SpecsByCategory: Record<string, z.ZodTypeAny> = {
+  "electric-guitar": GuitarSpecsSchema,
+  book: BookSpecsSchema,
+};
 
-  category: z.string().min(1, "Category is required"),
+export const ProductSchema = z
+  .object({
+    ...BaseSchema,
 
-  brand_id: z.string().min(1, "Brand is required"),
-  merchant_id: z.string().min(1, "Merchant is required"),
-  type_id: z.string().min(1, "Type is required"),
+    category_id: z.string().min(1, "Category is required"),
 
-  condition: z.string().min(1, "Condition is required"),
-  condition_score: z.number().int().min(1).max(5),
+    brand_id: z.string().min(1, "Brand is required").optional(),
+    merchant_id: z.string().min(1, "Merchant is required"),
+    type_id: z.string().optional(),
 
-  publish_date: z.string().datetime(),
+    condition: z.string().optional(),
+    condition_score: z.number().int().min(1).max(5).optional(),
 
-  name: z.string().min(1, "Name is required"),
-  model: z.string().min(1, "Model is required"),
-  description: z.string().min(1, "Description is required"),
+    name: z.string().min(1, "Name is required"),
+    model: z.string().optional(),
+    description: z.string().min(1, "Description is required"),
+    fullDescription: z.string().optional(),
 
-  currency: z.string().min(1),
-  price: z.number().min(0),
-  priceType: z.string().min(1),
+    currency: z.string().min(1),
+    price: z.number().min(0),
+    priceType: z.string().min(1),
 
-  specs: GuitarSpecsSchema,
-  images: ProductImagesSchema,
+    specs: z.unknown(),
 
-  is_enabled: z.boolean(),
-  is_pinned: z.boolean(),
-});
+    images: ProductImagesSchema,
+
+    is_enabled: z.boolean(),
+    is_pinned: z.boolean(),
+
+    publish_date: z.string().datetime(),
+  })
+  .superRefine((data, ctx) => {
+    const schema = SpecsByCategory[data.category_id];
+
+    if (!schema) {
+      ctx.addIssue({
+        path: ["category_id"],
+        code: "custom",
+        message: `Unsupported category '${data.category_id}'`,
+      });
+      return;
+    }
+
+    const result = schema.safeParse(data.specs);
+
+    if (!result.success) {
+      result.error.issues.forEach((issue) => {
+        ctx.addIssue({
+          code: "custom",
+          path: ["specs", ...issue.path],
+          message: issue.message,
+        });
+      });
+    }
+  });

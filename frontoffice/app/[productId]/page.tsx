@@ -11,6 +11,7 @@ import { Breadcrumb } from "@/features/components/Breadcrumb";
 import ProductCallToAction from "./components/ProductCallToAction/ProductCallToAction";
 import ProductDisclaimer from "./components/ProductDisclaimer";
 import ProductSimilarLising from "./components/ProductSimilarListing";
+import ProductFullDescription from "./components/ProductFullDescription";
 
 export async function generateStaticParams() {
   const { items } = CatalogGetCommand.handle();
@@ -94,12 +95,18 @@ export default async function ProductPage({
             </p>
           </div>
 
+          {product.fullDescription && (
+            <ProductFullDescription text={product.fullDescription} />
+          )}
+
           <div className="space-y-3">
             <h2 className="text-2xl font-semibold">Especificaciones</h2>
             <ProductSpecs
-              model={product.model}
-              brand={product.brand.name}
-              specs={product.specs}
+              specs={{
+                model: product.model,
+                brand: product.brand?.name,
+                ...product.specs,
+              }}
             />
           </div>
         </div>

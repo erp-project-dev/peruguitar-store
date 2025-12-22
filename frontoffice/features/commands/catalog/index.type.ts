@@ -1,28 +1,20 @@
 import { Brand } from "@/features/types/brand.type";
-import { ProductType } from "@/features/types/product-type";
+import { Category } from "@/features/types/category.type";
+import { ProductType } from "@/features/types/product-type.type";
 import { ProductCurrency } from "@/features/types/product.type";
-import { GuitarSpecs } from "@/features/types/spec.type";
 
 export interface ProductViewModel {
   id: string;
-  category: string;
+  category: Category;
   name: string;
-  type: ProductType;
-  brand: Brand;
-  model: string;
-  condition: string;
-  conditionScore: number;
-  description: string;
-  specs: GuitarSpecs;
+  type?: ProductType;
+  brand?: Brand;
+  model?: string;
 
   images: string[];
-  card_pic: string;
 
   currency: ProductCurrency;
   price: number;
-
-  publishDate: Date;
-  publishType: string;
 
   isPinned: boolean;
 
@@ -32,6 +24,8 @@ export interface ProductViewModel {
     whatsapp: string;
     instagram: string;
   };
+
+  publishDate: Date;
 }
 
 export interface CatalogViewModel {

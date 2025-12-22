@@ -9,52 +9,60 @@ import { StoreCommand } from "@/app/api/store/store.command";
 
 import { Brand } from "@/infrastracture/domain/brand.entity";
 import DataTable from "../components/Form/DataTable/DataTable";
+import { TagIcon } from "lucide-react";
+import { Category } from "@/infrastracture/domain/category.entity";
 
 const storeClient = new StoreClient();
 
 export default function Brands() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBrands = async () => {
+    const fetchData = async () => {
       try {
-        const data = await storeClient.execute<Brand[]>(
-          StoreCommand.BrandFindAll
-        );
-        setBrands(data);
+        const [categoriesData, brandsData] = await Promise.all([
+          storeClient.execute<Category[]>(StoreCommand.CategoryFindAll, {
+            options: {
+              cacheTtlSeconds: 60,
+            },
+          }),
+          storeClient.execute<Brand[]>(StoreCommand.BrandFindAll),
+        ]);
+
+        setCategories(categoriesData);
+        setBrands(brandsData);
       } catch (e) {
-        const message = e instanceof Error ? e.message : "Error loading brands";
+        const message = e instanceof Error ? e.message : "Error loading data";
         toast.error(message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBrands();
+    fetchData();
   }, []);
 
   const handleSave = async (id: string, row: Partial<Brand>) => {
-    const updated = await storeClient.execute<Brand>(
-      StoreCommand.BrandUpdate,
+    const updated = await storeClient.execute<Brand>(StoreCommand.BrandUpdate, {
       id,
-      row
-    );
+      payload: row,
+    });
 
     setBrands((prev) => prev.map((b) => (b._id === id ? updated : b)));
   };
 
   const handleInsert = async (row: Partial<Brand>) => {
-    const created = await storeClient.execute<Brand>(
-      StoreCommand.BrandCreate,
-      row
-    );
+    const created = await storeClient.execute<Brand>(StoreCommand.BrandCreate, {
+      payload: row,
+    });
 
     setBrands((prev) => [created, ...prev]);
   };
 
   const handleRemove = async (id: string) => {
-    await storeClient.execute(StoreCommand.BrandRemove, id);
+    await storeClient.execute(StoreCommand.BrandRemove, { id });
     setBrands((prev) => prev.filter((b) => b._id !== id));
   };
 
@@ -70,9 +78,33 @@ export default function Brands() {
           {
             key: "_id",
             label: "ID",
-            width: 140,
             render: (value) => (
               <span className="text-xs text-neutral-400">{value}</span>
+            ),
+            width: 140,
+          },
+          {
+            key: "categories",
+            label: "Categories",
+            width: 220,
+            editable: true,
+            defaultValue: [categories[0]?._id],
+            multiple: true,
+            values: categories.map((c) => ({ label: c.name, value: c._id })),
+            truncate: false,
+            render: (value: string[]) => (
+              <ul className="space-y-1">
+                {Array.isArray(value) &&
+                  value.map((category) => (
+                    <li
+                      key={category}
+                      className="flex items-center gap-2 text-xs"
+                    >
+                      <TagIcon size={12} className="text-neutral-500" />
+                      <span className="font-mono">{category}</span>
+                    </li>
+                  ))}
+              </ul>
             ),
           },
           {

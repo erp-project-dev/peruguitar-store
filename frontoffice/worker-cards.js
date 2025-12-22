@@ -166,7 +166,6 @@ async function generateCard(product, stats) {
   const globalStats = { created: 0, errors: 0 };
 
   for (const product of Catalog) {
-    if (!product.is_enabled) continue;
     const m = product.merchant_id;
     if (!grouped[m]) grouped[m] = [];
     grouped[m].push(product);

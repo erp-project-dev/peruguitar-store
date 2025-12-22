@@ -20,7 +20,9 @@ export default function Sidebar() {
     (async () => {
       try {
         const me = await storeClient.execute<User>(StoreCommand.UserFindMe, {
-          cacheTtlSeconds: 60 * 60 * 24,
+          options: {
+            cacheTtlSeconds: 60 * 60 * 24,
+          },
         });
         setUser(me);
       } catch {

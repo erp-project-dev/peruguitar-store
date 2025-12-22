@@ -6,4 +6,5 @@ export const ProductTypeSchema = z.object({
   _id: z.string(),
   name: z.string().min(1),
   description: z.string().min(1),
+  category_id: z.string().min(1, "CategoryId is required"),
 });

@@ -54,7 +54,7 @@ export default function Catalog({
 
   return (
     <section className="space-y-6">
-      <CatalogFilters
+      {/* <CatalogFilters
         defaultSort={sort}
         brands={brands.map((b) => ({ label: b.name, value: b.id }))}
         types={types.map((t) => ({ label: t.name, value: t.id }))}
@@ -68,7 +68,7 @@ export default function Catalog({
             limit,
           }))
         }
-      />
+      /> */}
 
       <div className="grid gap-2 md:gap-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         {catalog.items.map((product) => (

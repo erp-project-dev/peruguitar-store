@@ -38,8 +38,7 @@ export default function Settings() {
   const handleSave = async (id: string, row: Partial<Setting>) => {
     const updated = await storeClient.execute<Setting>(
       StoreCommand.SettingUpdate,
-      id,
-      row
+      { id, payload: row }
     );
 
     setSettings((prev) => prev.map((s) => (s._id === id ? updated : s)));
@@ -48,15 +47,14 @@ export default function Settings() {
   const handleInsert = async (row: Partial<Setting>) => {
     const created = await storeClient.execute<Setting>(
       StoreCommand.SettingCreate,
-      row
+      { payload: row }
     );
 
     setSettings((prev) => [created, ...prev]);
   };
 
   const handleRemove = async (id: string) => {
-    await storeClient.execute(StoreCommand.SettingRemove, id);
-
+    await storeClient.execute(StoreCommand.SettingRemove, { id });
     setSettings((prev) => prev.filter((s) => s._id !== id));
   };
 

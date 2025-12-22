@@ -12,8 +12,15 @@ import { Product } from "../domain/product.entity";
 import { Merchant } from "../domain/merchant.entity";
 import { Brand } from "../domain/brand.entity";
 import { ProductType } from "../domain/product-type.entity";
+import { Category } from "../domain/category.entity";
 
-type EntityType = "merchants" | "catalog" | "brands" | "types" | "settings";
+type EntityType =
+  | "merchants"
+  | "categories"
+  | "catalog"
+  | "brands"
+  | "types"
+  | "settings";
 
 const EXCLUDED_COLUMNS = [
   "merchants.email",
@@ -54,6 +61,7 @@ export class DataSyncService {
       Catalog: this.normalize(collections.catalog, "catalog"),
       Brands: this.normalize(collections.brands, "brands"),
       Types: this.normalize(collections.types, "types"),
+      Categories: this.normalize(collections.categories, "categories"),
       Settings: this.normalize(
         collections.settings.filter((s) => !s.is_private),
         "settings"
@@ -69,15 +77,17 @@ export class DataSyncService {
   }
 
   private async getCollections(db: Db) {
-    const [catalog, merchants, brands, settings, types] = await Promise.all([
-      db.collection<Product>("catalog").find({ is_enabled: true }).toArray(),
-      db.collection<Merchant>("merchants").find().toArray(),
-      db.collection<Brand>("brands").find().toArray(),
-      db.collection<Setting>("settings").find().toArray(),
-      db.collection<ProductType>("types").find().toArray(),
-    ]);
+    const [categories, catalog, merchants, brands, settings, types] =
+      await Promise.all([
+        db.collection<Category>("categories").find().toArray(),
+        db.collection<Product>("catalog").find({ is_enabled: true }).toArray(),
+        db.collection<Merchant>("merchants").find().toArray(),
+        db.collection<Brand>("brands").find().toArray(),
+        db.collection<Setting>("settings").find().toArray(),
+        db.collection<ProductType>("types").find().toArray(),
+      ]);
 
-    return { catalog, merchants, brands, settings, types };
+    return { categories, catalog, merchants, brands, settings, types };
   }
 
   private getNextRelease(settings: Setting[]): {

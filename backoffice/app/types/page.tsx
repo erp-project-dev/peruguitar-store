@@ -8,38 +8,46 @@ import { StoreClient } from "@/app/common/store.client";
 import { StoreCommand } from "@/app/api/store/store.command";
 
 import { ProductType } from "@/infrastracture/domain/product-type.entity";
+import { Brand } from "@/infrastracture/domain/brand.entity";
+
 import DataTable from "../components/Form/DataTable/DataTable";
+import { Category } from "@/infrastracture/domain/category.entity";
 
 const storeClient = new StoreClient();
 
 export default function Types() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [types, setTypes] = useState<ProductType[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTypes = async () => {
+    const fetchData = async () => {
       try {
-        const data = await storeClient.execute<ProductType[]>(
-          StoreCommand.ProductTypeFindAll
-        );
-        setTypes(data);
+        const [categoriesData, typesData] = await Promise.all([
+          storeClient.execute<Category[]>(StoreCommand.CategoryFindAll, {
+            options: { cacheTtlSeconds: 60 },
+          }),
+          storeClient.execute<ProductType[]>(StoreCommand.ProductTypeFindAll),
+        ]);
+
+        setCategories(categoriesData);
+        setTypes(typesData);
       } catch (e) {
-        const message =
-          e instanceof Error ? e.message : "Error loading product types";
+        const message = e instanceof Error ? e.message : "Error loading data";
         toast.error(message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTypes();
+    fetchData();
   }, []);
 
   const handleSave = async (id: string, row: Partial<ProductType>) => {
     const updated = await storeClient.execute<ProductType>(
       StoreCommand.ProductTypeUpdate,
-      id,
-      row
+      { id, payload: row }
     );
 
     setTypes((prev) => prev.map((t) => (t._id === id ? updated : t)));
@@ -48,14 +56,14 @@ export default function Types() {
   const handleInsert = async (row: Partial<ProductType>) => {
     const created = await storeClient.execute<ProductType>(
       StoreCommand.ProductTypeCreate,
-      row
+      { payload: row }
     );
 
     setTypes((prev) => [created, ...prev]);
   };
 
   const handleRemove = async (id: string) => {
-    await storeClient.execute(StoreCommand.ProductTypeRemove, id);
+    await storeClient.execute(StoreCommand.ProductTypeRemove, { id });
 
     setTypes((prev) => prev.filter((t) => t._id !== id));
   };
@@ -77,6 +85,17 @@ export default function Types() {
             key: "_id",
             label: "ID",
             width: 140,
+            render: (value) => (
+              <span className="text-xs text-neutral-400">{value}</span>
+            ),
+          },
+          {
+            editable: true,
+            editableOn: "insert",
+            key: "category_id",
+            label: "Category",
+            width: 200,
+            values: categories.map((c) => ({ label: c.name, value: c._id })),
             render: (value) => (
               <span className="text-xs text-neutral-400">{value}</span>
             ),

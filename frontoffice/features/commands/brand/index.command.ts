@@ -18,7 +18,7 @@ export class BrandGetCommand {
 
     if (input?.onlyInCatalog) {
       const { items } = CatalogGetCommand.handle();
-      const brandIdSet = new Set(items.map((item) => item.brand.id));
+      const brandIdSet = new Set(items.map((item) => item.brand?.id));
 
       result = result.filter((brand) => brandIdSet.has(brand.id));
     }

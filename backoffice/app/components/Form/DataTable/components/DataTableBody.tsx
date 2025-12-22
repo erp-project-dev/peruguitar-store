@@ -1,6 +1,7 @@
 "use client";
 
 import { Column } from "../DataTable";
+import DataTableEditRow from "./DataTableEditRow";
 import DataTableInsertRow from "./DataTableInsertRow";
 import DataTableRow from "./DataTableRow";
 
@@ -67,24 +68,31 @@ export default function TableBody<T extends { _id: string }>({
         />
       )}
 
-      {data.map((row) => (
-        <DataTableRow<T>
-          key={row._id}
-          showActions={canEdit || canInsert || canRemove}
-          row={row}
-          columns={columns}
-          isEditing={row._id === editingId}
-          draft={draft}
-          loading={loading}
-          canEdit={canEdit}
-          canRemove={canRemove}
-          onEdit={() => onEditStart(row)}
-          onSave={onEditSave}
-          onCancel={onEditCancel}
-          onRemove={() => onRemove(row._id)}
-          onChange={onEditChange}
-        />
-      ))}
+      {data.map((row) =>
+        row._id === editingId ? (
+          <DataTableEditRow<T>
+            key={row._id}
+            row={row}
+            columns={columns}
+            draft={draft}
+            loading={loading}
+            onSave={onEditSave}
+            onCancel={onEditCancel}
+            onChange={onEditChange}
+          />
+        ) : (
+          <DataTableRow<T>
+            key={row._id}
+            row={row}
+            columns={columns}
+            showActions={canEdit || canRemove}
+            canEdit={canEdit}
+            canRemove={canRemove}
+            onEdit={() => onEditStart(row)}
+            onRemove={() => onRemove(row._id)}
+          />
+        )
+      )}
     </tbody>
   );
 }

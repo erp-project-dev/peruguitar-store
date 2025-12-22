@@ -24,7 +24,7 @@ export interface CatalogGetCommandProps {
 
 export class CatalogGetCommand {
   static handle(props: CatalogGetCommandProps = {}): CatalogViewModel {
-    const { Merchants, Catalog, Brands, Types } = DATA;
+    const { Merchants, Catalog, Brands, Types, Categories } = DATA;
 
     const sortType: SortType = props.sort ?? "latest";
     const filter = this.buildFilter(props);
@@ -58,6 +58,7 @@ export class CatalogGetCommand {
 
     const items: ProductViewModel[] = limitedItems.map((p) => {
       const merchant = Merchants.find((x) => x.id === p.merchant_id);
+
       if (!merchant) {
         throw new Error(
           `DATA ERROR: Merchant not found for product ${p.id} (merchant_id: ${p.merchant_id})`
@@ -65,22 +66,19 @@ export class CatalogGetCommand {
       }
 
       const brand = Brands.find((b) => b.id === p.brand_id);
-      if (!brand) {
-        throw new Error(
-          `DATA ERROR: Brand not found for product ${p.id} (brand: ${p.brand_id})`
-        );
-      }
-
       const type = Types.find((tp) => tp.id === p.type_id);
-      if (!type) {
+
+      const category = Categories.find((tp) => tp.id === p.category_id);
+
+      if (!category) {
         throw new Error(
-          `DATA ERROR: Type not found for product ${p.id} (type: ${p.type_id})`
+          `DATA ERROR: Category not found for product ${p.id} (category_id: ${p.category_id})`
         );
       }
 
       return {
         id: p.id,
-        category: p.category,
+        category,
         name: p.name,
         type,
         brand,
@@ -94,7 +92,6 @@ export class CatalogGetCommand {
         currency: p.currency,
         price: p.price,
         publishDate: new Date(p.publish_date),
-        publishType: p.publish_type,
         isPinned: p.is_pinned,
         merchant: {
           id: merchant.id,

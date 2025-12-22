@@ -39,8 +39,7 @@ export default function Merchants() {
   const handleSave = async (id: string, row: Partial<Merchant>) => {
     const updated = await storeClient.execute<Merchant>(
       StoreCommand.MerchantUpdate,
-      id,
-      row
+      { id, payload: row }
     );
 
     setMerchants((prev) => prev.map((m) => (m._id === id ? updated : m)));
@@ -49,15 +48,14 @@ export default function Merchants() {
   const handleInsert = async (row: Partial<Merchant>) => {
     const created = await storeClient.execute<Merchant>(
       StoreCommand.MerchantCreate,
-      row
+      { payload: row }
     );
 
     setMerchants((prev) => [created, ...prev]);
   };
 
   const handleRemove = async (id: string) => {
-    await storeClient.execute(StoreCommand.MerchantRemove, id);
-
+    await storeClient.execute(StoreCommand.MerchantRemove, { id });
     setMerchants((prev) => prev.filter((m) => m._id !== id));
   };
 

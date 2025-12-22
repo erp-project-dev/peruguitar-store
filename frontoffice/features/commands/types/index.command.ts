@@ -1,6 +1,6 @@
 import DATA from "@/app/store";
 
-import { ProductType } from "@/features/types/product-type";
+import { ProductType } from "@/features/types/product-type.type";
 
 import { CatalogGetCommand } from "../catalog/index.command";
 
@@ -18,7 +18,7 @@ export class ProductTypeGetCommand {
 
     if (input?.onlyInCatalog) {
       const { items } = CatalogGetCommand.handle();
-      const typeIdSet = new Set(items.map((item) => item.type.id));
+      const typeIdSet = new Set(items.map((item) => item.type?.id));
 
       result = result.filter((type) => typeIdSet.has(type.id));
     }

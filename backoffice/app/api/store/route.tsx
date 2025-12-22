@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 }
 
 async function handleCommand(req: Request, body: IncomeRequest) {
-  const { command, id, payload } = body;
+  const { command, id, payload, query } = body;
 
   if (!command) {
     return NextResponse.json({ error: "Command is required" }, { status: 400 });
@@ -61,10 +61,12 @@ async function handleCommand(req: Request, body: IncomeRequest) {
   }
 
   if (handler.before) {
-    await handler.before(payload, id);
+    await handler.before(query, payload, id);
   }
 
-  const result = handler.next ? await handler.next(payload, id) : undefined;
+  const result = handler.next
+    ? await handler.next(query, payload, id)
+    : undefined;
 
   const res = NextResponse.json({
     command,
@@ -88,8 +90,9 @@ async function readIncomeRequest(
       command: formData.get("command") as StoreCommand,
       id: formData.get("id") as string,
       payload: formData.getAll("payload") as File[],
+      query: formData.getAll("query"),
     };
   }
 
-  return (await req.json()) as IncomeRequest;
+  return req.json() as Promise<IncomeRequest>;
 }

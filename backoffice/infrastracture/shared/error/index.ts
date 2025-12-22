@@ -5,6 +5,7 @@ type ApplicationErrorCode =
   | "conflict"
   | "error"
   | "unauthorized"
+  | "in-use"
   | "forbidden";
 
 export class ApplicationError extends Error {

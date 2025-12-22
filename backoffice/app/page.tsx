@@ -104,7 +104,7 @@ export default function Home() {
   useEffect(() => {
     storeClient
       .execute<StoreMetrics>(StoreCommand.StoreMetricsFind, {
-        cacheTtlSeconds: 60 * 15,
+        options: { cacheTtlSeconds: 60 * 15 },
       })
       .then(setMetrics)
       .catch((e) => setError(e.message))

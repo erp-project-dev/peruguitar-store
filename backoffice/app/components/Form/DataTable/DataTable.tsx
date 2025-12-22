@@ -22,13 +22,16 @@ export type Column<T> = {
   label: string;
 
   editable?: boolean;
+  editableOn?: "insert" | "edit";
+
   sortable?: boolean;
 
   width?: number;
   align?: "left" | "center" | "right";
 
   values?: SelectOption[];
-  defaultValue?: string;
+  defaultValue?: string | string[];
+  multiple?: boolean;
 
   truncate?: boolean;
 

@@ -11,79 +11,49 @@ import Button from "@/app/components/Form/Button";
 
 import { StoreClient } from "@/app/common/store.client";
 import { StoreCommand } from "@/app/api/store/store.command";
-
-import { Product } from "@/infrastracture/domain/product.entity";
-
-import {
-  CURRENCIES,
-  PRODUCT_PRICE_TYPES,
-  PRODUCT_CONDITIONS,
-  PRODUCT_SCORES,
-} from "@/app/common/data";
-import ProductInfo from "./components/ProductInfo";
-import ProductImageUpload from "./components/ProductImageUpload/ProductImageUpload";
-import ProductImageList from "./components/ProductImageList";
 import { getPublicPath } from "@/app/common/helpers/product.helper";
 
+import { Product } from "@/infrastracture/domain/product.entity";
+import { CategoryId } from "@/infrastracture/domain/category.entity";
+
+import ProductForm, { ProductEntryForm } from "../components/ProductForm";
+import ProductImageUpload from "./components/ProductImageUpload/ProductImageUpload";
+import ProductImageList from "./components/ProductImageList";
+
+import { useCatalogData } from "../shared/use-catalog-data";
+import { productEntryFrom } from "../shared/product-entry";
+
 const storeClient = new StoreClient();
-
-export type ProductCreate = {
-  brand_id: string;
-  merchant_id: string;
-  type_id: string;
-  condition: string;
-  condition_score: number;
-  name: string;
-  model: string;
-  description: string;
-  currency: string;
-  price: number;
-  priceType: string;
-  specs_raw: string;
-  is_enabled: boolean;
-  is_pinned: boolean;
-};
-
-const emptyForm: ProductCreate = {
-  brand_id: "",
-  merchant_id: "",
-  type_id: "",
-  condition: PRODUCT_CONDITIONS[0],
-  condition_score: PRODUCT_SCORES[4],
-  name: "",
-  model: "",
-  description: "",
-  currency: CURRENCIES[1],
-  price: 0,
-  priceType: PRODUCT_PRICE_TYPES[0],
-  specs_raw: "",
-  is_enabled: true,
-  is_pinned: false,
-};
 
 export default function EditProductPage() {
   const params = useParams<{ productId: string }>();
   const productId = params.productId;
-
   const router = useRouter();
 
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState<ProductEntryForm>(productEntryFrom);
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const { brands, merchants, types } = useCatalogData({
+    categoryId: form.category_id || undefined,
+  });
+
   useEffect(() => {
-    const fetchAll = async () => {
+    if (!productId) return;
+
+    const loadProduct = async () => {
       try {
         setLoading(true);
 
         const product = await storeClient.execute<Product>(
           StoreCommand.CatalogFindById,
-          productId
+          { id: productId }
         );
 
         setImages(product.images);
 
         setForm({
+          category_id: product.category_id,
           brand_id: product.brand_id,
           merchant_id: product.merchant_id,
           type_id: product.type_id,
@@ -92,11 +62,13 @@ export default function EditProductPage() {
           name: product.name,
           model: product.model,
           description: product.description,
+          fullDescription: product.fullDescription,
           currency: product.currency,
           price: product.price,
           priceType: product.priceType,
           is_enabled: product.is_enabled,
           is_pinned: product.is_pinned,
+          publish_date: product.publish_date,
           specs_raw: JSON.stringify(product.specs, null, 2),
         });
       } catch {
@@ -106,10 +78,11 @@ export default function EditProductPage() {
       }
     };
 
-    if (productId) fetchAll();
+    loadProduct();
   }, [productId]);
 
-  const update = (key: keyof ProductCreate, value: any) => {
+  /* ---------------- update form ---------------- */
+  const update = (key: keyof ProductEntryForm, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -119,29 +92,30 @@ export default function EditProductPage() {
 
       const specs = form.specs_raw ? JSON.parse(form.specs_raw) : {};
 
-      const payload = {
-        brand_id: form.brand_id,
-        merchant_id: form.merchant_id,
-        type_id: form.type_id,
-        condition: form.condition,
-        condition_score: form.condition_score,
-        name: form.name,
-        model: form.model,
-        description: form.description,
-        currency: form.currency,
-        price: form.price,
-        priceType: form.priceType,
-        specs,
-        is_pinned: form.is_pinned,
-        is_enabled: form.is_enabled,
-      };
-
-      await storeClient.execute(StoreCommand.CatalogUpdate, productId, payload);
+      await storeClient.execute(StoreCommand.CatalogUpdate, {
+        id: productId,
+        payload: {
+          brand_id: form.brand_id,
+          merchant_id: form.merchant_id,
+          type_id: form.type_id,
+          condition: form.condition,
+          condition_score: form.condition_score,
+          name: form.name,
+          model: form.model,
+          description: form.description,
+          fullDescription: form.fullDescription,
+          currency: form.currency,
+          price: form.price,
+          priceType: form.priceType,
+          specs,
+          is_enabled: form.is_enabled,
+          is_pinned: form.is_pinned,
+        },
+      });
 
       toast.success("Product updated");
     } catch (e) {
-      const message = e instanceof Error ? e.message : "Error updating product";
-      toast.error(message);
+      toast.error(e instanceof Error ? e.message : "Error updating product");
     } finally {
       setLoading(false);
     }
@@ -155,16 +129,13 @@ export default function EditProductPage() {
 
       const updated = await storeClient.execute<string[]>(
         StoreCommand.CatalogAttachImages,
-        productId,
-        files
+        { id: productId, payload: files }
       );
 
       setImages(updated);
-
       toast.success("Images attached");
     } catch (e) {
-      const message = e instanceof Error ? e.message : "Error attaching images";
-      toast.error(message);
+      toast.error(e instanceof Error ? e.message : "Error attaching images");
     } finally {
       setLoading(false);
     }
@@ -176,16 +147,13 @@ export default function EditProductPage() {
 
       const updated = await storeClient.execute<string[]>(
         StoreCommand.CatalogRemoveImage,
-        productId,
-        image
+        { id: productId, payload: image }
       );
 
       setImages(updated);
-
       toast.success("Image removed");
     } catch (e) {
-      const message = e instanceof Error ? e.message : "Error removing image";
-      toast.error(message);
+      toast.error(e instanceof Error ? e.message : "Error removing image");
     } finally {
       setLoading(false);
     }
@@ -197,17 +165,13 @@ export default function EditProductPage() {
 
       const updated = await storeClient.execute<string[]>(
         StoreCommand.CatalogReorderImages,
-        productId,
-        images
+        { id: productId, payload: images }
       );
 
       setImages(updated);
-
       toast.success("Images reordered");
     } catch (e) {
-      const message =
-        e instanceof Error ? e.message : "Error reordering images";
-      toast.error(message);
+      toast.error(e instanceof Error ? e.message : "Error reordering images");
     } finally {
       setLoading(false);
     }
@@ -216,7 +180,7 @@ export default function EditProductPage() {
   return (
     <PageSection
       title="Edit product"
-      description={"Update product information"}
+      description="Update product information"
       loading={loading}
       actions={
         <>
@@ -251,24 +215,33 @@ export default function EditProductPage() {
         </>
       }
     >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <ProductInfo form={form} onUpdate={update} />
-        </div>
+      {!loading && form.category_id && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <ProductForm
+              mode="edit"
+              category={form.category_id as CategoryId}
+              form={form}
+              brands={brands}
+              merchants={merchants}
+              types={types}
+              onUpdate={update}
+            />
+          </div>
 
-        <div className="flex flex-col gap-4">
-          <ProductImageUpload
-            onSelect={handleImagesAttach}
-            max={6 - images.length}
-          />
-
-          <ProductImageList
-            onReorder={handleOnReorder}
-            images={images}
-            onRemove={handleOnRemoveImage}
-          />
+          <div className="flex flex-col gap-4">
+            <ProductImageUpload
+              onSelect={handleImagesAttach}
+              max={6 - images.length}
+            />
+            <ProductImageList
+              images={images}
+              onReorder={handleOnReorder}
+              onRemove={handleOnRemoveImage}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </PageSection>
   );
 }

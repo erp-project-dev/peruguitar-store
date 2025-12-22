@@ -3,6 +3,7 @@ import { ApplicationError } from "../shared/error";
 import { toSlug } from "../helpers/slug.helper";
 import { Brand } from "../domain/brand.entity";
 import { BrandSchema } from "../schema/brand.schema";
+import { CategoryId } from "../domain/category.entity";
 
 export class BrandService {
   private repository = new MongoRepository<Brand>("brands", BrandSchema);
@@ -11,8 +12,16 @@ export class BrandService {
     return this.repository.findById(id);
   }
 
-  async findAll(): Promise<Brand[]> {
-    return this.repository.findAll();
+  async findAll(categoryId?: CategoryId): Promise<Brand[]> {
+    const filter = categoryId
+      ? {
+          categories: {
+            $in: [categoryId],
+          },
+        }
+      : {};
+
+    return this.repository.findAll(filter);
   }
 
   async create(entry: Omit<Brand, "_id">): Promise<Brand> {

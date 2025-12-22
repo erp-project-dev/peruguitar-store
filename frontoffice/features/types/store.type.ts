@@ -1,7 +1,8 @@
 import { Brand } from "./brand.type";
+import { Category } from "./category.type";
 import { Merchant } from "./merchant.type";
 import { Meta } from "./meta.type";
-import { ProductType } from "./product-type";
+import { ProductType } from "./product-type.type";
 import { Product } from "./product.type";
 import { Setting } from "./setting.type";
 
@@ -11,5 +12,6 @@ export interface StoreData {
   Brands: Brand[];
   Types: ProductType[];
   Settings: Setting[];
+  Categories: Category[];
   meta: Meta;
 }

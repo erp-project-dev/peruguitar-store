@@ -1,3 +1,4 @@
+import { CategoryId } from "@/infrastracture/domain/category.entity";
 import { SignInHook } from "./hooks/sign-in.hook";
 import { SignOutHook } from "./hooks/sign-out.hook";
 import { StoreCommand } from "./store.command";
@@ -15,13 +16,16 @@ import {
   productImageReorderService,
   storeMetricsService,
   dataSyncService,
+  categoryService,
 } from "./store.services";
+
 import { CommandHandler } from "./store.type";
 
 export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   // AUTH
   [StoreCommand.AuthSignIn]: {
-    next: ({ email, password }) => authService.authenticate(email, password),
+    next: (_q, { email, password }) =>
+      authService.authenticate(email, password),
     hooks: [{ hook: new SignInHook(), type: "next" }],
   },
   [StoreCommand.AuthSignOut]: {
@@ -33,38 +37,56 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
     next: () => userService.me(),
   },
 
+  // CATEGORY
+  [StoreCommand.CategoryFindAll]: {
+    next: () => categoryService.findAll(),
+  },
+  [StoreCommand.CategoryFindById]: {
+    next: (_q, _p, id) => categoryService.findById(id as CategoryId),
+  },
+  [StoreCommand.CategoryCreate]: {
+    next: (_q, payload) => categoryService.create(payload),
+  },
+  [StoreCommand.CategoryUpdate]: {
+    next: (_q, payload, id) =>
+      categoryService.update(id as CategoryId, payload),
+  },
+  [StoreCommand.CategoryRemove]: {
+    next: (_q, _p, id) => categoryService.remove(id as CategoryId),
+  },
+
   // MERCHANT
   [StoreCommand.MerchantFindAll]: {
     next: () => merchantService.findAll(),
   },
   [StoreCommand.MerchantFindById]: {
-    next: (_p, id) => merchantService.findById(id!),
+    next: (_q, _p, id) => merchantService.findById(id!),
   },
   [StoreCommand.MerchantCreate]: {
-    next: (payload) => merchantService.create(payload),
+    next: (_q, payload) => merchantService.create(payload),
   },
   [StoreCommand.MerchantUpdate]: {
-    next: (payload, id) => merchantService.update(id!, payload),
+    next: (_q, payload, id) => merchantService.update(id!, payload),
   },
   [StoreCommand.MerchantRemove]: {
-    next: (_p, id) => merchantService.remove(id!),
+    next: (_q, _p, id) => merchantService.remove(id!),
   },
 
   // BRAND
   [StoreCommand.BrandFindAll]: {
-    next: () => brandService.findAll(),
+    next: (q) => brandService.findAll(q?.categoryId),
   },
   [StoreCommand.BrandFindById]: {
-    next: (_p, id) => brandService.findById(id!),
+    next: (_q, _p, id) => brandService.findById(id!),
   },
   [StoreCommand.BrandCreate]: {
-    next: (payload) => brandService.create(payload),
+    next: (_q, payload) => brandService.create(payload),
   },
   [StoreCommand.BrandUpdate]: {
-    next: (payload, id) => brandService.update(id!, payload),
+    next: (_q, payload, id) => brandService.update(id!, payload),
   },
   [StoreCommand.BrandRemove]: {
-    next: (_p, id) => brandService.remove(id!),
+    next: (_q, _p, id) => brandService.remove(id!),
   },
 
   // PRODUCT TYPE
@@ -72,16 +94,16 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
     next: () => productTypeService.findAll(),
   },
   [StoreCommand.ProductTypeFindById]: {
-    next: (_p, id) => productTypeService.findById(id!),
+    next: (_q, _p, id) => productTypeService.findById(id!),
   },
   [StoreCommand.ProductTypeCreate]: {
-    next: (payload) => productTypeService.create(payload),
+    next: (_q, payload) => productTypeService.create(payload),
   },
   [StoreCommand.ProductTypeUpdate]: {
-    next: (payload, id) => productTypeService.update(id!, payload),
+    next: (_q, payload, id) => productTypeService.update(id!, payload),
   },
   [StoreCommand.ProductTypeRemove]: {
-    next: (_p, id) => productTypeService.remove(id!),
+    next: (_q, _p, id) => productTypeService.remove(id!),
   },
 
   // SETTING
@@ -89,16 +111,16 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
     next: () => settingService.findAll(),
   },
   [StoreCommand.SettingFindById]: {
-    next: (_p, id) => settingService.findById(id!),
+    next: (_q, _p, id) => settingService.findById(id!),
   },
   [StoreCommand.SettingCreate]: {
-    next: (payload) => settingService.create(payload),
+    next: (_q, payload) => settingService.create(payload),
   },
   [StoreCommand.SettingUpdate]: {
-    next: (payload, id) => settingService.update(id!, payload),
+    next: (_q, payload, id) => settingService.update(id!, payload),
   },
   [StoreCommand.SettingRemove]: {
-    next: (_p, id) => settingService.remove(id!),
+    next: (_q, _p, id) => settingService.remove(id!),
   },
 
   // PRODUCT
@@ -106,27 +128,27 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
     next: () => productService.findAll(),
   },
   [StoreCommand.CatalogFindById]: {
-    next: (_p, id) => productService.findById(id!),
+    next: (_q, _p, id) => productService.findById(id!),
   },
   [StoreCommand.CatalogCreate]: {
-    next: (payload) => productService.create(payload),
+    next: (_q, payload) => productService.create(payload),
   },
   [StoreCommand.CatalogUpdate]: {
-    next: (payload, id) => productService.update(id!, payload),
+    next: (_q, payload, id) => productService.update(id!, payload),
   },
   [StoreCommand.CatalogRemove]: {
-    next: (_p, id) => productService.remove(id!),
+    next: (_q, _p, id) => productService.remove(id!),
   },
 
   // PRODUCT > IMAGES
   [StoreCommand.CatalogAttachImages]: {
-    next: (payload, id) => productImageAttachService.attach(id!, payload),
+    next: (_q, payload, id) => productImageAttachService.attach(id!, payload),
   },
   [StoreCommand.CatalogRemoveImage]: {
-    next: (payload, id) => productImageRemoveService.remove(id!, payload),
+    next: (_q, payload, id) => productImageRemoveService.remove(id!, payload),
   },
   [StoreCommand.CatalogReorderImages]: {
-    next: (payload, id) => productImageReorderService.handle(id!, payload),
+    next: (_q, payload, id) => productImageReorderService.handle(id!, payload),
   },
 
   // STORE METRICS

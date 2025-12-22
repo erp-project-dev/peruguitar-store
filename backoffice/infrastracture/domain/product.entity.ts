@@ -1,51 +1,32 @@
 import { BaseEntity } from "./base.entity";
-
-export interface GuitarSpecs {
-  release_year: number | null;
-  origin: string | null;
-
-  body_wood: string | null;
-  body_finish: string | null;
-  body_type: string | null;
-
-  neck_wood: string | null;
-  fingerboard_wood: string | null;
-
-  scale_length_mm: number | null;
-  number_of_strings: number | null;
-
-  hand_orientation: "right" | "left" | null;
-
-  color: string | null;
-  bridge_type: string | null;
-  pickups: string | null;
-  hardware_color: string | null;
-}
+import { CategoryId } from "./category.entity";
+import { BookSpecs, GuitarSpecs } from "./product-specs.entity";
 
 export interface Product extends BaseEntity {
-  category: string;
+  category_id: CategoryId;
 
-  brand_id: string;
-  merchant_id: string;
-  type_id: string;
+  brand_id?: string;
+  type_id?: string;
 
-  condition: string;
-  condition_score: number;
-
-  publish_date: string;
+  condition?: string;
+  condition_score?: number;
 
   name: string;
-  model: string;
+  model?: string;
   description: string;
+  fullDescription?: string;
 
   currency: string;
   price: number;
   priceType: string;
 
-  specs: GuitarSpecs;
+  specs: GuitarSpecs | BookSpecs;
 
   images: string[];
 
   is_enabled: boolean;
   is_pinned: boolean;
+
+  merchant_id: string;
+  publish_date: string;
 }

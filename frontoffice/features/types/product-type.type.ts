@@ -11,4 +11,5 @@ export interface ProductType {
     | "boutique";
   name: string;
   description: string;
+  category_id: string;
 }

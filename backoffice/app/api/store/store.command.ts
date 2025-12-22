@@ -15,6 +15,13 @@ export enum StoreCommand {
   MerchantUpdate = "merchant.update",
   MerchantRemove = "merchant.remove",
 
+  // Categories
+  CategoryFindAll = "category.find_all",
+  CategoryFindById = "category.find_by_id",
+  CategoryCreate = "category.create",
+  CategoryUpdate = "category.update",
+  CategoryRemove = "category.remove",
+
   // CATALOG
   CatalogFindAll = "catalog.find_all",
   CatalogFindById = "catalog.find_by_id",

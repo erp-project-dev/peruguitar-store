@@ -23,7 +23,6 @@ export class ProductService {
     return this.repository.create({
       ...entry,
       _id: id,
-      category: "guitar",
       images: [],
       is_enabled: false,
       is_pinned: false,
