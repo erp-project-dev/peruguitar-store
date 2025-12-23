@@ -26,9 +26,8 @@ export default function CatalogProduct({
   product,
   ignorePinned,
 }: CatalogProductProps) {
-  const showPinned = product.isPinned && !ignorePinned;
+  const showPinned = product.is_pinned && !ignorePinned;
   const badgeClass = product.type ? PRODUCT_TYPE_BADGE[product.type.id] : "";
-  const titleClass = showPinned ? "text-purple-700" : "text-neutral-900";
 
   return (
     <Link
@@ -57,7 +56,7 @@ export default function CatalogProduct({
         </div>
 
         <h2
-          className={`text-base md:text-lg font-semibold leading-snug line-clamp-2 ${titleClass}`}
+          className={`text-base md:text-lg font-semibold leading-snug line-clamp-2 text-neutral-900`}
         >
           {product.name}
         </h2>
@@ -70,13 +69,15 @@ export default function CatalogProduct({
           </div>
         )}
 
-        <div className="pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums">
-          {product.price.toLocaleString("es-PE", {
-            minimumFractionDigits: 0,
-            currency: product.currency,
-            style: "currency",
-          })}
-        </div>
+        {product.price && (
+          <div className="pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums">
+            {product.price.toLocaleString("es-PE", {
+              minimumFractionDigits: 0,
+              currency: product.currency,
+              style: "currency",
+            })}
+          </div>
+        )}
       </div>
     </Link>
   );

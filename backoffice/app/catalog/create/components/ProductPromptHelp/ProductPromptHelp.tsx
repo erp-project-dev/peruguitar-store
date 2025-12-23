@@ -10,6 +10,8 @@ import { Field } from "@/app/components/Form/Field";
 
 import { getBookPromptTemplate } from "./templates/book.template";
 import { getGuitarPromptTemplate } from "./templates/electric-guitar.template";
+import { getServicePromptTemplate } from "./templates/service.template";
+
 import { CategoryId } from "@/infrastracture/domain/category.entity";
 
 type ProductPromptHelpProps = {
@@ -25,7 +27,7 @@ export default function ProductPromptHelp({
 }: ProductPromptHelpProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [techNotes, setTechNotes] = useState("");
+  const [notes, setNotes] = useState("");
 
   /**
    * Decide qué template usar según categoría
@@ -38,7 +40,15 @@ export default function ProductPromptHelp({
       return getBookPromptTemplate({
         productName: name,
         description,
-        techNotes,
+        techNotes: notes,
+      });
+    }
+
+    if (category === "service") {
+      return getServicePromptTemplate({
+        serviceName: name,
+        description,
+        notes,
       });
     }
 
@@ -46,11 +56,11 @@ export default function ProductPromptHelp({
     return getGuitarPromptTemplate({
       productName: name,
       description,
-      techNotes,
+      techNotes: notes,
       brands,
       types,
     });
-  }, [category, name, description, techNotes, brands, types]);
+  }, [category, name, description, notes, brands, types]);
 
   const handleCopy = async () => {
     if (!prompt) return;
@@ -93,12 +103,7 @@ export default function ProductPromptHelp({
         </Field>
 
         <Field label="Additional notes (optional)">
-          <Input
-            type="textarea"
-            rows={4}
-            value={techNotes}
-            onChange={setTechNotes}
-          />
+          <Input type="textarea" rows={4} value={notes} onChange={setNotes} />
         </Field>
       </div>
 

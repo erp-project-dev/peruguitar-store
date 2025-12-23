@@ -131,6 +131,8 @@ export default function Catalog() {
             label: "Brand",
             sortable: true,
             width: 100,
+            render: (value: number | undefined) =>
+              value === undefined ? "--" : value,
           },
 
           {
@@ -139,19 +141,22 @@ export default function Catalog() {
             sortable: true,
             width: 160,
             align: "right",
-            render: (value: number, row) => (
-              <span className="font-medium whitespace-nowrap">
-                {value.toLocaleString("es-PE", {
-                  style: "currency",
-                  currency: row.currency,
-                  minimumFractionDigits: 2,
-                })}
-              </span>
-            ),
+            render: (value: number | undefined, row) =>
+              value === undefined ? (
+                "--"
+              ) : (
+                <span className="font-medium whitespace-nowrap">
+                  {value.toLocaleString("es-PE", {
+                    style: "currency",
+                    currency: row.currency,
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
+              ),
           },
 
           {
-            key: "priceType",
+            key: "price_type",
             label: "Price type",
             width: 140,
           },

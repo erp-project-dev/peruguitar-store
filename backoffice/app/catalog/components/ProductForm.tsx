@@ -7,34 +7,8 @@ import { CategoryId } from "@/infrastracture/domain/category.entity";
 import { ProductType } from "@/infrastracture/domain/product-type.entity";
 import ProductElectricGuitarForm from "./ProductElectricGuitar";
 import ProductBookForm from "./ProductBook";
-
-export interface ProductEntryForm {
-  _id?: string;
-  category_id: CategoryId | null;
-
-  brand_id?: string;
-  type_id?: string;
-
-  condition?: string;
-  condition_score?: number;
-
-  name: string;
-  model?: string;
-  description: string;
-  fullDescription?: string;
-
-  currency: string;
-  price: number;
-  priceType: string;
-
-  specs_raw: string;
-
-  is_enabled: boolean;
-  is_pinned: boolean;
-
-  merchant_id: string;
-  publish_date: string;
-}
+import { ProductEntryForm } from "../shared/product.entry";
+import ProductServiceForm from "./ProductService";
 
 type Props = {
   mode: "insert" | "edit";
@@ -73,6 +47,17 @@ export default function ProductForm({
   if (category === "book") {
     return (
       <ProductBookForm
+        mode={mode}
+        form={form}
+        merchants={merchants}
+        onUpdate={onUpdate}
+      />
+    );
+  }
+
+  if (category === "service") {
+    return (
+      <ProductServiceForm
         mode={mode}
         form={form}
         merchants={merchants}

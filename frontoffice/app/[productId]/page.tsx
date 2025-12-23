@@ -12,6 +12,7 @@ import ProductCallToAction from "./components/ProductCallToAction/ProductCallToA
 import ProductDisclaimer from "./components/ProductDisclaimer";
 import ProductSimilarLising from "./components/ProductSimilarListing";
 import ProductFullDescription from "./components/ProductFullDescription/ProductFullDescription";
+import { ProductYoutubeVideo } from "./components/ProductYoutubeVideo";
 
 export async function generateStaticParams() {
   const { items } = CatalogGetCommand.handle();
@@ -78,11 +79,7 @@ export default async function ProductPage({
 
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-10">
         <div className="space-y-8">
-          <ProductPhoto
-            productName={product.name}
-            price={product.price}
-            pics={product.images}
-          />
+          <ProductPhoto productName={product.name} pics={product.images} />
 
           <div className="block md:hidden">
             <ProductCallToAction product={product} />
@@ -99,16 +96,22 @@ export default async function ProductPage({
             <ProductFullDescription text={product.fullDescription} />
           )}
 
-          <div className="space-y-3">
-            <h2 className="text-2xl font-semibold">Especificaciones</h2>
-            <ProductSpecs
-              specs={{
-                model: product.model,
-                brand: product.brand?.name,
-                ...product.specs,
-              }}
-            />
-          </div>
+          {product.brand_id && (
+            <div className="space-y-3">
+              <h2 className="text-2xl font-semibold">Especificaciones</h2>
+              <ProductSpecs
+                specs={{
+                  model: product.model,
+                  brand: product.brand?.name,
+                  ...product.specs,
+                }}
+              />
+            </div>
+          )}
+
+          {product.externalVideoUrl && (
+            <ProductYoutubeVideo url={product.externalVideoUrl} />
+          )}
         </div>
 
         <div className="relative hidden md:block">

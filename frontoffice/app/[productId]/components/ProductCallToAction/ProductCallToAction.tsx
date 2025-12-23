@@ -24,16 +24,20 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
         <h1 className="text-3xl font-bold leading-8">{product.name}</h1>
 
         <div className="flex gap-2 items-center">
-          <p className="text-2xl font-semibold">
-            {product.price.toLocaleString("es-PE", {
-              style: "currency",
-              currency: product.currency,
-            })}
-          </p>
-          <span>—</span>
-          <span className="text-gray-700 italic">
-            {translatePriceType(product.priceType)}
-          </span>
+          {product.price && product.price_type && (
+            <>
+              <p className="text-2xl font-semibold">
+                {product.price.toLocaleString("es-PE", {
+                  style: "currency",
+                  currency: product.currency,
+                })}
+              </p>
+              <span>—</span>
+              <span className="text-gray-700 italic">
+                {translatePriceType(product.price_type)}
+              </span>
+            </>
+          )}
         </div>
       </div>
 
@@ -45,11 +49,11 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
         productName={product.name}
       />
 
-      {product.conditionScore && (
+      {product.condition && product.condition_score && (
         <ProductConditionInfo
           label={translateProductCondition(product.condition)}
-          description={translateProductConditionScore(product.conditionScore)}
-          score={product.conditionScore}
+          description={translateProductConditionScore(product.condition_score)}
+          score={product.condition_score}
         />
       )}
 

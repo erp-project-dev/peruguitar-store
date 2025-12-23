@@ -2,7 +2,7 @@ import { CategoryId } from "./category.type";
 
 export type ProductCurrency = "USD" | "PEN";
 export type ProductCondition = "new" | "like_new";
-export type PriceType = "fixed" | "negotiable";
+export type price_type = "fixed" | "negotiable";
 
 export interface Product {
   id: string;
@@ -12,22 +12,24 @@ export interface Product {
 
   type_id?: string;
   brand_id?: string;
-  model: string;
+  model?: string;
 
-  condition: ProductCondition;
-  condition_score: number;
+  condition?: ProductCondition;
+  condition_score?: number;
 
   description: string;
-  fullDescription: string;
+  fullDescription?: string;
 
   specs: Record<string, string>;
 
   card_pic: string;
+
   images: string[];
+  externalVideoUrl?: string;
 
   currency: ProductCurrency;
-  price: number;
-  priceType: PriceType;
+  price?: number;
+  price_type?: price_type;
 
   publish_date: string;
 

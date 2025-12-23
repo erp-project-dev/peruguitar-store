@@ -9,7 +9,6 @@ import { getCatalogImagePath } from "@/features/helpers/product.helper";
 interface ProductPhotoProps {
   pics: string[];
   productName: string;
-  price: number;
 }
 
 export default function ProductPhoto({ pics }: ProductPhotoProps) {

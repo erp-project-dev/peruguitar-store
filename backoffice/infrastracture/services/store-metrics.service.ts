@@ -178,10 +178,10 @@ export class StoreMetricsService {
       },
 
       valueSignals: {
-        fixedPriceCount: catalog.filter((p) => p.priceType === "fixed").length,
+        fixedPriceCount: catalog.filter((p) => p.price_type === "fixed").length,
 
         negotiablePriceCount: catalog.filter(
-          (p) => p.priceType === "negotiable"
+          (p) => p.price_type === "negotiable"
         ).length,
 
         productsWithHighCondition: catalog.filter((p) => p.condition_score >= 4)

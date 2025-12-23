@@ -16,12 +16,12 @@ import { getPublicPath } from "@/app/common/helpers/product.helper";
 import { Product } from "@/infrastracture/domain/product.entity";
 import { CategoryId } from "@/infrastracture/domain/category.entity";
 
-import ProductForm, { ProductEntryForm } from "../components/ProductForm";
+import ProductForm from "../components/ProductForm";
 import ProductImageUpload from "./components/ProductImageUpload/ProductImageUpload";
 import ProductImageList from "./components/ProductImageList";
 
 import { useCatalogData } from "../shared/use-catalog-data";
-import { productEntryFrom } from "../shared/product-entry";
+import { ProductEntryForm, productEntryFrom } from "../shared/product.entry";
 
 const storeClient = new StoreClient();
 
@@ -53,23 +53,37 @@ export default function EditProductPage() {
         setImages(product.images);
 
         setForm({
+          _id: product._id,
           category_id: product.category_id,
+
           brand_id: product.brand_id,
           merchant_id: product.merchant_id,
           type_id: product.type_id,
+
           condition: product.condition,
           condition_score: product.condition_score,
+
           name: product.name,
           model: product.model,
           description: product.description,
           fullDescription: product.fullDescription,
+
           currency: product.currency,
           price: product.price,
-          priceType: product.priceType,
+          price_type: product.price_type ?? productEntryFrom.price_type,
+
+          externalVideoUrl: product.externalVideoUrl,
+
+          specs_raw: product.specs
+            ? JSON.stringify(product.specs, null, 2)
+            : undefined,
+
           is_enabled: product.is_enabled,
           is_pinned: product.is_pinned,
+
+          images: product.images ?? [],
+
           publish_date: product.publish_date,
-          specs_raw: JSON.stringify(product.specs, null, 2),
         });
       } catch {
         toast.error("Error loading product");
@@ -90,26 +104,14 @@ export default function EditProductPage() {
     try {
       setLoading(true);
 
-      const specs = form.specs_raw ? JSON.parse(form.specs_raw) : {};
+      const specs = form.specs_raw ? JSON.parse(form.specs_raw) : undefined;
 
       await storeClient.execute(StoreCommand.CatalogUpdate, {
         id: productId,
         payload: {
-          brand_id: form.brand_id,
-          merchant_id: form.merchant_id,
-          type_id: form.type_id,
-          condition: form.condition,
-          condition_score: form.condition_score,
-          name: form.name,
-          model: form.model,
-          description: form.description,
-          fullDescription: form.fullDescription,
-          currency: form.currency,
-          price: form.price,
-          priceType: form.priceType,
+          ...form,
           specs,
-          is_enabled: form.is_enabled,
-          is_pinned: form.is_pinned,
+          specs_raw: undefined,
         },
       });
 

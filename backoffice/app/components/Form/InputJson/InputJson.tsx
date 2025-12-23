@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { InputJsonViewer } from "./InputJsonViewer";
 
 type InputJsonProps = {
-  value: string;
+  value: string | undefined;
   onChange: (value: string) => void;
   rootLabel?: string;
   placeholder?: string;

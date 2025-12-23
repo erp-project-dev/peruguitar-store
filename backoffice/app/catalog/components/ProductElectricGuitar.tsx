@@ -17,8 +17,7 @@ import {
 import { Brand } from "@/infrastracture/domain/brand.entity";
 import { Merchant } from "@/infrastracture/domain/merchant.entity";
 import { ProductType } from "@/infrastracture/domain/product-type.entity";
-
-import { ProductEntryForm } from "./ProductForm";
+import { ProductEntryForm } from "../shared/product.entry";
 
 type Props = {
   mode: "insert" | "edit";
@@ -128,8 +127,8 @@ export default function ProductElectricGuitarForm({
       {/* PRICE TYPE */}
       <Field label="Price type">
         <Select
-          value={form.priceType}
-          onChange={(value) => onUpdate("priceType", value)}
+          value={form.price_type}
+          onChange={(value) => onUpdate("price_type", value)}
           options={PRODUCT_PRICE_TYPES.map((pt) => ({
             label: pt,
             value: pt,

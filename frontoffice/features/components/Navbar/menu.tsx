@@ -22,7 +22,7 @@ export const NAV_LINKS = [
     external: true,
   },
   {
-    label: "Publica tu guitarra",
+    label: "Publicar",
     href: "/publicar",
     className:
       "bg-yellow-400 text-[#0B2545] font-semibold px-4 py-2 rounded-md hover:bg-yellow-300 transition",

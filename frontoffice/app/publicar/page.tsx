@@ -4,9 +4,9 @@ import { getBasePath } from "@/features/helpers/path.helper";
 import PublishForm from "./components/PublishForm";
 import { StepCard } from "./components/StepCard";
 
-const title = "Publica tu instrumento | Peru Guitar";
+const title = "Publica tu producto o servicio | Peru Guitar";
 const description =
-  "Publica tu instrumento musical en Peru Guitar. Contáctate con el administrador para coordinar la publicación.";
+  "Publica tu producto o servicio en Peru Guitar. La publicación es gratuita y está sujeta a aprobación.";
 
 export const metadata = {
   title,
@@ -31,10 +31,10 @@ export default function Publish() {
       <div className="space-y-4">
         <Breadcrumb items={[{ label: "Publicar" }]} />
 
-        <h1 className="text-3xl font-bold">Publica tu instrumento</h1>
+        <h1 className="text-3xl font-bold">Publica tu producto o servicio</h1>
 
         <p className="text-lg text-gray-700">
-          Publica tu instrumento <strong>GRATIS</strong> en{" "}
+          Publica tu producto o servicio <strong>GRATIS</strong> en{" "}
           <strong>Peru Guitar</strong>, sujeto a aprobación.
         </p>
       </div>
@@ -44,29 +44,28 @@ export default function Publish() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <StepCard number={1} title="Completa el formulario">
-            Ingresa tu nombre, el modelo exacto de tu guitarra y el precio de
-            venta.
+            Selecciona la categoría e ingresa la información básica del producto
+            o servicio.
           </StepCard>
 
-          <StepCard number={2} title="Evaluación de exclusividad">
-            Verificamos si el instrumento cumple nuestros criterios de{" "}
-            <strong>gama alta, boutique, rarezas o modelos rebuscados</strong>.
+          <StepCard number={2} title="Revisión">
+            Verificamos que la publicación cumpla con nuestros criterios de
+            evaluación.
           </StepCard>
 
-          <StepCard number={3} title="Coordinamos detalles">
-            Ajustamos fotos, descripción, ficha técnica y cualquier información
-            adicional necesaria.
+          <StepCard number={3} title="Ajustes">
+            De ser necesario, coordinamos mejoras en la información o material
+            enviado.
           </StepCard>
 
-          <StepCard number={4} title="Publicación en catálogo">
-            Si es aprobado, publicamos tu instrumento en nuestro catálogo
-            exclusivo.
+          <StepCard number={4} title="Publicación">
+            Si es aprobado, publicamos el producto o servicio en la plataforma.
           </StepCard>
         </div>
 
         <p className="text-gray-500 text-center">
-          No participamos en transacciones. Solo brindamos visibilidad a tu
-          anuncio y la publicación.
+          Peru Guitar no participa en transacciones ni pagos. La coordinación se
+          realiza directamente entre las partes.
         </p>
       </div>
 

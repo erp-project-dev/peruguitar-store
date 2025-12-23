@@ -103,7 +103,7 @@ function drawBrand(ctx) {
   ctx.fillStyle = "rgba(230,230,230,0.92)";
   ctx.font = "italic 32px sans-serif";
   ctx.fillText(
-    "Marketplace exclusivo de guitarras",
+    "Marketplace exclusivo para guitarristas",
     WIDTH - MARGIN,
     HEIGHT - 75
   );
@@ -145,7 +145,11 @@ async function generateCard(product, stats) {
     drawBackground(ctx, img);
     drawGradient(ctx);
     drawTitle(ctx, product.name);
-    drawPrice(ctx, product.currency, product.price);
+
+    if (product.price) {
+      drawPrice(ctx, product.currency, product.price);
+    }
+
     drawBrand(ctx);
 
     writeFileSync(outputPath, canvas.toBuffer("image/jpeg", { quality: 0.9 }));

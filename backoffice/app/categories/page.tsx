@@ -87,6 +87,7 @@ export default function Categories() {
             label: "Name",
             editable: true,
             sortable: true,
+            width: 200,
           },
           {
             key: "description",

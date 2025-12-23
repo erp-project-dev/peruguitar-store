@@ -21,7 +21,7 @@ import { Category, CategoryId } from "@/infrastracture/domain/category.entity";
 
 import ProductPromptHelp from "./components/ProductPromptHelp/ProductPromptHelp";
 import ProductForm from "../components/ProductForm";
-import { productEntryFrom } from "../shared/product-entry";
+import { productEntryFrom } from "../shared/product.entry";
 
 const storeClient = new StoreClient();
 
@@ -97,7 +97,7 @@ export default function CreateProductPage() {
     try {
       setLoading(true);
 
-      const specs = form.specs_raw ? JSON.parse(form.specs_raw) : {};
+      const specs = form.specs_raw ? JSON.parse(form.specs_raw) : undefined;
 
       const payload = {
         category_id: form.category_id,
@@ -111,7 +111,7 @@ export default function CreateProductPage() {
         description: form.description,
         currency: form.currency,
         price: form.price,
-        priceType: form.priceType,
+        price_type: form.price_type,
         specs,
       };
 

@@ -12,17 +12,16 @@ export const ProductImagesSchema = z
           [".jpg", ".jpeg", ".png", ".webp", ".gif"].some((ext) =>
             v.toLowerCase().trim().endsWith(ext)
           ),
-        {
-          message: "Invalid image format",
-        }
+        { message: "Invalid image format" }
       )
   )
   .max(6)
   .default([]);
 
-const SpecsByCategory: Record<string, z.ZodTypeAny> = {
+const SpecsByCategory: Record<string, z.ZodTypeAny | null> = {
   "electric-guitar": GuitarSpecsSchema,
   book: BookSpecsSchema,
+  service: null,
 };
 
 export const ProductSchema = z
@@ -31,7 +30,7 @@ export const ProductSchema = z
 
     category_id: z.string().min(1, "Category is required"),
 
-    brand_id: z.string().min(1, "Brand is required").optional(),
+    brand_id: z.string().min(1).optional(),
     merchant_id: z.string().min(1, "Merchant is required"),
     type_id: z.string().optional(),
 
@@ -43,11 +42,13 @@ export const ProductSchema = z
     description: z.string().min(1, "Description is required"),
     fullDescription: z.string().optional(),
 
-    currency: z.string().min(1),
-    price: z.number().min(0),
-    priceType: z.string().min(1),
+    currency: z.string().min(1).optional(),
+    price: z.number().min(0).optional(),
+    price_type: z.string().min(1).optional(),
 
-    specs: z.unknown(),
+    specs: z.unknown().optional(),
+
+    externalVideoUrl: z.url().optional(),
 
     images: ProductImagesSchema,
 
@@ -59,11 +60,34 @@ export const ProductSchema = z
   .superRefine((data, ctx) => {
     const schema = SpecsByCategory[data.category_id];
 
-    if (!schema) {
+    // categoría desconocida
+    if (schema === undefined) {
       ctx.addIssue({
         path: ["category_id"],
         code: "custom",
         message: `Unsupported category '${data.category_id}'`,
+      });
+      return;
+    }
+
+    // categoría que NO usa specs (servicios)
+    if (schema === null) {
+      if (data.specs !== undefined) {
+        ctx.addIssue({
+          path: ["specs"],
+          code: "custom",
+          message: "This category does not support specs",
+        });
+      }
+      return;
+    }
+
+    // categoría que SÍ requiere specs
+    if (!data.specs) {
+      ctx.addIssue({
+        path: ["specs"],
+        code: "custom",
+        message: "Specs are required for this category",
       });
       return;
     }

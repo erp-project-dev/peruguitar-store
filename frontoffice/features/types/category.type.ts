@@ -1,4 +1,4 @@
-export type CategoryId = "electric-guitar" | "book";
+export type CategoryId = "electric-guitar" | "book" | "service";
 
 export interface Category {
   id: CategoryId;

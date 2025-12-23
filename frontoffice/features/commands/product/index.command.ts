@@ -32,25 +32,10 @@ export class ProductGetCommand {
     }
 
     return {
-      id: p.id,
+      ...p,
       category,
-      name: p.name,
       type,
       brand,
-      model: p.model,
-      condition: p.condition,
-      conditionScore: p.condition_score,
-      description: p.description,
-      fullDescription: p.fullDescription,
-      specs: p.specs,
-
-      images: p.images,
-      card_pic: p.card_pic,
-
-      currency: p.currency,
-      price: p.price,
-      priceType: p.priceType,
-
       publishDate: new Date(p.publish_date),
 
       merchant: {

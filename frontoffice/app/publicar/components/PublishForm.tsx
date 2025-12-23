@@ -1,16 +1,25 @@
 "use client";
 
+import { useState } from "react";
+
+import { CategoryGetCommand } from "@/features/commands/category/index.command";
 import { SettingGetCommand } from "@/features/commands/settings/index.command";
 import { getWhatsappLink } from "@/features/helpers/merchant.helper";
 
+type CategorySlug = string;
+
 export default function PublishForm() {
+  const categories = CategoryGetCommand.handle();
   const WHATSAPP_NUMBER = SettingGetCommand.handle().publishNumber;
+
+  const [category, setCategory] = useState<CategorySlug>("");
+
+  const showPrice = category !== "service" && category !== "";
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;
-
     if (!form.reportValidity()) return;
 
     const merchantName = (
@@ -21,21 +30,22 @@ export default function PublishForm() {
       form.elements.namedItem("productName") as HTMLInputElement
     ).value;
 
-    const productPrice = (
-      form.elements.namedItem("productPrice") as HTMLInputElement
-    ).value;
+    const productPriceInput = form.elements.namedItem(
+      "productPrice"
+    ) as HTMLInputElement | null;
+
+    const productPrice = productPriceInput?.value;
 
     const message = `
-Hola, te escribe *${merchantName}*. Deseo publicar un instrumento en Peru Guitar.
+Hola, te escribe *${merchantName}*. Deseo publicar en Peru Guitar.
 
-- *Modelo:* ${productName}  
-- *Precio:* S/ ${productPrice}
+- *Nombre:* ${productName}
+${showPrice && productPrice ? `- *Precio:* S/ ${productPrice}` : ""}
 
-Confirmo que mi instrumento cumple con los criterios de exclusividad de Peru Guitar  
-(_gama alta, boutique, rareza o modelo rebuscado_).
+Confirmo que cumple con los criterios de evaluación.
 
-Quedo atento a tus indicaciones para continuar.
-    `.trim();
+Quedo atento(a).
+`.trim();
 
     window.open(getWhatsappLink("peru", WHATSAPP_NUMBER, message), "_blank");
   };
@@ -43,6 +53,25 @@ Quedo atento a tus indicaciones para continuar.
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <select
+          name="category"
+          required
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-gray-600 md:col-span-2"
+        >
+          <option value="" disabled>
+            Selecciona una categoría
+          </option>
+
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+
+        {/* Nombre */}
         <input
           name="merchantName"
           type="text"
@@ -52,23 +81,36 @@ Quedo atento a tus indicaciones para continuar.
           className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-gray-600 md:col-span-2"
         />
 
+        {/* Nombre del producto / servicio */}
         <input
           name="productName"
           type="text"
-          placeholder="Nombre del instrumento"
+          placeholder={
+            category === "service"
+              ? "Nombre del servicio"
+              : "Nombre del producto"
+          }
           required
           maxLength={100}
-          className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-gray-600"
+          className={`
+    w-full px-4 py-4 bg-white border border-gray-300 rounded-xl
+    outline-none focus:ring-2 focus:ring-gray-600
+    ${category === "service" ? "md:col-span-2" : ""}
+  `}
         />
 
-        <input
-          name="productPrice"
-          type="number"
-          placeholder="Precio (S/)"
-          required
-          maxLength={6}
-          className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-gray-600"
-        />
+        {/* Precio (solo si aplica) */}
+        {showPrice && (
+          <input
+            name="productPrice"
+            type="number"
+            placeholder="Precio (S/)"
+            min={0}
+            max={999999}
+            required
+            className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-gray-600"
+          />
+        )}
       </div>
 
       <button

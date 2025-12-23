@@ -16,13 +16,14 @@ export interface Product extends BaseEntity {
   description: string;
   fullDescription?: string;
 
-  currency: string;
-  price: number;
-  priceType: string;
+  currency?: string;
+  price?: number;
+  price_type?: string;
 
-  specs: GuitarSpecs | BookSpecs;
+  specs?: GuitarSpecs | BookSpecs;
 
   images: string[];
+  externalVideoUrl?: string;
 
   is_enabled: boolean;
   is_pinned: boolean;

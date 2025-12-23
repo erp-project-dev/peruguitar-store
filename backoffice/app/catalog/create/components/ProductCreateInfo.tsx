@@ -26,7 +26,7 @@ type ProductCreateInfoProps = {
     condition_score: number;
     currency: string;
     price: number;
-    priceType: string;
+    price_type: string;
     merchant_id: string;
     description: string;
     specs_raw: string;
@@ -126,9 +126,9 @@ export default function ProductCreateInfo({
 
       <Field label="Price type">
         <Select
-          value={form.priceType}
+          value={form.price_type}
           placeholder="Select price type"
-          onChange={(value) => onUpdate("priceType", value)}
+          onChange={(value) => onUpdate("price_type", value)}
           options={PRODUCT_PRICE_TYPES.map((pt) => ({
             label: pt,
             value: pt,

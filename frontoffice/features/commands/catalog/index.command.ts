@@ -77,22 +77,11 @@ export class CatalogGetCommand {
       }
 
       return {
-        id: p.id,
+        ...p,
         category,
-        name: p.name,
         type,
         brand,
-        model: p.model,
-        condition: p.condition,
-        conditionScore: p.condition_score,
-        description: p.description,
-        specs: p.specs,
-        images: p.images,
-        card_pic: p.card_pic,
-        currency: p.currency,
-        price: p.price,
         publishDate: new Date(p.publish_date),
-        isPinned: p.is_pinned,
         merchant: {
           id: merchant.id,
           fullName: `${merchant.name} ${merchant.last_name}`,
@@ -122,20 +111,22 @@ export class CatalogGetCommand {
         return false;
       }
 
-      if (
-        props.minPrice !== null &&
-        props.minPrice !== undefined &&
-        item.price < props.minPrice
-      ) {
-        return false;
-      }
+      if (item.price) {
+        if (
+          props.minPrice !== null &&
+          props.minPrice !== undefined &&
+          item.price < props.minPrice
+        ) {
+          return false;
+        }
 
-      if (
-        props.maxPrice !== null &&
-        props.maxPrice !== undefined &&
-        item.price > props.maxPrice
-      ) {
-        return false;
+        if (
+          props.maxPrice !== null &&
+          props.maxPrice !== undefined &&
+          item.price > props.maxPrice
+        ) {
+          return false;
+        }
       }
 
       return true;
@@ -148,8 +139,11 @@ export class CatalogGetCommand {
 
     if (sortType === "latest") return dateB - dateA;
     if (sortType === "oldest") return dateA - dateB;
-    if (sortType === "price_desc") return b.price - a.price;
-    if (sortType === "price_asc") return a.price - b.price;
+
+    if (a.price && b.price) {
+      if (sortType === "price_desc") return b.price - a.price;
+      if (sortType === "price_asc") return a.price - b.price;
+    }
 
     return 0;
   }

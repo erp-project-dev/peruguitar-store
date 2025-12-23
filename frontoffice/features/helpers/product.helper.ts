@@ -1,7 +1,7 @@
 // -----------------------------
 // Paths
 
-import { PriceType } from "../types/product.type";
+import { price_type } from "../types/product.type";
 
 export function getCatalogImagePath(filename: string): string {
   return `/catalog/${filename}`;
@@ -66,7 +66,7 @@ export function translateProductSpec(spec: string): string {
   return map[spec] ?? spec.replace(/_/g, " ");
 }
 
-export function translatePriceType(type: PriceType): string {
+export function translatePriceType(type: price_type): string {
   switch (type) {
     case "fixed":
       return "Precio fijo";

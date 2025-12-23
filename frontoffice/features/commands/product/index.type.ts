@@ -1,27 +1,12 @@
 import { Brand } from "@/features/types/brand.type";
 import { Category } from "@/features/types/category.type";
 import { ProductType } from "@/features/types/product-type.type";
-import { PriceType, ProductCurrency } from "@/features/types/product.type";
+import { Product } from "@/features/types/product.type";
 
-export interface ProductPageViewModel {
-  id: string;
+export interface ProductPageViewModel extends Product {
   category: Category;
-  name: string;
   type?: ProductType;
   brand?: Brand;
-  model?: string;
-  condition: string;
-  conditionScore: number;
-  description: string;
-  fullDescription: string;
-  specs: Record<string, string>;
-
-  images: string[];
-  card_pic: string;
-
-  currency: ProductCurrency;
-  price: number;
-  priceType: PriceType;
 
   publishDate: Date;
 
