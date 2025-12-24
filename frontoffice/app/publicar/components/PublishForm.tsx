@@ -9,7 +9,9 @@ import { getWhatsappLink } from "@/features/helpers/merchant.helper";
 type CategorySlug = string;
 
 export default function PublishForm() {
-  const categories = CategoryGetCommand.handle();
+  const categories = CategoryGetCommand.handle({
+    onlyParents: true,
+  });
   const WHATSAPP_NUMBER = SettingGetCommand.handle().publishNumber;
 
   const [category, setCategory] = useState<CategorySlug>("");
