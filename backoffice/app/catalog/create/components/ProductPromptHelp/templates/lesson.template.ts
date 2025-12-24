@@ -4,7 +4,7 @@ type ServicePromptVars = {
   notes?: string;
 };
 
-export function getServicePromptTemplate({
+export function getLessonPromptTemplate({
   serviceName,
   description,
   notes,
@@ -44,6 +44,7 @@ GENERATE THE FOLLOWING:
 3. Descripción extendida
    - Use only the provided information
    - Do NOT add steps, promises, or assumptions
+   - Use Markdown starting from H3 headings, and keep the output between 200 and 2000 characters only if necessary.
 
 4. Enfoque / especialidad
    - Extract ONLY if explicitly mentioned

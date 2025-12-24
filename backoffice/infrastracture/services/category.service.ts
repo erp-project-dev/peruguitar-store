@@ -17,7 +17,26 @@ export class CategoryService {
   }
 
   async findAll(): Promise<Category[]> {
-    return this.repository.findAll();
+    const categories = await this.repository.findAll();
+
+    const parents = categories.filter((c) => c.parent_id === null);
+    const children = categories.filter((c) => c.parent_id !== null);
+
+    const result: Category[] = [];
+
+    parents
+      .sort((a, b) => a.name.localeCompare(b.name, "es"))
+      .forEach((parent) => {
+        result.push(parent);
+
+        const childs = children
+          .filter((child) => child.parent_id === parent._id)
+          .sort((a, b) => a.name.localeCompare(b.name, "es"));
+
+        result.push(...childs);
+      });
+
+    return result;
   }
 
   async create(entry: Category): Promise<Category> {

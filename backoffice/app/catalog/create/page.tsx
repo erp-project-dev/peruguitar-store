@@ -172,10 +172,12 @@ export default function CreateProductPage() {
               value={form.category_id ?? ""}
               placeholder="Select category"
               onChange={(value) => update("category_id", value as CategoryId)}
-              options={categories.map((c) => ({
-                label: c.name,
-                value: c._id,
-              }))}
+              options={categories
+                .filter((c) => c.parent_id)
+                .map((c) => ({
+                  label: c.name,
+                  value: c._id,
+                }))}
             />
           </div>
         </div>

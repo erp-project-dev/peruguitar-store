@@ -36,12 +36,17 @@ GENERATE THE FOLLOWING:
    - Use the original book title exactly as written
    - Do NOT modify wording, order, or capitalization
 
-2. Descripción final
-   - Based ONLY on the base description provided
-   - Maximum 200 characters
-   - Do NOT invent content or context
+2. Descripción corta
+   - Based strictly on the base description
+   - Maximum 150 characters
+   - Do NOT invent capabilities or outcomes
 
-3. Ficha técnica (JSON)
+3. Descripción extendida
+   - Use only the provided information
+   - Do NOT add steps, promises, or assumptions
+   - Use Markdown starting from H3 headings, and keep the output between 200 and 2000 characters only if necessary.
+
+4. Ficha técnica (JSON)
    - Use only explicitly known data
    - Unknown fields must remain null
    - Return a valid MINIFIED JSON (single line)

@@ -9,6 +9,7 @@ import { StoreCommand } from "@/app/api/store/store.command";
 
 import { Category } from "@/infrastracture/domain/category.entity";
 import DataTable from "../components/Form/DataTable/DataTable";
+import { CornerDownRight } from "lucide-react";
 
 const storeClient = new StoreClient();
 
@@ -45,6 +46,8 @@ export default function Categories() {
   };
 
   const handleInsert = async (row: Partial<Category>) => {
+    console.info("row", row);
+
     const created = await storeClient.execute<Category>(
       StoreCommand.CategoryCreate,
       { payload: row }
@@ -76,6 +79,7 @@ export default function Categories() {
             label: "ID",
             width: 180,
             editable: true,
+            editableOn: "insert",
             render: (value) => (
               <span className="text-xs font-mono text-neutral-400">
                 {value}
@@ -88,11 +92,48 @@ export default function Categories() {
             editable: true,
             sortable: true,
             width: 200,
+            render: (value, row) => {
+              const isChild = row.parent_id !== null;
+
+              return (
+                <span
+                  className={`flex items-center gap-2 text-xs ${
+                    !isChild ? "font-bold" : ""
+                  }`}
+                >
+                  {isChild && (
+                    <CornerDownRight className="w-3 h-3 text-neutral-400" />
+                  )}
+
+                  <span>{value ?? "--"}</span>
+                </span>
+              );
+            },
           },
           {
             key: "description",
             label: "Description",
             editable: true,
+          },
+          {
+            key: "parent_id",
+            label: "Parent",
+            editable: true,
+            editableOn: "insert",
+            sortable: true,
+            width: 180,
+            defaultValue: null,
+            values: [
+              { label: "No parent category", value: null },
+              ...categories
+                .filter((c) => !c.parent_id)
+                .map((c) => ({ label: c.name, value: c._id })),
+            ],
+            render: (value) => (
+              <span className="text-xs font-mono text-neutral-400">
+                {value ?? "--"}
+              </span>
+            ),
           },
         ]}
       />

@@ -13,7 +13,7 @@ import DataTableBody from "./components/DataTableBody";
 export type ActionType = "edit" | "insert" | "remove";
 
 export type SelectOption = {
-  value: string;
+  value: string | null;
   label: string;
 };
 
@@ -30,7 +30,7 @@ export type Column<T> = {
   align?: "left" | "center" | "right";
 
   values?: SelectOption[];
-  defaultValue?: string | string[];
+  defaultValue?: string | string[] | null;
   multiple?: boolean;
 
   truncate?: boolean;
@@ -124,7 +124,7 @@ export default function DataTable<
     columns.forEach((col) => {
       if (!col.editable) return;
 
-      if (col.values?.length && col.defaultValue) {
+      if (col.values?.length && col.defaultValue !== undefined) {
         initialDraft[col.key] = col.defaultValue as any;
       }
     });

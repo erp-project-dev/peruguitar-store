@@ -4,6 +4,7 @@ import { BaseSchema } from "./base.schema";
 export const CategorySchema = z.object({
   ...BaseSchema,
   _id: z.string().min(1, "Category id is required"),
+  parent_id: z.string().min(1, "Parent id is required").nullable(),
   name: z.string().min(1, "Category name is required"),
   description: z.string().min(1, "Category description is required"),
 });

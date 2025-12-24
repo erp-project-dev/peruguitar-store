@@ -4,15 +4,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, ChevronDown } from "lucide-react";
 
 export interface DataTableSelectOption {
-  value: string;
+  value: string | null;
   label: string;
 }
 
 interface DataTableSelectProps {
-  value?: string;
+  value?: string | null;
   options: DataTableSelectOption[];
   placeholder?: string;
-  onChange: (value: string) => void;
+  onChange: (value: string | null) => void;
 }
 
 export default function DataTableSelect({

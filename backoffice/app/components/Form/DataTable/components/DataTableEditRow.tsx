@@ -11,7 +11,7 @@ interface DataTableEditRowProps<T extends { _id: string }> {
   draft: Partial<T>;
   columns: Column<T>[];
   loading: boolean;
-  onChange: (key: keyof T, value: string | string[]) => void;
+  onChange: (key: keyof T, value: unknown) => void;
   onSave: () => void;
   onCancel: () => void;
 }
@@ -28,7 +28,7 @@ export default function DataTableEditRow<T extends { _id: string }>({
   return (
     <tr className="border-t border-neutral-100 bg-neutral-50">
       {columns.map((col) => {
-        const rawValue = draft[col.key] ?? col.defaultValue ?? "";
+        const rawValue = draft[col.key];
 
         return (
           <td
@@ -42,15 +42,15 @@ export default function DataTableEditRow<T extends { _id: string }>({
                 col.multiple ? (
                   <DataTableMultipleInput
                     options={col.values.map((v) => ({
-                      key: v.value,
-                      value: v.label,
+                      label: v.label,
+                      value: v.value,
                     }))}
                     defaultValues={rawValue as string[]}
                     onChange={(next) => onChange(col.key, next)}
                   />
                 ) : (
                   <DataTableSelect
-                    value={String(rawValue ?? "")}
+                    value={rawValue as string | null}
                     options={col.values.map((opt) => ({
                       value: opt.value,
                       label: opt.label,

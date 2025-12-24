@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 
 export interface DataTableMultiSelectOption {
-  key: string;
-  value: string;
+  label: string;
+  value: string | null;
 }
 
 interface DataTableMultiSelectInputProps {
@@ -42,24 +42,24 @@ export default function DataTableMultiSelectInput({
   /* ---------------- filtering ---------------- */
   const filteredOptions = useMemo(() => {
     return options.filter((o) =>
-      o.value.toLowerCase().includes(query.toLowerCase())
+      o.value?.toLowerCase().includes(query.toLowerCase())
     );
   }, [options, query]);
 
   /* ---------------- display text ---------------- */
   const displayValue = useMemo(() => {
     return selected
-      .map((k) => options.find((o) => o.key === k)?.value)
+      .map((k) => options.find((o) => o.label === k)?.value)
       .filter(Boolean)
       .join(", ");
   }, [selected, options]);
 
   /* ---------------- toggle selection ---------------- */
-  const toggle = (key: string) => {
+  const toggle = (label: string) => {
     setSelected((prev) => {
-      const next = prev.includes(key)
-        ? prev.filter((v) => v !== key)
-        : [...prev, key];
+      const next = prev.includes(label)
+        ? prev.filter((v) => v !== label)
+        : [...prev, label];
 
       onChange(next);
       return next;
@@ -113,13 +113,13 @@ export default function DataTableMultiSelectInput({
 
             {filteredOptions.map((opt) => (
               <label
-                key={opt.key}
+                key={opt.value}
                 className="flex cursor-pointer items-center gap-2 rounded px-1 py-1 text-sm hover:bg-neutral-50"
               >
                 <input
                   type="checkbox"
-                  checked={selected.includes(opt.key)}
-                  onChange={() => toggle(opt.key)}
+                  checked={selected.includes(opt.label)}
+                  onChange={() => toggle(opt.label)}
                 />
                 <span>{opt.value}</span>
               </label>

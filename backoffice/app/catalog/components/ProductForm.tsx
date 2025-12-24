@@ -8,7 +8,7 @@ import { ProductType } from "@/infrastracture/domain/product-type.entity";
 import ProductElectricGuitarForm from "./ProductElectricGuitar";
 import ProductBookForm from "./ProductBook";
 import { ProductEntryForm } from "../shared/product.entry";
-import ProductServiceForm from "./ProductService";
+import ProductLessonForm from "./ProductLesson";
 
 type Props = {
   mode: "insert" | "edit";
@@ -55,9 +55,9 @@ export default function ProductForm({
     );
   }
 
-  if (category === "service") {
+  if (category === "lesson") {
     return (
-      <ProductServiceForm
+      <ProductLessonForm
         mode={mode}
         form={form}
         merchants={merchants}

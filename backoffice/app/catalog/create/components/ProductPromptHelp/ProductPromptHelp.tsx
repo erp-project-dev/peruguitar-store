@@ -10,7 +10,7 @@ import { Field } from "@/app/components/Form/Field";
 
 import { getBookPromptTemplate } from "./templates/book.template";
 import { getGuitarPromptTemplate } from "./templates/electric-guitar.template";
-import { getServicePromptTemplate } from "./templates/service.template";
+import { getLessonPromptTemplate } from "./templates/lesson.template";
 
 import { CategoryId } from "@/infrastracture/domain/category.entity";
 
@@ -44,8 +44,8 @@ export default function ProductPromptHelp({
       });
     }
 
-    if (category === "service") {
-      return getServicePromptTemplate({
+    if (category === "lesson") {
+      return getLessonPromptTemplate({
         serviceName: name,
         description,
         notes,

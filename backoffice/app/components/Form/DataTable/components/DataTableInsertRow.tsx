@@ -44,15 +44,19 @@ export default function DataTableInsertRow<T>({
                 col.multiple ? (
                   <DataTableMultipleInput
                     options={col.values.map((v) => ({
-                      key: v.value,
-                      value: v.label,
+                      label: v.label,
+                      value: v.value,
                     }))}
                     onChange={(next) => onChange(col.key, next)}
                     defaultValues={col.defaultValue as string[]}
                   />
                 ) : (
                   <DataTableSelect
-                    value={String(rawValue ?? "")}
+                    value={
+                      (rawValue === undefined ? col.defaultValue : rawValue) as
+                        | string
+                        | null
+                    }
                     options={col.values.map((opt) => ({
                       value: opt.value,
                       label: opt.label,

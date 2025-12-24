@@ -19,7 +19,7 @@ type Props = {
   onUpdate: (key: keyof ProductEntryForm, value: any) => void;
 };
 
-export default function ProductServiceForm({
+export default function ProductLessonForm({
   mode,
   form,
   merchants,

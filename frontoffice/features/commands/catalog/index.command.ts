@@ -67,7 +67,6 @@ export class CatalogGetCommand {
 
       const brand = Brands.find((b) => b.id === p.brand_id);
       const type = Types.find((tp) => tp.id === p.type_id);
-
       const category = Categories.find((tp) => tp.id === p.category_id);
 
       if (!category) {
