@@ -1,11 +1,11 @@
 type ServicePromptVars = {
-  serviceName: string;
+  name: string;
   description?: string;
   notes?: string;
 };
 
 export function getLessonPromptTemplate({
-  serviceName,
+  name,
   description,
   notes,
 }: ServicePromptVars): string {
@@ -61,7 +61,7 @@ Estado values:
 `;
 
   return template
-    .replace("[SERVICE_NAME]", serviceName || "(empty)")
+    .replace("[SERVICE_NAME]", name || "(empty)")
     .replace("[DESCRIPTION]", description || "(empty)")
     .replace("[NOTES]", notes || "(not provided)");
 }

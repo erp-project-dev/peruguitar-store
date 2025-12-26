@@ -1,6 +1,12 @@
 import { z } from "zod";
 import { BaseSchema } from "./base.schema";
-import { GuitarSpecsSchema, BookSpecsSchema } from "./product-specs.schema";
+import {
+  GuitarSpecsSchema,
+  BookSpecsSchema,
+  DigitalPedalboardSpecsSchema,
+  PickSpecsSchema,
+  TShirtSpecsSchema,
+} from "./product-specs.schema";
 
 export const ProductImagesSchema = z
   .array(
@@ -21,7 +27,9 @@ export const ProductImagesSchema = z
 const SpecsByCategory: Record<string, z.ZodTypeAny | null> = {
   "electric-guitar": GuitarSpecsSchema,
   book: BookSpecsSchema,
-  service: null,
+  "pedalboard-digital": DigitalPedalboardSpecsSchema,
+  pick: PickSpecsSchema,
+  tshirt: TShirtSpecsSchema,
 };
 
 export const ProductSchema = z

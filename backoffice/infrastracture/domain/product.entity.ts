@@ -1,6 +1,12 @@
 import { BaseEntity } from "./base.entity";
 import { CategoryId } from "./category.entity";
-import { BookSpecs, GuitarSpecs } from "./product-specs.entity";
+import {
+  BookSpecs,
+  DigitalPedalboardSpecs,
+  GuitarSpecs,
+  PickSpecs,
+  TShirtSpecs,
+} from "./product-specs";
 
 export interface Product extends BaseEntity {
   category_id: CategoryId;
@@ -20,7 +26,12 @@ export interface Product extends BaseEntity {
   price?: number;
   price_type?: string;
 
-  specs?: GuitarSpecs | BookSpecs;
+  specs?:
+    | GuitarSpecs
+    | BookSpecs
+    | PickSpecs
+    | TShirtSpecs
+    | DigitalPedalboardSpecs;
 
   images: string[];
   externalVideoUrl?: string;

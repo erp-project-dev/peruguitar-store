@@ -90,7 +90,7 @@ export class MongoRepository<T extends Document> {
 
   async create(data: CreateData<T>): Promise<T> {
     try {
-      const entry = await this.prepareEntry(data, "insert");
+      const entry = await this.prepareAudit(data, "insert");
       this.validator.parse(entry);
 
       const col = await this.collection();
@@ -108,7 +108,7 @@ export class MongoRepository<T extends Document> {
 
   async update(id: string, data: UpdateData<T>): Promise<T> {
     try {
-      const entry = await this.prepareEntry({ ...data, _id: id }, "update");
+      const entry = await this.prepareAudit({ ...data, _id: id }, "update");
       this.validator.partial().parse(entry);
 
       const col = await this.collection();
@@ -166,7 +166,7 @@ export class MongoRepository<T extends Document> {
     return !exists;
   }
 
-  private async prepareEntry(
+  private async prepareAudit(
     entry: Partial<BaseEntity>,
     type: "insert" | "update"
   ) {

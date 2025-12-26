@@ -1,13 +1,13 @@
 type BookPromptVars = {
-  productName: string;
+  name: string;
   description?: string;
-  techNotes?: string;
+  notes?: string;
 };
 
 export function getBookPromptTemplate({
-  productName,
+  name,
   description,
-  techNotes,
+  notes,
 }: BookPromptVars): string {
   const template = `
 NEW PRODUCT — BOOK STRUCTURING PROMPT
@@ -77,7 +77,7 @@ Estado values:
 `;
 
   return template
-    .replace("[PRODUCT_NAME]", productName || "(empty)")
+    .replace("[PRODUCT_NAME]", name || "(empty)")
     .replace("[DESCRIPTION]", description || "(empty)")
-    .replace("[TECH_NOTES]", techNotes || "(not provided)");
+    .replace("[TECH_NOTES]", notes || "(not provided)");
 }

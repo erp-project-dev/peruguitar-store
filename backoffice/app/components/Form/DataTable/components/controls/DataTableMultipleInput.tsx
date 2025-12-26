@@ -55,11 +55,11 @@ export default function DataTableMultiSelectInput({
   }, [selected, options]);
 
   /* ---------------- toggle selection ---------------- */
-  const toggle = (label: string) => {
+  const toggle = (value: string) => {
     setSelected((prev) => {
-      const next = prev.includes(label)
-        ? prev.filter((v) => v !== label)
-        : [...prev, label];
+      const next = prev.includes(value)
+        ? prev.filter((v) => v !== value)
+        : [...prev, value];
 
       onChange(next);
       return next;
@@ -118,8 +118,8 @@ export default function DataTableMultiSelectInput({
               >
                 <input
                   type="checkbox"
-                  checked={selected.includes(opt.label)}
-                  onChange={() => toggle(opt.label)}
+                  checked={selected.includes(String(opt.value))}
+                  onChange={() => toggle(String(opt.value))}
                 />
                 <span>{opt.value}</span>
               </label>

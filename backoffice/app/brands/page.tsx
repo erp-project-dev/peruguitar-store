@@ -88,7 +88,6 @@ export default function Brands() {
             label: "Categories",
             width: 220,
             editable: true,
-            defaultValue: [categories[0]?._id],
             multiple: true,
             values: categories.map((c) => ({ label: c.name, value: c._id })),
             truncate: false,

@@ -1,6 +1,10 @@
 import { BaseEntity } from "./base.entity";
 
-export type CategoryId = "electric-guitar" | "book" | "lesson";
+export type CategoryId =
+  | "electric-guitar"
+  | "book"
+  | "lesson"
+  | "pedalboard-digital";
 
 export interface Category extends BaseEntity {
   _id: CategoryId;

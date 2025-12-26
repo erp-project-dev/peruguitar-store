@@ -9,6 +9,7 @@ import ProductElectricGuitarForm from "./ProductElectricGuitar";
 import ProductBookForm from "./ProductBook";
 import { ProductEntryForm } from "../shared/product.entry";
 import ProductLessonForm from "./ProductLesson";
+import ProductPedalboardDigitalForm from "./ProductPedalboardDigital";
 
 type Props = {
   mode: "insert" | "edit";
@@ -60,6 +61,18 @@ export default function ProductForm({
       <ProductLessonForm
         mode={mode}
         form={form}
+        merchants={merchants}
+        onUpdate={onUpdate}
+      />
+    );
+  }
+
+  if (category === "pedalboard-digital") {
+    return (
+      <ProductPedalboardDigitalForm
+        mode={mode}
+        form={form}
+        brands={brands}
         merchants={merchants}
         onUpdate={onUpdate}
       />

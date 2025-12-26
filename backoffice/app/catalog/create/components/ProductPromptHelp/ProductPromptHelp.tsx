@@ -13,6 +13,7 @@ import { getGuitarPromptTemplate } from "./templates/electric-guitar.template";
 import { getLessonPromptTemplate } from "./templates/lesson.template";
 
 import { CategoryId } from "@/infrastracture/domain/category.entity";
+import { getPedalDigitalPromptTemplate } from "./templates/pedal-digital.template";
 
 type ProductPromptHelpProps = {
   category: CategoryId;
@@ -29,34 +30,32 @@ export default function ProductPromptHelp({
   const [description, setDescription] = useState("");
   const [notes, setNotes] = useState("");
 
-  /**
-   * Decide qué template usar según categoría
-   * No hay lógica de negocio aquí, solo selección de prompt
-   */
   const prompt = useMemo(() => {
     if (!category) return "";
 
+    const templateInput = {
+      name,
+      description,
+      notes,
+    };
+
     if (category === "book") {
-      return getBookPromptTemplate({
-        productName: name,
-        description,
-        techNotes: notes,
-      });
+      return getBookPromptTemplate(templateInput);
     }
 
     if (category === "lesson") {
-      return getLessonPromptTemplate({
-        serviceName: name,
-        description,
-        notes,
+      return getLessonPromptTemplate(templateInput);
+    }
+
+    if (category === "pedalboard-digital") {
+      return getPedalDigitalPromptTemplate({
+        ...templateInput,
+        brands,
       });
     }
 
-    // default: electric-guitar
     return getGuitarPromptTemplate({
-      productName: name,
-      description,
-      techNotes: notes,
+      ...templateInput,
       brands,
       types,
     });
