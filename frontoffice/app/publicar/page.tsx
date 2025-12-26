@@ -1,7 +1,7 @@
 import { Breadcrumb } from "@/features/components/Breadcrumb";
 import { getBasePath } from "@/features/helpers/path.helper";
 
-import PublishForm from "./components/PublishForm";
+import PublishForm from "./components/PublishForm/PublishForm";
 import { StepCard } from "./components/StepCard";
 
 const title = "Publica tu producto o servicio | Peru Guitar";
@@ -27,7 +27,7 @@ export const metadata = {
 
 export default function Publish() {
   return (
-    <section className="max-w-3xl space-y-10 py-12">
+    <section className="max-w-3xl space-y-10">
       <div className="space-y-4">
         <Breadcrumb items={[{ label: "Publicar" }]} />
 
@@ -63,7 +63,7 @@ export default function Publish() {
           </StepCard>
         </div>
 
-        <p className="text-gray-500 text-center">
+        <p className="text-gray-500 text-center max-w-md mx-auto mt-10">
           Peru Guitar no participa en transacciones ni pagos. La coordinación se
           realiza directamente entre las partes.
         </p>

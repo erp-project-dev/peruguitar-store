@@ -1,7 +1,6 @@
 import DATA from "@/app/store";
 
 import { Product } from "@/features/types/product.type";
-
 import { CatalogViewModel, ProductViewModel } from "./index.type";
 
 export type SortType =
@@ -20,6 +19,7 @@ export interface CatalogGetCommandProps {
   notIn?: string[];
   limit?: number;
   ignorePinned?: boolean;
+  parentCategoryId?: string;
 }
 
 export class CatalogGetCommand {
@@ -27,7 +27,18 @@ export class CatalogGetCommand {
     const { Merchants, Catalog, Brands, Types, Categories } = DATA;
 
     const sortType: SortType = props.sort ?? "latest";
-    const filter = this.buildFilter(props);
+
+    let allowedCategoryIds: Set<string> | null = null;
+
+    if (props.parentCategoryId) {
+      allowedCategoryIds = new Set(
+        Categories.filter((c) => c.parent_id === props.parentCategoryId).map(
+          (c) => c.id
+        )
+      );
+    }
+
+    const filter = this.buildFilter(props, allowedCategoryIds);
 
     let mergedItems: Product[];
 
@@ -58,21 +69,16 @@ export class CatalogGetCommand {
 
     const items: ProductViewModel[] = limitedItems.map((p) => {
       const merchant = Merchants.find((x) => x.id === p.merchant_id);
-
       if (!merchant) {
-        throw new Error(
-          `DATA ERROR: Merchant not found for product ${p.id} (merchant_id: ${p.merchant_id})`
-        );
+        throw new Error(`DATA ERROR: Merchant not found for product ${p.id}`);
       }
 
       const brand = Brands.find((b) => b.id === p.brand_id);
-      const type = Types.find((tp) => tp.id === p.type_id);
-      const category = Categories.find((tp) => tp.id === p.category_id);
+      const type = Types.find((t) => t.id === p.type_id);
+      const category = Categories.find((c) => c.id === p.category_id);
 
       if (!category) {
-        throw new Error(
-          `DATA ERROR: Category not found for product ${p.id} (category_id: ${p.category_id})`
-        );
+        throw new Error(`DATA ERROR: Category not found for product ${p.id}`);
       }
 
       return {
@@ -96,9 +102,16 @@ export class CatalogGetCommand {
     };
   }
 
-  static buildFilter(props: CatalogGetCommandProps) {
+  static buildFilter(
+    props: CatalogGetCommandProps,
+    allowedCategoryIds?: Set<string> | null
+  ) {
     return (item: Product) => {
       if (props.notIn && props.notIn.includes(item.id)) {
+        return false;
+      }
+
+      if (allowedCategoryIds && !allowedCategoryIds.has(item.category_id)) {
         return false;
       }
 

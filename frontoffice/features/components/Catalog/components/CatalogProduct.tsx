@@ -33,7 +33,9 @@ export default function CatalogProduct({
     <Link
       href={product.id}
       className={`p-2 md:p-4 group block cursor-pointer rounded-2xl bg-white/35 hover:bg-white transition-shadow duration-300 hover:shadow-lg ${
-        showPinned ? "md:outline-2 md:outline-purple-600 md:outline-dashed" : ""
+        showPinned
+          ? "md:outline-2 md:outline-neutral-400 md:outline-dashed"
+          : ""
       }`}
     >
       <div className="relative overflow-hidden rounded-xl">

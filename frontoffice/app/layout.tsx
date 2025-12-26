@@ -5,12 +5,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/features/components/Navbar/Navbar";
 import Footer from "@/features/components/Footer";
 import ClarityInitializer from "@/features/components/Clarity";
-
 import { getBasePath } from "@/features/helpers/path.helper";
-
 import { SettingGetCommand } from "@/features/commands/settings/index.command";
 
 import "./globals.css";
+import SubNavbar from "@/features/components/SubNavBar/SubNavbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,7 +54,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased select-none`}
       >
         <ClarityInitializer />
+
         <Navbar />
+        <SubNavbar />
+
         <div className="flex mt-10 mb-10 items-center justify-center px-8">
           {children}
         </div>

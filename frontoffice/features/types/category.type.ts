@@ -5,4 +5,5 @@ export interface Category {
   parent_id: string | null;
   name: string;
   description: string;
+  order: number;
 }

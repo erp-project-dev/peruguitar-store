@@ -11,9 +11,7 @@ export class CategoryGetCommand {
   static handle(input: CategoryGetCommandProps = {}): Category[] {
     const { Categories } = DATA;
 
-    const sorted = [...Categories].sort((a, b) =>
-      a.name.localeCompare(b.name, "es", { sensitivity: "base" })
-    );
+    const sorted = [...Categories].sort((a, b) => a.order - b.order);
 
     return this.applyFilters(sorted, input);
   }
@@ -26,8 +24,13 @@ export class CategoryGetCommand {
 
     if (input.onlyInCatalog) {
       const { items } = CatalogGetCommand.handle();
+
       const categoryIdSet = new Set(
-        items.map((item) => item.category?.id).filter(Boolean)
+        items
+          .map((item) =>
+            input.onlyParents ? item.category?.parent_id : item.category?.id
+          )
+          .filter(Boolean)
       );
 
       result = result.filter((category) => categoryIdSet.has(category.id));

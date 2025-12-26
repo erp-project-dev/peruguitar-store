@@ -11,9 +11,6 @@ import { NAV_LINKS } from "./menu";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // -------------------------------
-  // CLASES BASE
-  // -------------------------------
   const baseDesktop =
     "hover:text-yellow-400 transition flex items-center gap-2";
 

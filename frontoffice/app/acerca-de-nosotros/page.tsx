@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function AboutUs() {
   return (
-    <section className="max-w-3xl space-y-6 py-12">
+    <section className="max-w-3xl space-y-6">
       <Breadcrumb items={[{ label: "Acerca de nosotros" }]} />
 
       <h1 className="text-3xl font-bold">Acerca de Peru Guitar</h1>

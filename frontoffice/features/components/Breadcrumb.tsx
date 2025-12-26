@@ -36,9 +36,12 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
               {isLast ? (
                 <span className="text-slate-900 font-medium">{item.label}</span>
               ) : (
-                <span className="hover:text-slate-900 transition-colors">
+                <Link
+                  href={item.href!}
+                  className="hover:text-slate-900 transition-colors cursor-pointer"
+                >
                   {item.label}
-                </span>
+                </Link>
               )}
 
               {!isLast && (
