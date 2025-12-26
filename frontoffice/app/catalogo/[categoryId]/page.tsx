@@ -38,7 +38,7 @@ export async function generateMetadata({
     description: `Explora ${category.name} disponibles en Peru Guitar.`,
     openGraph: {
       title: `${category.name} - Peru Guitar`,
-      description: `Explora ${category.name} disponibles en Peru Guitar.`,
+      description: category.description,
       url: getBasePath(`/catalogo/${category.id}`),
       type: "website",
       images: [
