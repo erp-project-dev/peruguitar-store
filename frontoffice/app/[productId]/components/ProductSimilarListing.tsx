@@ -13,6 +13,7 @@ export default function ProductSimilarLising({
     notIn: [excludedProductId],
     ignorePinned: true,
     limit: 6,
+    status: "available",
   });
 
   if (!items || items.length === 0) {

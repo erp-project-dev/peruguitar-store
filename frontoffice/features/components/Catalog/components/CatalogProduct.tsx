@@ -37,13 +37,12 @@ export default function CatalogProduct({
       className={`
         p-2 md:p-4 block rounded-2xl
         bg-white/35 transition-shadow duration-300 cursor-pointer
-        ${!isSold ? "group hover:bg-white hover:shadow-lg" : ""}
-        ${
-          showPinned
-            ? "md:outline-2 md:outline-neutral-400 md:outline-dashed"
-            : ""
-        }
-        ${isSold ? "grayscale cursor-default" : ""}
+         ${
+           showPinned
+             ? "md:outline-2 md:outline-neutral-400 md:outline-dashed"
+             : ""
+         }
+        ${isSold ? "grayscale cursor-defaul opacity-70" : ""}
       `}
     >
       <div className="relative overflow-hidden rounded-xl">
@@ -68,11 +67,7 @@ export default function CatalogProduct({
           {product.category.name}
         </div>
 
-        <h2
-          className={`text-base md:text-lg font-semibold leading-snug line-clamp-2 text-neutral-900 ${
-            product.isSold ? "line-through" : ""
-          }`}
-        >
+        <h2 className="text-base md:text-lg font-semibold leading-snug line-clamp-2 text-neutral-900">
           {product.name}
         </h2>
 
@@ -85,11 +80,7 @@ export default function CatalogProduct({
         )}
 
         {product.price && (
-          <div
-            className={`pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums ${
-              product.isSold ? "line-through" : ""
-            }`}
-          >
+          <div className="pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums">
             {product.price.toLocaleString("es-PE", {
               minimumFractionDigits: 0,
               currency: product.currency,

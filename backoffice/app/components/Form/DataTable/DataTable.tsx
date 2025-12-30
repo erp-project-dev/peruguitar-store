@@ -175,8 +175,6 @@ export default function DataTable<
     setInsertDraft({});
   };
 
-  /* -------------------- DELETE -------------------- */
-
   const confirmRemove = (id: string) => {
     if (!onRemove) return;
 
@@ -239,9 +237,14 @@ export default function DataTable<
           onStartInsert={startInsert}
           onSaveInsert={saveInsert}
           onCancelInsert={cancelInsert}
-          onInsertChange={(key, value) =>
-            setInsertDraft((prev) => ({ ...prev, [key]: value }))
-          }
+          onInsertChange={(key, value) => {
+            const column = columns.find((c) => c.key === key);
+
+            setInsertDraft((prev) => ({
+              ...prev,
+              [key]: castValue(value, column?.type),
+            }));
+          }}
           onEditStart={(row) => {
             setEditingId(row._id);
             setDraft({ ...row } as Partial<T>);

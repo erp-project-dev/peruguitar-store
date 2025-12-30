@@ -20,6 +20,7 @@ export interface CatalogGetCommandProps {
   limit?: number;
   ignorePinned?: boolean;
   parentCategoryId?: string;
+  status?: string;
 }
 
 export class CatalogGetCommand {
@@ -140,6 +141,10 @@ export class CatalogGetCommand {
         ) {
           return false;
         }
+      }
+
+      if (props.status && props.status !== item.status) {
+        return false;
       }
 
       return true;

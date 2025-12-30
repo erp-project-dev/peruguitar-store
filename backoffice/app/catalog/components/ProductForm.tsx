@@ -10,6 +10,7 @@ import ProductBookForm from "./ProductBook";
 import { ProductEntryForm } from "../shared/product.entry";
 import ProductLessonForm from "./ProductLesson";
 import ProductPedalboardDigitalForm from "./ProductPedalboardDigital";
+import ProductGeneric from "./ProductGeneric";
 
 type Props = {
   mode: "insert" | "edit";
@@ -80,6 +81,11 @@ export default function ProductForm({
   }
 
   return (
-    <div className="text-sm text-red-500">Unsupported category: {category}</div>
+    <ProductGeneric
+      mode={mode}
+      form={form}
+      merchants={merchants}
+      onUpdate={onUpdate}
+    />
   );
 }

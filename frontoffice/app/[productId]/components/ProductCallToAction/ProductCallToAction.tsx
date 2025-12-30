@@ -21,22 +21,12 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
   return (
     <aside className="self-start space-y-6 rounded-xl bg-gray-100 p-6 md:shadow-[0_4px_12px_rgba(55,65,81,0.15)]">
       <div className="space-y-1">
-        <h1
-          className={`text-3xl font-bold leading-8 ${
-            product.isSold ? "line-through" : ""
-          }`}
-        >
-          {product.name}
-        </h1>
+        <h1 className="text-3xl font-bold leading-8">{product.name}</h1>
 
         <div className="flex gap-2 items-center">
           {product.price && product.price_type && (
             <>
-              <p
-                className={`text-2xl font-semibold dashed ${
-                  product.isSold ? "line-through" : ""
-                }`}
-              >
+              <p className="text-2xl font-semibold">
                 {product.price.toLocaleString("es-PE", {
                   style: "currency",
                   currency: product.currency,

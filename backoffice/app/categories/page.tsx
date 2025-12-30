@@ -46,8 +46,6 @@ export default function Categories() {
   };
 
   const handleInsert = async (row: Partial<Category>) => {
-    console.info("row", row);
-
     const created = await storeClient.execute<Category>(
       StoreCommand.CategoryCreate,
       { payload: row }
