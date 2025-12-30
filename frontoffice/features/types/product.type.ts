@@ -18,14 +18,14 @@ export interface Product {
   condition_score?: number;
 
   description: string;
-  fullDescription?: string;
+  full_description?: string;
 
   specs: Record<string, string>;
 
   card_pic: string;
 
   images: string[];
-  externalVideoUrl?: string;
+  external_video_url?: string;
 
   currency: ProductCurrency;
   price?: number;

@@ -10,7 +10,7 @@ import { Field } from "@/app/components/Form/Field";
 
 import { getBookPromptTemplate } from "./templates/book.template";
 import { getGuitarPromptTemplate } from "./templates/electric-guitar.template";
-import { getLessonPromptTemplate } from "./templates/lesson.template";
+import { getServicePromptTemplate } from "./templates/service.template";
 
 import { CategoryId } from "@/infrastracture/domain/category.entity";
 import { getPedalDigitalPromptTemplate } from "./templates/pedal-digital.template";
@@ -43,8 +43,8 @@ export default function ProductPromptHelp({
       return getBookPromptTemplate(templateInput);
     }
 
-    if (category === "lesson") {
-      return getLessonPromptTemplate(templateInput);
+    if (["lesson", "music-production"].includes(category)) {
+      return getServicePromptTemplate(templateInput);
     }
 
     if (category === "pedalboard-digital") {
@@ -81,15 +81,7 @@ export default function ProductPromptHelp({
       {/* ---------- INPUTS (shared for all categories) ---------- */}
       <div className="space-y-5">
         <Field label="Original product name">
-          <Input
-            value={name}
-            onChange={setName}
-            placeholder={
-              category === "book"
-                ? "e.g. The Pragmatic Programmer"
-                : "e.g. Fender Stratocaster American Special 2013"
-            }
-          />
+          <Input value={name} onChange={setName} placeholder="Product name" />
         </Field>
 
         <Field label="Base description">

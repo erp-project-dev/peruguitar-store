@@ -66,13 +66,13 @@ export default function EditProductPage() {
           name: product.name,
           model: product.model,
           description: product.description,
-          fullDescription: product.fullDescription,
+          full_description: product.full_description,
 
           currency: product.currency,
           price: product.price,
           price_type: product.price_type ?? productEntryFrom.price_type,
 
-          externalVideoUrl: product.externalVideoUrl,
+          external_video_url: product.external_video_url,
 
           specs_raw: product.specs
             ? JSON.stringify(product.specs, null, 2)

@@ -22,7 +22,7 @@ export interface Product extends BaseEntity {
   name: string;
   model?: string;
   description: string;
-  fullDescription?: string;
+  full_description?: string;
 
   currency?: string;
   price?: number;
@@ -36,7 +36,7 @@ export interface Product extends BaseEntity {
     | DigitalPedalboardSpecs;
 
   images: string[];
-  externalVideoUrl?: string;
+  external_video_url?: string;
 
   status: ProductStatus;
   is_pinned: boolean;

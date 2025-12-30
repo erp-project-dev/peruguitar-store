@@ -95,8 +95,8 @@ export default async function ProductPage({
             </p>
           </div>
 
-          {product.fullDescription && (
-            <ProductFullDescription text={product.fullDescription} />
+          {product.full_description && (
+            <ProductFullDescription text={product.full_description} />
           )}
 
           {product.brand_id && (
@@ -112,8 +112,8 @@ export default async function ProductPage({
             </div>
           )}
 
-          {product.externalVideoUrl && (
-            <ProductYoutubeVideo url={product.externalVideoUrl} />
+          {product.external_video_url && (
+            <ProductYoutubeVideo url={product.external_video_url} />
           )}
         </div>
 

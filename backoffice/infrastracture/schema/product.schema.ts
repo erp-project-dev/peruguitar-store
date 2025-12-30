@@ -30,6 +30,8 @@ const SpecsByCategory: Record<string, z.ZodTypeAny | null> = {
   "pedalboard-digital": DigitalPedalboardSpecsSchema,
   pick: PickSpecsSchema,
   tshirt: TShirtSpecsSchema,
+  lesson: null,
+  "music-production": null,
 };
 
 export const ProductSchema = z
@@ -68,7 +70,6 @@ export const ProductSchema = z
   .superRefine((data, ctx) => {
     const schema = SpecsByCategory[data.category_id];
 
-    // categoría desconocida
     if (schema === undefined) {
       ctx.addIssue({
         path: ["category_id"],
@@ -78,7 +79,6 @@ export const ProductSchema = z
       return;
     }
 
-    // categoría que NO usa specs (servicios)
     if (schema === null) {
       if (data.specs !== undefined) {
         ctx.addIssue({
@@ -90,7 +90,6 @@ export const ProductSchema = z
       return;
     }
 
-    // categoría que SÍ requiere specs
     if (!data.specs) {
       ctx.addIssue({
         path: ["specs"],

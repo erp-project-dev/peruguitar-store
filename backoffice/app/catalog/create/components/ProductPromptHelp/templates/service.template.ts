@@ -4,7 +4,7 @@ type ServicePromptVars = {
   notes?: string;
 };
 
-export function getLessonPromptTemplate({
+export function getServicePromptTemplate({
   name,
   description,
   notes,

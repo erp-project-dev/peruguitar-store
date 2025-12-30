@@ -5,12 +5,8 @@ import { Brand } from "@/infrastracture/domain/brand.entity";
 import { Merchant } from "@/infrastracture/domain/merchant.entity";
 import { CategoryId } from "@/infrastracture/domain/category.entity";
 import { ProductType } from "@/infrastracture/domain/product-type.entity";
-import ProductElectricGuitarForm from "./ProductElectricGuitar";
-import ProductBookForm from "./ProductBook";
 import { ProductEntryForm } from "../shared/product.entry";
-import ProductLessonForm from "./ProductLesson";
-import ProductPedalboardDigitalForm from "./ProductPedalboardDigital";
-import ProductGeneric from "./ProductGeneric";
+import ProductFormBuilder from "./ProductFormBuilder";
 
 type Props = {
   mode: "insert" | "edit";
@@ -35,57 +31,101 @@ export default function ProductForm({
 }: Props) {
   if (category === "electric-guitar") {
     return (
-      <ProductElectricGuitarForm
+      <ProductFormBuilder
         mode={mode}
         form={form}
         brands={brands}
         merchants={merchants}
         types={types}
         onUpdate={onUpdate}
+        layout={[
+          "name",
+          "type",
+          "brand",
+          "model",
+          "condition",
+          "score",
+          "currency",
+          "price",
+          "price_type",
+          "merchant",
+          "status",
+          "pinned",
+          "description:full",
+          "specs:full",
+        ]}
       />
     );
   }
 
   if (category === "book") {
     return (
-      <ProductBookForm
+      <ProductFormBuilder
         mode={mode}
         form={form}
         merchants={merchants}
         onUpdate={onUpdate}
+        layout={[
+          "name:full",
+          "currency",
+          "price",
+          "price_type",
+          "merchant",
+          "status",
+          "pinned",
+          "description:full",
+          "specs:full",
+        ]}
       />
     );
   }
 
-  if (category === "lesson") {
+  if (["lesson", "music-production"].includes(category)) {
     return (
-      <ProductLessonForm
+      <ProductFormBuilder
         mode={mode}
         form={form}
         merchants={merchants}
         onUpdate={onUpdate}
+        layout={[
+          "name:full",
+          "merchant",
+          "status",
+          "pinned",
+          "description:full",
+          "full_description:full",
+          "external_video_url:full",
+        ]}
       />
     );
   }
 
   if (category === "pedalboard-digital") {
     return (
-      <ProductPedalboardDigitalForm
+      <ProductFormBuilder
         mode={mode}
         form={form}
         brands={brands}
         merchants={merchants}
         onUpdate={onUpdate}
+        layout={[
+          "name:full",
+          "brand",
+          "model",
+          "condition",
+          "score",
+          "currency",
+          "price",
+          "price_type",
+          "merchant",
+          "status",
+          "pinned",
+          "description:full",
+          "specs:full",
+        ]}
       />
     );
   }
 
-  return (
-    <ProductGeneric
-      mode={mode}
-      form={form}
-      merchants={merchants}
-      onUpdate={onUpdate}
-    />
-  );
+  return null;
 }

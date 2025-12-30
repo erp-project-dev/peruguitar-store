@@ -109,10 +109,13 @@ export default function CreateProductPage() {
         name: form.name,
         model: form.model,
         description: form.description,
+        full_description: form.full_description,
         currency: form.currency,
         price: form.price,
         price_type: form.price_type,
         specs,
+        status: form.status,
+        external_video_url: form.external_video_url,
       };
 
       const created = await storeClient.execute<Product>(
