@@ -1,7 +1,7 @@
 1:"$Sreact.fragment"
-2:I[94621,["/_next/static/chunks/1517eb77aa123769.js","/_next/static/chunks/fa827f1ca66376f8.js"],"Breadcrumb"]
-3:I[89689,["/_next/static/chunks/1517eb77aa123769.js","/_next/static/chunks/fa827f1ca66376f8.js"],"default"]
+2:I[94621,["/_next/static/chunks/a58e5c4898138d04.js","/_next/static/chunks/fa827f1ca66376f8.js"],"Breadcrumb"]
+3:I[89689,["/_next/static/chunks/a58e5c4898138d04.js","/_next/static/chunks/fa827f1ca66376f8.js"],"default"]
 4:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-0:{"buildId":"7QP4srBteBkuD5vrlk6hE","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"max-w-7xl mx-auto flex flex-col space-y-8","children":[["$","$L2",null,{"items":[{"href":"/catalogo","label":"Catálogo"},{"label":"Pedaleras"}]}],["$","h1",null,{"className":"text-3xl font-bold mb-0","children":"Pedaleras"}],["$","h2",null,{"className":"","children":"Pedaleras y sistemas de efectos para guitarra."}],["$","$L3",null,{"parentCategoryId":"pedalboard","sort":"latest","cols":4}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/fa827f1ca66376f8.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"Pn9yvpj4ZnTSX8jWL_yPl","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"max-w-7xl mx-auto flex flex-col space-y-8","children":[["$","$L2",null,{"items":[{"href":"/catalogo","label":"Catálogo"},{"label":"Pedaleras"}]}],["$","h1",null,{"className":"text-3xl font-bold mb-0","children":"Pedaleras"}],["$","h2",null,{"className":"","children":"Pedaleras y sistemas de efectos para guitarra."}],["$","$L3",null,{"parentCategoryId":"pedalboard","sort":"latest","cols":4}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/fa827f1ca66376f8.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"loading":null,"isPartial":false}
 6:null
