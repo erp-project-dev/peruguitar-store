@@ -13,6 +13,7 @@ interface ProductWhatsappButtonProps {
   productId: string;
   productName: string;
   className?: string;
+  disabled: boolean;
 }
 
 export default function ProductWhatsappButton({
@@ -22,8 +23,11 @@ export default function ProductWhatsappButton({
   productId,
   productName,
   className,
+  disabled,
 }: ProductWhatsappButtonProps) {
   const handleClick = () => {
+    if (disabled) return;
+
     sendClarityEvent("whatsapp_click");
 
     const message = `
@@ -40,13 +44,21 @@ ref: ${getBasePath(productId)}
   return (
     <button
       onClick={handleClick}
+      disabled={disabled}
       className={
         className ??
-        "w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-[#25D366] text-black font-bold hover:brightness-95 transition cursor-pointer"
+        `
+        w-full flex items-center justify-center gap-2 py-3 rounded-lg font-bold transition
+        ${
+          disabled
+            ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+            : "bg-[#25D366] text-black hover:brightness-95 cursor-pointer"
+        }
+      `
       }
     >
       <MessageCircle className="w-5 h-5" />
-      Contactar por WhatsApp
+      {disabled ? "Producto vendido" : "Contactar por WhatsApp"}
     </button>
   );
 }

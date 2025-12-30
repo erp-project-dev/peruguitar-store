@@ -21,12 +21,22 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
   return (
     <aside className="self-start space-y-6 rounded-xl bg-gray-100 p-6 md:shadow-[0_4px_12px_rgba(55,65,81,0.15)]">
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold leading-8">{product.name}</h1>
+        <h1
+          className={`text-3xl font-bold leading-8 ${
+            product.isSold ? "line-through" : ""
+          }`}
+        >
+          {product.name}
+        </h1>
 
         <div className="flex gap-2 items-center">
           {product.price && product.price_type && (
             <>
-              <p className="text-2xl font-semibold">
+              <p
+                className={`text-2xl font-semibold dashed ${
+                  product.isSold ? "line-through" : ""
+                }`}
+              >
                 {product.price.toLocaleString("es-PE", {
                   style: "currency",
                   currency: product.currency,
@@ -47,6 +57,7 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
         phoneNumber={product.merchant.whatsapp}
         productId={product.id}
         productName={product.name}
+        disabled={product.isSold}
       />
 
       {product.condition && product.condition_score && (
@@ -67,9 +78,11 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
             publishDate={product.publishDate}
           />
 
-          <ProductStoryCard
-            imageCardUrl={getCatalogImagePath(product.card_pic)}
-          />
+          {!product.isSold && (
+            <ProductStoryCard
+              imageCardUrl={getCatalogImagePath(product.card_pic)}
+            />
+          )}
         </div>
       </div>
 

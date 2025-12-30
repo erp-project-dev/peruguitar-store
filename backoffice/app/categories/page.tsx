@@ -87,6 +87,34 @@ export default function Categories() {
             ),
           },
           {
+            type: "number",
+            key: "order",
+            label: "Order",
+            width: 100,
+            editable: true,
+            render: (value, row) => {
+              const isParent = row.parent_id === null;
+              const orderLabel = String(value ?? 0).padStart(2, "0");
+
+              return (
+                <div className="flex items-center gap-1">
+                  {!isParent && (
+                    <CornerDownRight className="w-3 h-3 text-neutral-400" />
+                  )}
+
+                  <span
+                    className={`
+            px-2 py-0.5 rounded-full text-xs font-mono
+            ${isParent ? "bg-black text-white" : "bg-gray-300 text-gray-800"}
+          `}
+                  >
+                    {orderLabel}
+                  </span>
+                </div>
+              );
+            },
+          },
+          {
             key: "name",
             label: "Name",
             editable: true,

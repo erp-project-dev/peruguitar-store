@@ -24,17 +24,22 @@ export class CategoryService {
 
     const result: Category[] = [];
 
-    parents
-      .sort((a, b) => a.name.localeCompare(b.name, "es"))
-      .forEach((parent) => {
-        result.push(parent);
+    const sortByOrder = (a: Category, b: Category) => {
+      const orderA = a.order ?? 999;
+      const orderB = b.order ?? 999;
 
-        const childs = children
-          .filter((child) => child.parent_id === parent._id)
-          .sort((a, b) => a.name.localeCompare(b.name, "es"));
+      if (orderA !== orderB) return orderA - orderB;
+      return a.name.localeCompare(b.name, "es", { sensitivity: "base" });
+    };
 
-        result.push(...childs);
-      });
+    parents.sort(sortByOrder).forEach((parent) => {
+      result.push(parent);
+
+      children
+        .filter((child) => child.parent_id === parent._id)
+        .sort(sortByOrder)
+        .forEach((child) => result.push(child));
+    });
 
     return result;
   }

@@ -7,4 +7,5 @@ export const CategorySchema = z.object({
   parent_id: z.string().min(1, "Parent id is required").nullable(),
   name: z.string().min(1, "Category name is required"),
   description: z.string().min(1, "Category description is required"),
+  order: z.number().min(0).max(100),
 });

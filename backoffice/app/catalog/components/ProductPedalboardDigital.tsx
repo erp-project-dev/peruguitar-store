@@ -17,6 +17,7 @@ import {
 import { Brand } from "@/infrastracture/domain/brand.entity";
 import { Merchant } from "@/infrastracture/domain/merchant.entity";
 import { ProductEntryForm } from "../shared/product.entry";
+import { PRODUCT_STATUS } from "@/app/common/data/status.data";
 
 type Props = {
   mode: "insert" | "edit";
@@ -127,10 +128,14 @@ export default function ProductPedalboardDigitalForm({
 
       {mode === "edit" && (
         <>
-          <Field label="Enabled">
-            <Switch
-              value={form.is_enabled}
-              onChange={(v) => onUpdate("is_enabled", v)}
+          <Field label="Status">
+            <Select
+              value={form.status}
+              onChange={(value) => onUpdate("status", value)}
+              options={PRODUCT_STATUS.map(({ value, label }) => ({
+                label,
+                value,
+              }))}
             />
           </Field>
 

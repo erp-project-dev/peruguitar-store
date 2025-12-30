@@ -93,6 +93,7 @@ export class CatalogGetCommand {
           whatsapp: merchant.whatsapp,
           instagram: merchant.instagram,
         },
+        isSold: p.status === "sold",
       };
     });
 

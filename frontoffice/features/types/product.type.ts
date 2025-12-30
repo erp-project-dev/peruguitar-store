@@ -33,6 +33,7 @@ export interface Product {
 
   publish_date: string;
 
+  status: "available" | "disabled" | "sold";
   is_pinned: boolean;
 
   merchant_id: string;

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Pin, PinOff, Check, X, Plus, ImageIcon } from "lucide-react";
 
-import { Product } from "@/infrastracture/domain/product.entity";
+import { Product, ProductStatus } from "@/infrastracture/domain/product.entity";
 
 import PageSection from "@/app/components/PageSection";
 import { StoreClient } from "@/app/common/store.client";
@@ -176,17 +176,38 @@ export default function Catalog() {
           },
 
           {
-            key: "is_enabled",
-            label: "Enabled",
-            width: 90,
+            key: "status",
+            label: "Status",
+            width: 120,
             align: "center",
             sortable: true,
-            render: (value) =>
-              value ? (
-                <Check className="h-6 w-6 text-green-600 mx-auto" />
-              ) : (
-                <X className="h-6 w-6 text-red-500 mx-auto" />
-              ),
+            render: (value: ProductStatus) => {
+              switch (value) {
+                case "available":
+                  return (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">
+                      Available
+                    </span>
+                  );
+
+                case "disabled":
+                  return (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">
+                      Disabled
+                    </span>
+                  );
+
+                case "sold":
+                  return (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">
+                      Sold
+                    </span>
+                  );
+
+                default:
+                  return null;
+              }
+            },
           },
         ]}
         actions={["remove"]}

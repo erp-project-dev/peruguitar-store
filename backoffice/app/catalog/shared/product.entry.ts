@@ -34,7 +34,7 @@ export const productEntryFrom: ProductEntryForm = {
   price_type: undefined,
   externalVideoUrl: undefined,
   specs_raw: undefined,
-  is_enabled: true,
+  status: "disabled",
   is_pinned: false,
   images: [],
 };

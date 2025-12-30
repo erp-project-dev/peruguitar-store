@@ -28,7 +28,6 @@ const EXCLUDED_COLUMNS = [
   "created_by",
   "updated_at",
   "updated_by",
-  "is_enabled",
   "settings.is_private",
 ];
 
@@ -80,7 +79,10 @@ export class DataSyncService {
     const [categories, catalog, merchants, brands, settings, types] =
       await Promise.all([
         db.collection<Category>("categories").find().toArray(),
-        db.collection<Product>("catalog").find({ is_enabled: true }).toArray(),
+        db
+          .collection<Product>("catalog")
+          .find({ status: { $ne: "disabled" } })
+          .toArray(),
         db.collection<Merchant>("merchants").find().toArray(),
         db.collection<Brand>("brands").find().toArray(),
         db.collection<Setting>("settings").find().toArray(),

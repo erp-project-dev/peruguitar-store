@@ -18,6 +18,7 @@ export type SelectOption = {
 };
 
 export type Column<T> = {
+  type?: "string" | "number" | "boolean";
   key: keyof T;
   label: string;
 
@@ -37,6 +38,22 @@ export type Column<T> = {
 
   render?: (value: any, row: T) => React.ReactNode;
 };
+
+function castValue(value: any, type?: "string" | "number" | "boolean") {
+  if (value === "" || value === null) return null;
+
+  switch (type) {
+    case "number":
+      return Number(value);
+
+    case "boolean":
+      return value === true || value === "true" || value === 1;
+
+    case "string":
+    default:
+      return String(value);
+  }
+}
 
 export type DataTableProps<T extends { _id: string; editable?: boolean }> = {
   columns: Column<T>[];
@@ -231,9 +248,14 @@ export default function DataTable<
           }}
           onEditSave={saveEdit}
           onEditCancel={cancelEdit}
-          onEditChange={(key, value) =>
-            setDraft((prev) => ({ ...prev, [key]: value }))
-          }
+          onEditChange={(key, value) => {
+            const column = columns.find((c) => c.key === key);
+
+            setDraft((prev) => ({
+              ...prev,
+              [key]: castValue(value, column?.type),
+            }));
+          }}
           onRemove={confirmRemove}
         />
       </table>

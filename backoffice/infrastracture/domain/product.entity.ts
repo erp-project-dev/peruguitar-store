@@ -8,6 +8,8 @@ import {
   TShirtSpecs,
 } from "./product-specs";
 
+export type ProductStatus = "available" | "disabled" | "sold";
+
 export interface Product extends BaseEntity {
   category_id: CategoryId;
 
@@ -36,7 +38,7 @@ export interface Product extends BaseEntity {
   images: string[];
   externalVideoUrl?: string;
 
-  is_enabled: boolean;
+  status: ProductStatus;
   is_pinned: boolean;
 
   merchant_id: string;

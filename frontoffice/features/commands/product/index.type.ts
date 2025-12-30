@@ -21,4 +21,6 @@ export interface ProductPageViewModel extends Product {
     whatsapp: string;
     instagram: string;
   };
+
+  isSold: boolean;
 }

@@ -60,7 +60,7 @@ export const ProductSchema = z
 
     images: ProductImagesSchema,
 
-    is_enabled: z.boolean(),
+    status: z.string().min(1, "Status is required"),
     is_pinned: z.boolean(),
 
     publish_date: z.string().datetime(),

@@ -27,16 +27,24 @@ export default function CatalogProduct({
   ignorePinned,
 }: CatalogProductProps) {
   const showPinned = product.is_pinned && !ignorePinned;
+  const isSold = product.status === "sold";
+
   const badgeClass = product.type ? PRODUCT_TYPE_BADGE[product.type.id] : "";
 
   return (
     <Link
       href={product.id}
-      className={`p-2 md:p-4 group block cursor-pointer rounded-2xl bg-white/35 hover:bg-white transition-shadow duration-300 hover:shadow-lg ${
-        showPinned
-          ? "md:outline-2 md:outline-neutral-400 md:outline-dashed"
-          : ""
-      }`}
+      className={`
+        p-2 md:p-4 block rounded-2xl
+        bg-white/35 transition-shadow duration-300 cursor-pointer
+        ${!isSold ? "group hover:bg-white hover:shadow-lg" : ""}
+        ${
+          showPinned
+            ? "md:outline-2 md:outline-neutral-400 md:outline-dashed"
+            : ""
+        }
+        ${isSold ? "grayscale cursor-default" : ""}
+      `}
     >
       <div className="relative overflow-hidden rounded-xl">
         {showPinned && (
@@ -48,7 +56,10 @@ export default function CatalogProduct({
         <img
           src={getCatalogImagePath(product.images[0])}
           alt={product.name}
-          className="w-full aspect-7/6 object-cover transition-transform duration-300 group-hover:scale-[1.1]"
+          className={`
+            w-full aspect-7/6 object-cover transition-transform duration-300
+            ${!isSold ? "group-hover:scale-[1.1]" : ""}
+          `}
         />
       </div>
 
@@ -58,7 +69,9 @@ export default function CatalogProduct({
         </div>
 
         <h2
-          className={`text-base md:text-lg font-semibold leading-snug line-clamp-2 text-neutral-900`}
+          className={`text-base md:text-lg font-semibold leading-snug line-clamp-2 text-neutral-900 ${
+            product.isSold ? "line-through" : ""
+          }`}
         >
           {product.name}
         </h2>
@@ -72,7 +85,11 @@ export default function CatalogProduct({
         )}
 
         {product.price && (
-          <div className="pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums">
+          <div
+            className={`pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums ${
+              product.isSold ? "line-through" : ""
+            }`}
+          >
             {product.price.toLocaleString("es-PE", {
               minimumFractionDigits: 0,
               currency: product.currency,

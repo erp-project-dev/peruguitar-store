@@ -78,7 +78,7 @@ export default function EditProductPage() {
             ? JSON.stringify(product.specs, null, 2)
             : undefined,
 
-          is_enabled: product.is_enabled,
+          status: product.status,
           is_pinned: product.is_pinned,
 
           images: product.images ?? [],

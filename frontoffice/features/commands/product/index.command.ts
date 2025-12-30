@@ -49,6 +49,8 @@ export class ProductGetCommand {
         whatsapp: merchant.whatsapp,
         instagram: merchant.instagram,
       },
+
+      isSold: p.status === "sold",
     };
   }
 }

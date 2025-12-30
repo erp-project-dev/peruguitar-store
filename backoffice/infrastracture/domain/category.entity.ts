@@ -11,4 +11,5 @@ export interface Category extends BaseEntity {
   parent_id: string | null;
   name: string;
   description: string;
+  order: number;
 }

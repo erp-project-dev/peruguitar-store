@@ -122,7 +122,6 @@ export default async function ProductPage({
       </div>
 
       <ProductSimilarLising excludedProductId={product.id} />
-
       <ProductDisclaimer />
     </section>
   );

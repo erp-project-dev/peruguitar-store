@@ -16,6 +16,7 @@ export interface ProductViewModel extends Product {
   };
 
   publishDate: Date;
+  isSold: boolean;
 }
 
 export interface CatalogViewModel {
