@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://peruguitar.com/prs-mark-holcomb-7s</loc>
-<lastmod>2025-11-23T15:00:00.000Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
 <loc>https://peruguitar.com/clases-de-guitarra-electrica-con-koko-rengifo</loc>
 <lastmod>2025-12-23T03:41:31.501Z</lastmod>
 <changefreq>weekly</changefreq>
@@ -153,6 +147,12 @@
 <url>
 <loc>https://peruguitar.com/fender-player-plus-stratocaster-tequila-sunrise-2024-made-in-mexico</loc>
 <lastmod>2025-11-26T15:00:00.000Z</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://peruguitar.com/prs-mark-holcomb-7s</loc>
+<lastmod>2025-11-23T15:00:00.000Z</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.8</priority>
 </url>
