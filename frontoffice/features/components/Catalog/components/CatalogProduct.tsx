@@ -33,7 +33,7 @@ export default function CatalogProduct({
 
   return (
     <Link
-      href={product.id}
+      href={`/${product.id}`}
       className={`
         p-2 md:p-4 block rounded-2xl
         bg-white/35 transition-shadow duration-300 cursor-pointer
