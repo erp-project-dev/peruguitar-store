@@ -90,12 +90,14 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
         )}
       </aside>
 
-      <div className="mt-3">
-        <ProductShareButtons
-          url={getBasePath(product.id)}
-          title={product.name}
-        />
-      </div>
+      {!product.isSold && (
+        <div className="mt-3">
+          <ProductShareButtons
+            url={getBasePath(product.id)}
+            title={product.name}
+          />
+        </div>
+      )}
     </>
   );
 }
