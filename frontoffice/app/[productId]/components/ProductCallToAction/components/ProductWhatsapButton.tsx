@@ -1,10 +1,9 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
-
 import { sendClarityEvent } from "@/features/helpers/clarity.helper";
 import { getBasePath } from "@/features/helpers/path.helper";
 import { getWhatsappLink } from "@/features/helpers/merchant.helper";
+import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 
 interface ProductWhatsappButtonProps {
   phoneNumber: string;
@@ -57,7 +56,7 @@ ref: ${getBasePath(productId)}
       `
       }
     >
-      <MessageCircle className="w-5 h-5" />
+      <SiWhatsapp className="w-5 h-5" />
       {disabled ? "Producto vendido" : "Contactar por WhatsApp"}
     </button>
   );

@@ -14,14 +14,7 @@ export const metadata = {
   openGraph: {
     title,
     description,
-    images: [
-      {
-        url: getBasePath("/peruguitar-og-image.jpg"),
-        width: 1200,
-        height: 630,
-      },
-    ],
-    type: "website",
+    url: getBasePath("publicar"),
   },
 };
 

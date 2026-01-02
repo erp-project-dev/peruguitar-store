@@ -5,5 +5,5 @@ export const SettingSchema = z.object({
   ...BaseSchema,
 
   value: z.string(),
-  isPrivate: z.boolean(),
+  is_private: z.boolean(),
 });

@@ -118,7 +118,7 @@ export default async function ProductPage({
         </div>
 
         <div className="relative hidden md:block">
-          <div className="md:sticky md:top-5">
+          <div className="md:sticky md:top-6">
             <ProductCallToAction product={product} />
           </div>
         </div>

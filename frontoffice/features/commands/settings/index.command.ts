@@ -13,6 +13,7 @@ export class SettingGetCommand {
       websiteUrl,
       websiteTitle,
       websiteDescription,
+      fbId,
     } = this.getSettings();
 
     return {
@@ -28,6 +29,7 @@ export class SettingGetCommand {
         title: websiteTitle,
         description: websiteDescription,
       },
+      fbId,
     };
   }
 
@@ -46,6 +48,7 @@ export class SettingGetCommand {
       websiteUrl: getValue("website_url"),
       websiteTitle: getValue("website_title"),
       websiteDescription: getValue("website_description"),
+      fbId: getValue("fb_id"),
     };
   }
 }

@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const { website } = SettingGetCommand.handle();
+const { website, fbId } = SettingGetCommand.handle();
 
 export const metadata: Metadata = {
   title: website.title,
@@ -39,7 +39,11 @@ export const metadata: Metadata = {
         height: 630,
       },
     ],
+    url: getBasePath("/"),
     type: "website",
+  },
+  facebook: {
+    appId: fbId,
   },
 };
 

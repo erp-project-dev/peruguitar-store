@@ -12,7 +12,7 @@ export async function generateMetadata() {
       title: "Catálogo - Peru Guitar",
       description:
         "Explora guitarras, pedales, servicios y artículos disponibles en Peru Guitar.",
-      url: getBasePath("/catalogo"),
+      url: getBasePath("catalogo"),
       type: "website",
       images: [
         {

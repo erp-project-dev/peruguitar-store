@@ -15,4 +15,6 @@ export interface SettingsViewModel {
     title: string;
     description: string;
   };
+
+  fbId: string;
 }

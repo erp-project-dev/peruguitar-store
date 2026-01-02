@@ -1,9 +1,18 @@
 import { Breadcrumb } from "@/features/components/Breadcrumb";
+import { getBasePath } from "@/features/helpers/path.helper";
+
+const title = "Acerca de nosotros";
+const description =
+  "Conoce Peru Guitar, un marketplace curado para guitarristas donde se publican productos y servicios seleccionados. Conectamos a la comunidad de forma directa y transparente.";
 
 export const metadata = {
-  title: "Acerca de nosotros",
-  description:
-    "Conoce Peru Guitar, un marketplace curado para guitarristas donde se publican productos y servicios seleccionados. Conectamos a la comunidad de forma directa y transparente.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: getBasePath("acerca-de-nosotros"),
+  },
 };
 
 export default function AboutUs() {
