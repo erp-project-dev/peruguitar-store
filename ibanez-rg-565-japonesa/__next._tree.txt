@@ -2,10 +2,10 @@
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/chunks/f943d050e3deb9f8.css","style"]
-:HL["/catalog/javierroman/gibson-les-paul-standard-50s-goldtop-2023-1.jpg","image"]
-:HL["/catalog/victorvera/fender-american-professional-ii-1.jpg","image"]
-:HL["/catalog/percy-flores/produccion-musical-con-percy-flores-70269e80.jpg","image"]
-:HL["/catalog/lucianotello/silvertone-u1-1960-1.jpg","image"]
-:HL["/catalog/ricardoroa/fender-player-plus-stratocaster-tequila-sunrise-2024-made-in-mexico-1.jpeg","image"]
-:HL["/catalog/diegoandre/fender-telecaster-usa-avri-52-reissue-2008-upgrades-premium-1.jpg","image"]
-0:{"buildId":"1RDsN5NIXBCRKVmz_2iG7","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"ibanez-rg-565-japonesa","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+:HL["/catalog/jordisanmarti/prs-mccarty-usa-2016-dark-cherry-burst-1.jpg","image"]
+:HL["/catalog/mariodiaz/gibson-les-paul-studio-1.jpg","image"]
+:HL["/catalog/abel-vega/kemper-profiler-power-head-d963fe1b.jpg","image"]
+:HL["/catalog/vanerabel/gibson-les-paul-studio-goldtop-bonamassa-2013-1.jpg","image"]
+:HL["/catalog/salimvera/fender-american-ultra-1.jpg","image"]
+:HL["/catalog/cesarneyra/musicman-jp6-1.jpg","image"]
+0:{"buildId":"cUzcC1hvqdr5g53mkidfW","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"ibanez-rg-565-japonesa","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
