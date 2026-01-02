@@ -1,7 +1,7 @@
 1:"$Sreact.fragment"
-2:I[94621,["/_next/static/chunks/a58e5c4898138d04.js","/_next/static/chunks/c754449dec58ef80.js"],"Breadcrumb"]
-3:I[89689,["/_next/static/chunks/a58e5c4898138d04.js","/_next/static/chunks/c754449dec58ef80.js"],"default"]
+2:I[94621,["/_next/static/chunks/8820580fa4725d4b.js","/_next/static/chunks/c754449dec58ef80.js"],"Breadcrumb"]
+3:I[89689,["/_next/static/chunks/8820580fa4725d4b.js","/_next/static/chunks/c754449dec58ef80.js"],"default"]
 4:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-0:{"buildId":"Umy2QFty-5blgLJzdO-DW","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"max-w-7xl mx-auto flex flex-col space-y-8","children":[["$","$L2",null,{"items":[{"href":"/catalogo","label":"Catálogo"},{"label":"Guitarras"}]}],["$","h1",null,{"className":"text-3xl font-bold mb-0","children":"Guitarras"}],["$","h2",null,{"className":"","children":"Incluye instrumentos nuevos y usados, con información básica de modelo, estado y características generales."}],["$","$L3",null,{"parentCategoryId":"guitar","sort":"latest","cols":4}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/c754449dec58ef80.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"wGeNFylNOYiQRvR8fyLrj","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"max-w-7xl mx-auto flex flex-col space-y-8","children":[["$","$L2",null,{"items":[{"href":"/catalogo","label":"Catálogo"},{"label":"Guitarras"}]}],["$","h1",null,{"className":"text-3xl font-bold mb-0","children":"Guitarras"}],["$","h2",null,{"className":"","children":"Incluye instrumentos nuevos y usados, con información básica de modelo, estado y características generales."}],["$","$L3",null,{"parentCategoryId":"guitar","sort":"latest","cols":4}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/c754449dec58ef80.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"loading":null,"isPartial":false}
 6:null
