@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { Pin } from "lucide-react";
+import { Check, Pin } from "lucide-react";
 
 import { ProductViewModel } from "@/features/commands/catalog/index.type";
 import { getCatalogImagePath } from "@/features/helpers/product.helper";
@@ -35,6 +35,7 @@ export default function CatalogProduct({
     <Link
       href={`/${product.id}`}
       className={`
+        group
         p-2 md:p-4 block rounded-2xl
         bg-white/35 transition-shadow duration-300 cursor-pointer
          ${
@@ -42,7 +43,6 @@ export default function CatalogProduct({
              ? "md:outline-2 md:outline-neutral-400 md:outline-dashed"
              : ""
          }
-        ${isSold ? "grayscale cursor-defaul opacity-70" : ""}
       `}
     >
       <div className="relative overflow-hidden rounded-xl">
@@ -55,10 +55,9 @@ export default function CatalogProduct({
         <img
           src={getCatalogImagePath(product.images[0])}
           alt={product.name}
-          className={`
-            w-full aspect-7/6 object-cover transition-transform duration-300
-            ${!isSold ? "group-hover:scale-[1.1]" : ""}
-          `}
+          className={`w-full aspect-7/6 object-cover transition-transform duration-300 ${
+            !isSold ? "group-hover:scale-[1.1]" : "grayscale-90 opacity-75"
+          }`}
         />
       </div>
 
@@ -80,13 +79,26 @@ export default function CatalogProduct({
         )}
 
         {product.price && (
-          <div className="pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums">
-            {product.price.toLocaleString("es-PE", {
-              minimumFractionDigits: 0,
-              currency: product.currency,
-              style: "currency",
-            })}
-          </div>
+          <>
+            <div
+              className={`pt-1 md:pt-2 text-xl md:text-2xl font-bold text-neutral-900 tabular-nums ${
+                isSold ? "line-through opacity-60 " : ""
+              }`}
+            >
+              {product.price.toLocaleString("es-PE", {
+                minimumFractionDigits: 0,
+                currency: product.currency,
+                style: "currency",
+              })}
+            </div>
+
+            {isSold && (
+              <div className="flex items-center gap-1 text-sm font-medium align-middle -mt-2">
+                <Check className="w-4 h-4" />
+                Vendido
+              </div>
+            )}
+          </>
         )}
       </div>
     </Link>

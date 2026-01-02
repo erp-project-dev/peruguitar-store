@@ -1,4 +1,4 @@
-import { Info } from "lucide-react";
+import { Check } from "lucide-react";
 
 export default function ProductSoldNotice() {
   return (
@@ -12,12 +12,12 @@ export default function ProductSoldNotice() {
       role="status"
     >
       <div className="flex items-center justify-center gap-2">
-        <Info className="h-5 w-5 text-neutral-200" />
+        <Check className="h-5 w-5 text-neutral-200" />
         <strong className="text-sm font-semibold">Producto vendido</strong>
       </div>
 
       <p className="mt-1 text-sm text-neutral-300">
-        Este producto ya ha sido vendido
+        Este producto ya ha sido vendido por el anunciante.
       </p>
     </div>
   );
