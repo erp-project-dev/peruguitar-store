@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback } from "react";
-import { Copy } from "lucide-react";
+import { useCallback, useState } from "react";
+import { Copy, Check } from "lucide-react";
 import {
   SiWhatsapp,
   SiFacebook,
@@ -14,13 +14,22 @@ interface ShareButtonsProps {
   title?: string;
 }
 
-export default function ShareButtons({ url, title }: ShareButtonsProps) {
+export default function ProductShareButtons({ url, title }: ShareButtonsProps) {
+  const [copied, setCopied] = useState(false);
+
   const encodedUrl = encodeURIComponent(url);
   const encodedText = encodeURIComponent(title ?? "");
 
   const handleCopy = useCallback(async () => {
+    if (copied) return;
+
     await navigator.clipboard.writeText(url);
-  }, [url]);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 200);
+  }, [url, copied]);
 
   const baseClass =
     "flex h-10 w-10 items-center justify-center rounded-lg cursor-pointer transition-colors";
@@ -72,7 +81,13 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
         className={`${baseClass} bg-gray-700 hover:bg-gray-800 text-white`}
         aria-label="Copiar link"
       >
-        <Copy size={18} />
+        <span
+          className={`transition-all duration-200 ${
+            copied ? "scale-100 opacity-100" : "scale-95 opacity-100"
+          }`}
+        >
+          {copied ? <Check size={18} /> : <Copy size={18} />}
+        </span>
       </button>
     </div>
   );
