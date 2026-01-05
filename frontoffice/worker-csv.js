@@ -41,7 +41,12 @@ function escapeCSV(value = "") {
       "brand",
     ];
 
-    const rows = Catalog.filter((p) => p.status === "available").map(
+    const conditionMap = {
+      new: "new",
+      like_new: "used",
+    };
+
+    const rows = Catalog.filter((p) => p.status === "available" && p.price).map(
       ({
         id,
         name,
@@ -57,8 +62,8 @@ function escapeCSV(value = "") {
           title: name,
           description,
           availability: "in stock",
-          condition,
-          price: price != null ? `${price.toFixed(2)} ${currency}` : "",
+          condition: conditionMap[condition] || "used",
+          price: `${price.toFixed(2)} ${currency}`,
           link: `https://peruguitar.com/${id}`,
           image_link: `https://peruguitar.com/catalog/${images[0]}`,
           brand: brandMap[brand_id] || "",
