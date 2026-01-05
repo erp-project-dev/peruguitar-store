@@ -1,11 +1,11 @@
-:HL["/_next/static/chunks/1275027fac986ee5.css","style"]
+:HL["/_next/static/chunks/e07321b55d626467.css","style"]
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/chunks/f943d050e3deb9f8.css","style"]
-:HL["/catalog/vanerabel/gibson-les-paul-studio-goldtop-bonamassa-2013-1.jpg","image"]
-:HL["/catalog/mariodiaz/gibson-les-paul-studio-1.jpg","image"]
 :HL["/catalog/diego-cortes-rodriguez/ibanez-prestige-rg752hm-d0baa6dd.jpg","image"]
-:HL["/catalog/cesarneyra/musicman-jp6-1.jpg","image"]
-:HL["/catalog/omar-ramirez-risco/manos-de-acero-44b6e080.jpg","image"]
+:HL["/catalog/moshegarcia-saldana/fender-telecaster-american-professional-i-sunburst-19e75dc3.jpg","image"]
+:HL["/catalog/salimvera/fender-american-ultra-1.jpg","image"]
+:HL["/catalog/ed-vasquez/ibanez-rg-550-genesis-purple-neon-a1732df5.jpg","image"]
 :HL["/catalog/percy-flores/produccion-musical-con-percy-flores-70269e80.jpg","image"]
-0:{"buildId":"bf96G6jVI0XCCWnzzoOuC","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"prs-se-custom-24-floyd","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+:HL["/catalog/diego-merino/fender-american-original-60s-5fee9c6d.jpg","image"]
+0:{"buildId":"pSZ4w_5QpJ6rI0QUPBvT3","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"prs-se-custom-24-floyd","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
