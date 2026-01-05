@@ -2,10 +2,10 @@
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/chunks/f943d050e3deb9f8.css","style"]
+:HL["/catalog/ricardoroa/fender-player-plus-stratocaster-tequila-sunrise-2024-made-in-mexico-1.jpeg","image"]
+:HL["/catalog/vanerabel/fender-telecaster-american-special-2013-1.jpg","image"]
+:HL["/catalog/koko-rengifo/clases-de-guitarra-electrica-con-koko-rengifo-1a56aef9.jpg","image"]
+:HL["/catalog/ricardoroa/esp-e2-m1-made-in-japan-1.jpeg","image"]
+:HL["/catalog/diegoandre/fender-telecaster-usa-avri-52-reissue-2008-upgrades-premium-1.jpg","image"]
 :HL["/catalog/omar-ramirez-risco/manos-de-acero-44b6e080.jpg","image"]
-:HL["/catalog/kikekluver/ibanez-jem777vbk-1989-1.jpg","image"]
-:HL["/catalog/jordisanmarti/prs-mccarty-usa-2016-dark-cherry-burst-1.jpg","image"]
-:HL["/catalog/vanerabel/gibson-les-paul-studio-goldtop-bonamassa-2013-1.jpg","image"]
-:HL["/catalog/diego-merino/fender-american-original-60s-5fee9c6d.jpg","image"]
-:HL["/catalog/jordisanmarti/jackson-soloist-sl1-usa-select-custom-1.jpg","image"]
-0:{"buildId":"7RYDqmVa09IRwLK7HfoWq","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"gibson-les-paul-standard-50s-goldtop-2023","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"zfK8I7NEuVAgXkIyo7A8f","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"gibson-les-paul-standard-50s-goldtop-2023","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
