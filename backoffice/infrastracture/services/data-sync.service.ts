@@ -2,6 +2,7 @@
 import path from "path";
 import fs from "fs/promises";
 import crypto from "crypto";
+import { exec } from "child_process";
 
 import { Db } from "mongodb";
 
@@ -37,6 +38,8 @@ export class DataSyncService {
     "../frontoffice/app/db"
   );
 
+  private readonly taskRoot = path.resolve(process.cwd(), "../frontoffice");
+
   private readonly outputFile = "store.enc";
   private readonly secret = process.env.DATA_SYNC_SECRET as string;
 
@@ -44,6 +47,10 @@ export class DataSyncService {
   private readonly ivLength = 16;
 
   async handle(): Promise<void> {
+    if (!this.secret) {
+      throw new Error("DATA_SYNC_SECRET is not defined");
+    }
+
     const db = await getDbInstance();
 
     const collections = await this.getCollections(db);
@@ -71,8 +78,33 @@ export class DataSyncService {
 
     await this.ensureDirectory();
     await this.writeEncrypted(encrypted);
-
+    await this.runTaskRead();
     await this.confirmRelease(db, releaseVersion, releaseDate);
+  }
+
+  private runTaskRead(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      exec(
+        "npm run task:read",
+        {
+          cwd: this.taskRoot,
+        },
+        (error, stdout, stderr) => {
+          if (error) {
+            console.error("Error ejecutando task:read");
+            console.error(error);
+            return reject(error);
+          }
+
+          if (stderr) {
+            console.warn("stderr:", stderr);
+          }
+
+          console.log(stdout);
+          resolve();
+        }
+      );
+    });
   }
 
   private async getCollections(db: Db) {
@@ -104,10 +136,7 @@ export class DataSyncService {
       settings.find((s) => s._id === RELEASE_DATE_KEY)?.value ??
       new Date().toUTCString();
 
-    return {
-      releaseVersion,
-      releaseDate,
-    };
+    return { releaseVersion, releaseDate };
   }
 
   private getNextReleaseVersion(currentVersion: string) {
