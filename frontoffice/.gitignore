@@ -47,3 +47,4 @@ next-env.d.ts
 
 # cards
 public/catalog/**/**-card.*
+public/catalog.csv

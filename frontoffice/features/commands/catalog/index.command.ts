@@ -1,6 +1,6 @@
 import DATA from "@/app/store";
 
-import { Product } from "@/features/types/product.type";
+import { Product, ProductStatus } from "@/features/types/product.type";
 import { CatalogViewModel, ProductViewModel } from "./index.type";
 
 export type SortType =
@@ -20,7 +20,7 @@ export interface CatalogGetCommandProps {
   limit?: number;
   ignorePinned?: boolean;
   parentCategoryId?: string;
-  status?: string;
+  status?: ProductStatus;
 }
 
 export class CatalogGetCommand {

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "task:read": "node worker-reader.js",
+    "task:csv": "node worker-csv.js",
     "task:cards": "node worker-cards.js",
     "task:optz": "node worker-optz.js",
     "task:build": "npm run task:read && npm run task:cards",

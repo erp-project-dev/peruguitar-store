@@ -3,6 +3,7 @@ import { CategoryId } from "./category.type";
 export type ProductCurrency = "USD" | "PEN";
 export type ProductCondition = "new" | "like_new";
 export type price_type = "fixed" | "negotiable";
+export type ProductStatus = "available" | "disabled" | "sold";
 
 export interface Product {
   id: string;
@@ -33,7 +34,7 @@ export interface Product {
 
   publish_date: string;
 
-  status: "available" | "disabled" | "sold";
+  status: ProductStatus;
   is_pinned: boolean;
 
   merchant_id: string;
