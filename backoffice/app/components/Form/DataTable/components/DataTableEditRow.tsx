@@ -61,7 +61,7 @@ export default function DataTableEditRow<T extends { _id: string }>({
               ) : (
                 <input
                   className="w-full rounded border border-neutral-300 px-2 py-1 text-sm"
-                  value={String(rawValue)}
+                  value={String(rawValue ?? "")}
                   onChange={(e) => onChange(col.key, e.target.value)}
                 />
               )

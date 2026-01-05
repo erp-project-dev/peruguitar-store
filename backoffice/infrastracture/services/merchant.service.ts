@@ -5,6 +5,8 @@ import { toSlug } from "../helpers/slug.helper";
 import { MerchantSchema } from "../schema/merchant.schema";
 
 export class MerchantService {
+  private readonly sharedIdentityMerchantIds = ["erpproject", "peruguitar"];
+
   private repository = new MongoRepository<Merchant>(
     "merchants",
     MerchantSchema
@@ -32,8 +34,10 @@ export class MerchantService {
   }
 
   async update(id: string, entry: Partial<Merchant>): Promise<Merchant> {
-    await this.validateUniqueWhatsapp(entry.whatsapp, id);
-    await this.validateUniqueEmail(entry.email, id);
+    if (!this.sharedIdentityMerchantIds.includes(id)) {
+      await this.validateUniqueWhatsapp(entry.whatsapp, id);
+      await this.validateUniqueEmail(entry.email, id);
+    }
 
     return this.repository.update(id, entry);
   }

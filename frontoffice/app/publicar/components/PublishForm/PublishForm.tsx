@@ -25,7 +25,8 @@ export default function PublishForm() {
     setIsReady(true);
   }, []);
 
-  const showPrice = category !== "service" && category !== "";
+  const hasCategory = category !== "";
+  const showPrice = hasCategory && category !== "service";
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,13 +61,13 @@ export default function PublishForm() {
   return (
     isReady && (
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <select
             name="category"
             required
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-gray-600 md:col-span-2"
+            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-4 outline-none focus:ring-2 focus:ring-gray-600 md:col-span-2"
           >
             <option value="" disabled>
               Selecciona una categoría
@@ -85,7 +86,8 @@ export default function PublishForm() {
             placeholder="Tu nombre completo"
             required
             maxLength={100}
-            className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-gray-600 md:col-span-2"
+            disabled={!hasCategory}
+            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-4 outline-none focus:ring-2 focus:ring-gray-600 disabled:cursor-not-allowed disabled:opacity-50 md:col-span-2"
           />
 
           <input
@@ -98,11 +100,13 @@ export default function PublishForm() {
             }
             required
             maxLength={100}
+            disabled={!hasCategory}
             className={`
-            w-full px-4 py-4 bg-white border border-gray-300 rounded-xl
-            outline-none focus:ring-2 focus:ring-gray-600
-            ${category === "service" ? "md:col-span-2" : ""}
-          `}
+              w-full rounded-xl border border-gray-300 bg-white px-4 py-4
+              outline-none focus:ring-2 focus:ring-gray-600
+              disabled:cursor-not-allowed disabled:opacity-50
+              ${category === "service" ? "md:col-span-2" : ""}
+            `}
           />
 
           {showPrice && (
@@ -113,14 +117,16 @@ export default function PublishForm() {
               min={0}
               max={999999}
               required
-              className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-gray-600"
+              disabled={!hasCategory}
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-4 outline-none focus:ring-2 focus:ring-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
             />
           )}
         </div>
 
         <button
           type="submit"
-          className="block w-full text-center bg-green-600 hover:bg-green-700 transition px-6 py-3 rounded-xl text-lg font-medium text-white cursor-pointer"
+          disabled={!hasCategory}
+          className="block w-full cursor-pointer rounded-xl bg-green-600 px-6 py-3 text-center text-lg font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Contactar por WhatsApp
         </button>

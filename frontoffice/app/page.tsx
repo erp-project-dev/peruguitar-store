@@ -1,5 +1,10 @@
 import Catalog from "@/features/components/Catalog/Catalog";
+import Section from "@/features/components/Section";
 
 export default function Home() {
-  return <Catalog sort="latest" />;
+  return (
+    <Section width="full">
+      <Catalog sort="latest" />
+    </Section>
+  );
 }

@@ -2,6 +2,8 @@ import { CategoryFindCommand } from "@/features/commands/category/find.command";
 import { CategoryGetCommand } from "@/features/commands/category/index.command";
 import { Breadcrumb } from "@/features/components/Breadcrumb";
 import Catalog from "@/features/components/Catalog/Catalog";
+import HeroHeader from "@/features/components/HeroHeader";
+import Section from "@/features/components/Section";
 import { getParentCategoryImage } from "@/features/helpers/category.helper";
 import { getBasePath } from "@/features/helpers/path.helper";
 import { Category } from "@/features/types/category.type";
@@ -61,18 +63,22 @@ export default async function CatalogPage({
   const category = CategoryFindCommand.handle(categoryId) as Category;
 
   return (
-    <section className="max-w-7xl mx-auto flex flex-col space-y-8">
-      <Breadcrumb
-        items={[
-          { href: "/catalogo", label: "Catálogo" },
-          { label: category.name },
-        ]}
+    <>
+      <HeroHeader
+        title={category.name}
+        description={category.description}
+        backgroundUrl={getParentCategoryImage(`${categoryId}_bg`)}
       />
 
-      <h1 className="text-3xl font-bold mb-0">{category.name}</h1>
-      <h2 className="">{category.description}</h2>
-
-      <Catalog parentCategoryId={categoryId} sort="latest" cols={4} />
-    </section>
+      <Section>
+        <Breadcrumb
+          items={[
+            { href: "/catalogo", label: "Catálogo" },
+            { label: category.name },
+          ]}
+        />
+        <Catalog parentCategoryId={categoryId} sort="latest" cols={4} />
+      </Section>
+    </>
   );
 }

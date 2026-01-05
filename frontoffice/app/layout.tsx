@@ -62,9 +62,7 @@ export default function RootLayout({
         <Navbar />
         <SubNavbar />
 
-        <div className="flex mt-10 mb-10 items-center justify-center px-8">
-          {children}
-        </div>
+        {children}
         <Footer />
       </body>
     </html>

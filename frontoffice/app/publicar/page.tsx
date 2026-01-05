@@ -3,6 +3,7 @@ import { getBasePath } from "@/features/helpers/path.helper";
 
 import PublishForm from "./components/PublishForm/PublishForm";
 import { StepCard } from "./components/StepCard";
+import Section from "@/features/components/Section";
 
 const title = "Publica tu producto o servicio | Peru Guitar";
 const description =
@@ -20,10 +21,10 @@ export const metadata = {
 
 export default function Publish() {
   return (
-    <section className="max-w-3xl space-y-10">
-      <div className="space-y-4">
-        <Breadcrumb items={[{ label: "Publicar" }]} />
+    <Section width="narrow">
+      <Breadcrumb items={[{ label: "Publicar" }]} />
 
+      <div>
         <h1 className="text-3xl font-bold">Publica tu producto o servicio</h1>
 
         <p className="text-lg text-gray-700">
@@ -56,13 +57,13 @@ export default function Publish() {
           </StepCard>
         </div>
 
-        <p className="text-gray-500 text-center max-w-md mx-auto mt-10">
+        <p className="text-gray-500 text-center max-w-md mx-auto mt-6 mb-6">
           Peru Guitar no participa en transacciones ni pagos. La coordinación se
           realiza directamente entre las partes.
         </p>
       </div>
 
       <PublishForm />
-    </section>
+    </Section>
   );
 }

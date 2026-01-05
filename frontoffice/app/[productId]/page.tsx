@@ -14,6 +14,7 @@ import ProductSimilarLising from "./components/ProductSimilarListing";
 import ProductFullDescription from "./components/ProductFullDescription/ProductFullDescription";
 import { ProductYoutubeVideo } from "./components/ProductYoutubeVideo";
 import ProductSoldNotice from "./components/ProductSoldNotice";
+import Section from "@/features/components/Section";
 
 export async function generateStaticParams() {
   const { items } = CatalogGetCommand.handle();
@@ -75,7 +76,7 @@ export default async function ProductPage({
   }
 
   return (
-    <section className="max-w-7xl mx-auto flex flex-col space-y-8">
+    <Section spaceY="8">
       <Breadcrumb items={[{ label: product.name }]} />
 
       {product.isSold && <ProductSoldNotice />}
@@ -126,6 +127,6 @@ export default async function ProductPage({
 
       <ProductSimilarLising excludedProductId={product.id} />
       <ProductDisclaimer />
-    </section>
+    </Section>
   );
 }

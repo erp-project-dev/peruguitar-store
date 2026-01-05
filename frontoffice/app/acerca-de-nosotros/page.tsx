@@ -1,4 +1,5 @@
 import { Breadcrumb } from "@/features/components/Breadcrumb";
+import Section from "@/features/components/Section";
 import { getBasePath } from "@/features/helpers/path.helper";
 
 const title = "Acerca de nosotros";
@@ -17,7 +18,7 @@ export const metadata = {
 
 export default function AboutUs() {
   return (
-    <section className="max-w-3xl space-y-6">
+    <Section width="narrow">
       <Breadcrumb items={[{ label: "Acerca de nosotros" }]} />
 
       <h1 className="text-3xl font-bold">Acerca de Peru Guitar</h1>
@@ -68,6 +69,6 @@ export default function AboutUs() {
         <strong>Peru Guitar</strong>, puedes contactarnos a través de nuestras
         redes sociales oficiales.
       </p>
-    </section>
+    </Section>
   );
 }

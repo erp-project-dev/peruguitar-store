@@ -1,5 +1,7 @@
 import { Breadcrumb } from "@/features/components/Breadcrumb";
 import Catalog from "@/features/components/Catalog/Catalog";
+import HeroHeader from "@/features/components/HeroHeader";
+import Section from "@/features/components/Section";
 import { getParentCategoryImage } from "@/features/helpers/category.helper";
 import { getBasePath } from "@/features/helpers/path.helper";
 
@@ -27,18 +29,17 @@ export async function generateMetadata() {
 
 export default function CatalogPage() {
   return (
-    <section className="max-w-7xl mx-auto flex flex-col space-y-8">
-      <Breadcrumb items={[{ label: "Catálogo" }]} />
+    <>
+      <HeroHeader
+        title="Catálogo"
+        description="Explora instrumentos, pedales, servicios y artículos para guitarristas."
+        backgroundUrl={getParentCategoryImage("guitar_bg")}
+      />
 
-      <div>
-        <h1 className="text-3xl font-bold">Catálogo</h1>
-        <p className="text-gray-600">
-          Explora instrumentos, pedales, servicios y artículos para
-          guitarristas.
-        </p>
-      </div>
-
-      <Catalog sort="latest" cols={4} />
-    </section>
+      <Section>
+        <Breadcrumb items={[{ label: "Catálogo" }]} />
+        <Catalog sort="latest" cols={4} />
+      </Section>
+    </>
   );
 }
