@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Eye, Save, Undo } from "lucide-react";
+import { Eye, Save, Undo, MessageCircle } from "lucide-react";
 
 import PageSection from "@/app/components/PageSection";
 import Button from "@/app/components/Form/Button";
@@ -22,6 +22,7 @@ import ProductImageList from "./components/ProductImageList";
 
 import { useCatalogData } from "../shared/use-catalog-data";
 import { ProductEntryForm, productEntryFrom } from "../shared/product.entry";
+import { getWhatsappLink } from "@/app/common/helpers/merchant.helper";
 
 const storeClient = new StoreClient();
 
@@ -70,7 +71,7 @@ export default function EditProductPage() {
 
           currency: product.currency,
           price: product.price,
-          price_type: product.price_type ?? productEntryFrom.price_type,
+          price_type: product.price_type,
 
           external_video_url: product.external_video_url,
 
@@ -80,8 +81,6 @@ export default function EditProductPage() {
 
           status: product.status,
           is_pinned: product.is_pinned,
-
-          images: product.images ?? [],
 
           publish_date: product.publish_date,
         });
@@ -95,7 +94,6 @@ export default function EditProductPage() {
     loadProduct();
   }, [productId]);
 
-  /* ---------------- update form ---------------- */
   const update = (key: keyof ProductEntryForm, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
@@ -121,6 +119,29 @@ export default function EditProductPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleWhatsappMessage = (productId: string) => {
+    const merchant = merchants.find((m) => m._id === form.merchant_id);
+
+    if (!merchant) {
+      throw new Error("Merchant does not exist");
+    }
+
+    const message = `
+Hola ${merchant.name},
+
+Estamos publicando tu producto.
+Dentro de poco podrás usar el siguiente enlace para visualizarlo:
+
+https://peruguitar.com/${productId}
+
+Gracias.
+    `;
+
+    const url = getWhatsappLink(merchant.country, merchant.whatsapp, message);
+
+    window.open(url, "_blank");
   };
 
   const handleImagesAttach = async (files: File[]) => {
@@ -193,6 +214,16 @@ export default function EditProductPage() {
             disabled={loading}
           >
             Back
+          </Button>
+
+          <Button
+            size="lg"
+            icon={MessageCircle}
+            onClick={() => handleWhatsappMessage(productId)}
+            disabled={loading || form.status !== "available"}
+            variant="primary"
+          >
+            Chat with merchant
           </Button>
 
           <Button

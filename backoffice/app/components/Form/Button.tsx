@@ -1,7 +1,13 @@
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
 
-type ButtonVariant = "default" | "info" | "success" | "warning" | "danger";
+type ButtonVariant =
+  | "default"
+  | "primary"
+  | "info"
+  | "success"
+  | "warning"
+  | "danger";
 type ButtonSize = "sm" | "md" | "lg";
 
 type ButtonProps = {
@@ -18,6 +24,8 @@ type ButtonProps = {
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   default:
     "bg-neutral-900 text-white hover:bg-neutral-800 focus:ring-neutral-400",
+  primary:
+    "bg-white text-neutral-900 hover:bg-neutral-100 focus:ring-neutral-300 border border-neutral-300",
   info: "bg-blue-600 text-white hover:bg-blue-500 focus:ring-blue-400",
   success: "bg-green-600 text-white hover:bg-green-500 focus:ring-green-400",
   warning: "bg-yellow-500 text-black hover:bg-yellow-400 focus:ring-yellow-300",

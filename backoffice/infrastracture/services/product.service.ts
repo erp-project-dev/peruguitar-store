@@ -24,7 +24,6 @@ export class ProductService {
       ...entry,
       _id: id,
       images: [],
-      is_enabled: false,
       is_pinned: false,
       publish_date: new Date().toISOString(),
     });

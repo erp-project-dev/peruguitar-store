@@ -116,6 +116,7 @@ export default function CreateProductPage() {
         specs,
         status: form.status,
         external_video_url: form.external_video_url,
+        images: [],
       };
 
       const created = await storeClient.execute<Product>(

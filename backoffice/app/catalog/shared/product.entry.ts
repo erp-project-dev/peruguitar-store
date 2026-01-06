@@ -5,6 +5,7 @@ type ProductOmitedProperties =
   | "specs"
   | "category_id"
   | "_id"
+  | "images"
   | "created_at"
   | "created_by"
   | "updated_at"
@@ -15,6 +16,7 @@ export interface ProductEntryForm
   _id?: string;
   category_id?: CategoryId;
   specs_raw?: string;
+  images?: string[];
 }
 
 export const productEntryFrom: ProductEntryForm = {
@@ -36,5 +38,4 @@ export const productEntryFrom: ProductEntryForm = {
   specs_raw: undefined,
   status: "disabled",
   is_pinned: false,
-  images: [],
 };

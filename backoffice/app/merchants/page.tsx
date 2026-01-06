@@ -94,7 +94,6 @@ export default function Merchants() {
             label: "Last name",
             editable: true,
             sortable: true,
-            width: 200,
           },
           {
             key: "country",
@@ -127,7 +126,7 @@ export default function Merchants() {
             key: "email",
             label: "E-mail",
             editable: true,
-            width: 260,
+            width: 300,
             render: (value) =>
               value ? (
                 <a
@@ -143,6 +142,7 @@ export default function Merchants() {
             label: "WhatsApp",
             editable: true,
             align: "right",
+            width: 260,
             render: (value) =>
               value ? (
                 <a
