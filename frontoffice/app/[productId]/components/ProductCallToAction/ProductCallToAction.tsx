@@ -47,7 +47,6 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
 
         <ProductWhatsappButton
           merchantCountry={product.merchant.country}
-          merchantName={product.merchant.name}
           phoneNumber={product.merchant.whatsapp}
           productId={product.id}
           productName={product.name}

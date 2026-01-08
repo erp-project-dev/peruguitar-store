@@ -7,7 +7,6 @@ import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 
 interface ProductWhatsappButtonProps {
   phoneNumber: string;
-  merchantName: string;
   merchantCountry: string;
   productId: string;
   productName: string;
@@ -17,7 +16,6 @@ interface ProductWhatsappButtonProps {
 
 export default function ProductWhatsappButton({
   phoneNumber,
-  merchantName,
   merchantCountry,
   productId,
   productName,
@@ -30,8 +28,8 @@ export default function ProductWhatsappButton({
     sendClarityEvent("whatsapp_click");
 
     const message = `
-Hola ${merchantName}, estoy interesado en *${productName}* que encontré en *Peru Guitar*. ¿Sigue disponible?
-ref: ${getBasePath(productId)}
+Hola, estoy interesado en *${productName}* que encontré en *Peru Guitar*. ¿Sigue disponible?
+${getBasePath(productId)}
 `;
 
     window.open(
