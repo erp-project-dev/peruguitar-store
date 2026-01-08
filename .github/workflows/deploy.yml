@@ -9,6 +9,7 @@ on:
 jobs:
   decide:
     runs-on: ubuntu-latest
+    environment: production
     outputs:
       deploy: ${{ steps.release.outputs.deploy }}
 
@@ -36,10 +37,7 @@ jobs:
         working-directory: ./frontoffice
         run: |
           LOCAL_VERSION=$(node -p "require('./app/db/store.json').meta.release_version")
-
-          REMOTE_VERSION=$(curl -sf https://peruguitar.com/.meta/version \
-            | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).release_version" \
-            || echo "")
+          REMOTE_VERSION=$(curl -sf https://peruguitar.com/.meta/version || echo "")
 
           if [ "$LOCAL_VERSION" != "$REMOTE_VERSION" ]; then
             echo "deploy=true" >> $GITHUB_OUTPUT
@@ -69,10 +67,14 @@ jobs:
       - name: Generate cards from images
         working-directory: ./frontoffice
         run: npm run task:cards
+        env:
+          DATA_SYNC_SECRET: ${{ secrets.DATA_SYNC_SECRET }}
 
       - name: Generate catalog CSV
         working-directory: ./frontoffice
         run: npm run task:csv
+        env:
+          DATA_SYNC_SECRET: ${{ secrets.DATA_SYNC_SECRET }}
 
       - name: Build Next.js (static export)
         working-directory: ./frontoffice
