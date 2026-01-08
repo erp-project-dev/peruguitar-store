@@ -7,9 +7,10 @@ on:
       - main
 
 jobs:
-  deploy:
+  decide:
     runs-on: ubuntu-latest
-    environment: production
+    outputs:
+      deploy: ${{ steps.release.outputs.deploy }}
 
     steps:
       - name: Checkout repository
@@ -29,6 +30,41 @@ jobs:
         run: npm run task:read
         env:
           DATA_SYNC_SECRET: ${{ secrets.DATA_SYNC_SECRET }}
+
+      - name: Decide release
+        id: release
+        working-directory: ./frontoffice
+        run: |
+          LOCAL_VERSION=$(node -p "require('./app/db/store.json').meta.release_version")
+
+          REMOTE_VERSION=$(curl -sf https://peruguitar.com/.meta/version \
+            | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).release_version" \
+            || echo "")
+
+          if [ "$LOCAL_VERSION" != "$REMOTE_VERSION" ]; then
+            echo "deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "deploy=false" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    needs: decide
+    if: needs.decide.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: ./frontoffice
+        run: npm install
 
       - name: Generate cards from images
         working-directory: ./frontoffice
