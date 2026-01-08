@@ -2,10 +2,10 @@
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/chunks/f943d050e3deb9f8.css","style"]
-:HL["/catalog/ricardoroa/fender-player-plus-stratocaster-tequila-sunrise-2024-made-in-mexico-1.jpeg","image"]
+:HL["/catalog/lucianotello/silvertone-u1-1960-1.jpg","image"]
+:HL["/catalog/victorvera/fender-american-professional-ii-1.jpg","image"]
+:HL["/catalog/ed-vasquez/ibanez-rg-550-genesis-purple-neon-a1732df5.jpg","image"]
 :HL["/catalog/moshegarcia-saldana/fender-telecaster-american-professional-i-sunburst-19e75dc3.jpg","image"]
-:HL["/catalog/ricardougarte/ibanez-rg-565-japonesa-1.jpg","image"]
-:HL["/catalog/vanerabel/fender-telecaster-american-special-2013-1.jpg","image"]
-:HL["/catalog/diego-merino/fender-american-original-60s-5fee9c6d.jpg","image"]
-:HL["/catalog/javierroman/gibson-les-paul-standard-50s-goldtop-2023-1.jpg","image"]
-0:{"buildId":"VcOeemdwtw1WrP6FAp4cc","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"ltd-ec256-dimarzio","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+:HL["/catalog/cesarneyra/musicman-jp6-1.jpg","image"]
+:HL["/catalog/martincamasca/custom-profesional-dimarzio-sperzel-1.jpg","image"]
+0:{"buildId":"cWbTa6lXep88MyE6SJb6k","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"ltd-ec256-dimarzio","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
