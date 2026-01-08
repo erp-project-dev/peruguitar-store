@@ -4,7 +4,6 @@ export interface Merchant {
   country: string;
   state: string;
   city: string;
-  last_name: string;
   whatsapp: string;
   instagram: string;
 }

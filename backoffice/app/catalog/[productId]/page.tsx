@@ -223,7 +223,7 @@ Gracias.
             disabled={loading || form.status !== "available"}
             variant="primary"
           >
-            Chat with merchant
+            Chat
           </Button>
 
           <Button
@@ -233,7 +233,7 @@ Gracias.
             disabled={loading}
             variant="info"
           >
-            Visit product page
+            Visit page
           </Button>
 
           <Button

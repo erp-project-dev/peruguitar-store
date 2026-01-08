@@ -18,7 +18,7 @@ export default function Navbar() {
     "block text-lg hover:text-yellow-400 transition flex items-center gap-2";
 
   return (
-    <nav className="w-full z-50 bg-black text-white shadow-md">
+    <nav className="w-full z-50 bg-linear-to-r from-black to-zinc-800 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
@@ -56,8 +56,6 @@ export default function Navbar() {
           {open ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
       </div>
-
-      {/* MOBILE DROPDOWN */}
       {open && (
         <div className="md:hidden bg-[#111] px-4 pt-2 pb-4 space-y-4 border-t border-white/10">
           {NAV_LINKS.map((item) => {

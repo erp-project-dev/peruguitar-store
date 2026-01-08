@@ -38,17 +38,7 @@ export class ProductGetCommand {
       brand,
       publishDate: new Date(p.publish_date),
 
-      merchant: {
-        id: merchant.id,
-        firstName: merchant.name,
-        lastName: merchant.last_name,
-        fullName: `${merchant.name} ${merchant.last_name}`,
-        country: merchant.country,
-        state: merchant.state,
-        city: merchant.city,
-        whatsapp: merchant.whatsapp,
-        instagram: merchant.instagram,
-      },
+      merchant,
 
       isSold: p.status === "sold",
     };

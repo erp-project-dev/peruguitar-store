@@ -88,12 +88,7 @@ export class CatalogGetCommand {
         type,
         brand,
         publishDate: new Date(p.publish_date),
-        merchant: {
-          id: merchant.id,
-          fullName: `${merchant.name} ${merchant.last_name}`,
-          whatsapp: merchant.whatsapp,
-          instagram: merchant.instagram,
-        },
+        merchant,
         isSold: p.status === "sold",
       };
     });

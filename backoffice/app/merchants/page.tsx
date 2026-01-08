@@ -84,14 +84,7 @@ export default function Merchants() {
           },
           {
             key: "name",
-            label: "Name",
-            editable: true,
-            sortable: true,
-            width: 140,
-          },
-          {
-            key: "last_name",
-            label: "Last name",
+            label: "Display name",
             editable: true,
             sortable: true,
           },

@@ -1,5 +1,6 @@
 import { Brand } from "@/features/types/brand.type";
 import { Category } from "@/features/types/category.type";
+import { Merchant } from "@/features/types/merchant.type";
 import { ProductType } from "@/features/types/product-type.type";
 import { Product } from "@/features/types/product.type";
 
@@ -10,17 +11,7 @@ export interface ProductPageViewModel extends Product {
 
   publishDate: Date;
 
-  merchant: {
-    id: string;
-    fullName: string;
-    firstName: string;
-    country: string;
-    state: string;
-    city: string;
-    lastName: string;
-    whatsapp: string;
-    instagram: string;
-  };
+  merchant: Merchant;
 
   isSold: boolean;
 }

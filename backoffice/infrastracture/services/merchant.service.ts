@@ -21,7 +21,7 @@ export class MerchantService {
   }
 
   async create(entry: Omit<Merchant, "_id">): Promise<Merchant> {
-    const id = toSlug(entry.name, entry.last_name);
+    const id = toSlug(entry.name);
 
     await this.validateUniqueId(id);
     await this.validateUniqueWhatsapp(entry.whatsapp);

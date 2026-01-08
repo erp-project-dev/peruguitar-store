@@ -47,7 +47,7 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
 
         <ProductWhatsappButton
           merchantCountry={product.merchant.country}
-          merchantName={product.merchant.firstName}
+          merchantName={product.merchant.name}
           phoneNumber={product.merchant.whatsapp}
           productId={product.id}
           productName={product.name}
@@ -67,7 +67,7 @@ export default function ProductCallToAction(props: ProductCallToActionProps) {
         <div className="border-t border-b border-dashed border-gray-300 pt-4 pb-4">
           <div className="grid grid-cols-[3fr_1fr] items-center gap-4 text-sm text-gray-700">
             <ProductMerchantInfo
-              fullName={product.merchant.fullName}
+              fullName={product.merchant.name}
               country={product.merchant.country}
               state={product.merchant.state}
               city={product.merchant.city}
