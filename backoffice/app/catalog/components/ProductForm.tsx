@@ -127,5 +127,31 @@ export default function ProductForm({
     );
   }
 
+  if (category === "pick") {
+    return (
+      <ProductFormBuilder
+        mode={mode}
+        form={form}
+        brands={brands}
+        merchants={merchants}
+        onUpdate={onUpdate}
+        layout={[
+          "name:full",
+          "brand",
+          "model",
+          "currency",
+          "price",
+          "price_type",
+          "merchant",
+          "status",
+          "pinned",
+          "description:full",
+          "full_description:full",
+          "specs:full",
+        ]}
+      />
+    );
+  }
+
   return null;
 }

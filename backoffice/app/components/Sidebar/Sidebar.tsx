@@ -9,6 +9,7 @@ import { SIDEBAR_MENU } from "./sidebar.config";
 import { StoreCommand } from "@/app/api/store/store.command";
 import { StoreClient } from "@/app/common/store.client";
 import type { User } from "@/infrastracture/domain/user.entity";
+import { DataSyncButton } from "./components/DataSyncButton";
 
 const storeClient = new StoreClient();
 
@@ -42,10 +43,10 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed inset-y-0 left-0 w-64 bg-neutral-900 border-r border-neutral-800 text-neutral-200 flex flex-col">
-      {/* Header */}
       <div className="border-b border-neutral-800">
-        <div className="h-14 flex items-center px-4 font-bold text-sm tracking-wide">
-          Peru Guitar Panel
+        <div className="h-14 flex items-center justify-between px-4 font-bold text-sm tracking-wide">
+          <span>Peru Guitar Panel</span>
+          <DataSyncButton />
         </div>
 
         {user && (

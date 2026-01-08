@@ -33,11 +33,20 @@ export function translateProductSpec(spec: string): string {
     /* ---------- Common ---------- */
     brand: "Marca",
     model: "Modelo",
+    origin: "Origen",
+    release_year: "Año de lanzamiento",
+    color: "Color",
+    material: "Material",
+    size: "Tamaño",
+
+    /* ---------- Pick specs ---------- */
+    thickness_mm: "Grosor (mm)",
+    shape: "Forma",
+    grip: "Grip",
+    finish: "Acabado",
+    flexibility: "Flexibilidad",
 
     /* ---------- Guitar specs ---------- */
-    release_year: "Año de lanzamiento",
-    origin: "Origen",
-
     body_wood: "Madera del cuerpo",
     body_finish: "Acabado del cuerpo",
     body_type: "Tipo de cuerpo",
@@ -49,7 +58,6 @@ export function translateProductSpec(spec: string): string {
     number_of_strings: "Número de cuerdas",
 
     hand_orientation: "Orientación",
-    color: "Color",
     bridge_type: "Puente",
     pickups: "Pastillas",
     hardware_color: "Color de herrajes",
@@ -61,11 +69,18 @@ export function translateProductSpec(spec: string): string {
     pages: "Número de páginas",
     format: "Formato",
     isbn: "ISBN",
+
+    /* ---------- T-Shirt / Merch ---------- */
+    fabric_weight_gsm: "Gramaje",
+    fit: "Corte",
+    print_type: "Tipo de impresión",
+    collar_type: "Tipo de cuello",
+    sleeve_type: "Tipo de manga",
+    unisex: "Unisex",
   };
 
   return map[spec] ?? spec.replace(/_/g, " ");
 }
-
 export function translatePriceType(type: price_type): string {
   switch (type) {
     case "fixed":

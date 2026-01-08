@@ -89,7 +89,9 @@ export default function Brands() {
             width: 220,
             editable: true,
             multiple: true,
-            values: categories.map((c) => ({ label: c.name, value: c._id })),
+            values: categories
+              .filter((c) => c.parent_id)
+              .map((c) => ({ label: c.name, value: c._id })),
             truncate: false,
             render: (value: string[]) => (
               <ul className="space-y-1">

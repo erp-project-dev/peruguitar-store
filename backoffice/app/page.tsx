@@ -27,7 +27,6 @@ import MetricSection from "./components/Dashboard/MetricSection";
 import MetricGrid from "./components/Dashboard/MetricGrid";
 import { MetricCard } from "./components/Dashboard/MetricCard";
 import MetricTable from "./components/Dashboard/MetricTable";
-import { DataSyncButton } from "./components/Dashboard/DataSyncButton";
 
 const storeClient = new StoreClient();
 
@@ -124,7 +123,6 @@ export default function Home() {
       title="Dashboard"
       description="General store metrics"
       loading={loading}
-      actions={<DataSyncButton />}
     >
       <div className="space-y-14">
         {/* ================= PRODUCTS ================= */}

@@ -32,6 +32,8 @@ export const BookSpecsSchema = z.object({
 });
 
 export const PickSpecsSchema = z.object({
+  origin: z.string().nullable(),
+  release_year: z.number().int().nullable(),
   material: z.string().nullable(),
   thickness_mm: z.number().nullable(),
   shape: z.string().nullable(),
@@ -41,7 +43,6 @@ export const PickSpecsSchema = z.object({
   flexibility: z.enum(["soft", "medium", "hard"]).nullable(),
   color: z.string().nullable(),
   pack_quantity: z.number().int().nullable(),
-  made_in: z.string().nullable(),
 });
 
 export const DigitalPedalboardSpecsSchema = z.object({

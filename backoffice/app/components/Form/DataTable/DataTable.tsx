@@ -39,19 +39,35 @@ export type Column<T> = {
   render?: (value: any, row: T) => React.ReactNode;
 };
 
-function castValue(value: any, type?: "string" | "number" | "boolean") {
-  if (value === "" || value === null) return null;
+type CastType = "string" | "number" | "boolean";
+
+function castValue(value: any, type?: CastType): any {
+  if (value === "" || value === null || value === undefined) {
+    return null;
+  }
+
+  if (Array.isArray(value)) {
+    const result = value
+      .map((v) => castValue(v, type))
+      .filter((v) => v !== null);
+
+    return result.length ? result : null;
+  }
 
   switch (type) {
-    case "number":
-      return Number(value);
+    case "number": {
+      const n = Number(value);
+      return Number.isNaN(n) ? null : n;
+    }
 
     case "boolean":
-      return value === true || value === "true" || value === 1;
+      return value === true || value === "true" || value === 1 || value === "1";
 
     case "string":
-    default:
       return String(value);
+
+    default:
+      return value;
   }
 }
 

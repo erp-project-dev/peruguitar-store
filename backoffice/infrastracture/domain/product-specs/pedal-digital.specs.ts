@@ -1,5 +1,6 @@
-export interface DigitalPedalboardSpecs {
-  origin: string | null;
+import { BaseSpecs } from "./base.specs";
+
+export interface DigitalPedalboardSpecs extends BaseSpecs {
   processing_type: string | null;
   effects_count: number | null;
   amp_models: boolean | null;
@@ -9,5 +10,4 @@ export interface DigitalPedalboardSpecs {
   expression_pedal: boolean | null;
   connectivity: string | null;
   power_type: string | null;
-  color: string | null;
 }

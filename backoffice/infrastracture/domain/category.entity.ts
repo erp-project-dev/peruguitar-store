@@ -5,7 +5,8 @@ export type CategoryId =
   | "book"
   | "lesson"
   | "pedalboard-digital"
-  | "music-production";
+  | "music-production"
+  | "pick";
 
 export interface Category extends BaseEntity {
   _id: CategoryId;
