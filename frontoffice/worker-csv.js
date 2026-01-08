@@ -4,7 +4,7 @@ import path from "path";
 import logger from "./worker-logger.js";
 
 const sourceFile = path.resolve("./app/db/store.json");
-const outputFile = path.resolve("./public/catalog.csv");
+const outputFile = path.resolve("./public/.meta/catalog.csv");
 
 function escapeCSV(value = "") {
   return `"${String(value).replace(/"/g, '""')}"`;

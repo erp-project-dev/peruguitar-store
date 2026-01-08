@@ -105,8 +105,8 @@ export default async function ProductPage({
               <h2 className="text-2xl font-semibold">Especificaciones</h2>
               <ProductSpecs
                 specs={{
-                  model: product.model,
                   brand: product.brand?.name,
+                  model: product.model,
                   ...product.specs,
                 }}
               />

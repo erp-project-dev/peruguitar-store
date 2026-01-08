@@ -15,12 +15,13 @@ if (!DATA_SYNC_SECRET) {
 const sourceFile = path.resolve("./app/db/store.enc");
 const destinationFile = path.resolve("./app/db/store.json");
 
+// NUEVO
+const metaDir = path.resolve("./public/.meta");
+const versionFile = path.join(metaDir, "version");
+
 const algorithm = "aes-256-cbc";
 const ivLength = 16;
 
-// -------------------------------------------
-// DECRYPT (MATCHES YOUR ENCRYPT LOGIC)
-// -------------------------------------------
 function decrypt(payload) {
   const [ivHex, encryptedHex] = payload.split(":");
 
@@ -36,7 +37,6 @@ function decrypt(payload) {
   }
 
   const key = crypto.createHash("sha256").update(DATA_SYNC_SECRET).digest();
-
   const decipher = crypto.createDecipheriv(algorithm, key, iv);
 
   const decrypted = Buffer.concat([
@@ -47,9 +47,6 @@ function decrypt(payload) {
   return JSON.parse(decrypted);
 }
 
-// -------------------------------------------
-// MAIN
-// -------------------------------------------
 (async () => {
   logger.start("Data Sync");
 
@@ -62,8 +59,20 @@ function decrypt(payload) {
     const store = decrypt(encryptedPayload);
 
     fs.writeFileSync(destinationFile, JSON.stringify(store, null, 2), "utf8");
-
     logger.success("store.json generated successfully");
+
+    const releaseVersion = store?.meta?.release_version;
+
+    if (!releaseVersion) {
+      throw new Error("meta.release_version not found in store");
+    }
+
+    if (!fs.existsSync(metaDir)) {
+      fs.mkdirSync(metaDir, { recursive: true });
+    }
+
+    fs.writeFileSync(versionFile, releaseVersion, "utf8");
+    logger.success("version file generated successfully");
   } catch (err) {
     logger.error(err.message);
     process.exit(1);
