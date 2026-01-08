@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   Guitar,
   Users,
+  UserCircle,
   Settings,
   Tags,
   Layers,
@@ -15,6 +16,12 @@ export const SIDEBAR_MENU = [
     label: "Dashboard",
     icon: LayoutDashboard,
     path: "/",
+  },
+  {
+    id: "customers",
+    label: "Customers",
+    icon: UserCircle,
+    path: "/customers",
   },
   {
     id: "merchants",

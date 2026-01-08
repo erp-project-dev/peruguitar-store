@@ -17,6 +17,7 @@ import {
   storeMetricsService,
   dataSyncService,
   categoryService,
+  customerService,
 } from "./store.services";
 
 import { CommandHandler } from "./store.type";
@@ -70,6 +71,23 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   },
   [StoreCommand.MerchantRemove]: {
     next: (_q, _p, id) => merchantService.remove(id!),
+  },
+
+  // CUSTOMER
+  [StoreCommand.CustomerFindAll]: {
+    next: () => customerService.findAll(),
+  },
+  [StoreCommand.CustomerFindById]: {
+    next: (_q, _p, id) => customerService.findById(id!),
+  },
+  [StoreCommand.CustomerCreate]: {
+    next: (_q, payload) => customerService.create(payload),
+  },
+  [StoreCommand.CustomerUpdate]: {
+    next: (_q, payload, id) => customerService.update(id!, payload),
+  },
+  [StoreCommand.CustomerRemove]: {
+    next: (_q, _p, id) => customerService.remove(id!),
   },
 
   // BRAND

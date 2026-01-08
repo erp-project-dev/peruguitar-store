@@ -53,6 +53,8 @@ export default function TableBody<T extends { _id: string }>({
   onEditChange,
   onRemove,
 }: TableBodyProps<T>) {
+  const showNoItems = !loading && data.length === 0;
+
   return (
     <tbody>
       {canInsert && (
@@ -66,6 +68,17 @@ export default function TableBody<T extends { _id: string }>({
           onCancel={onCancelInsert}
           onChange={onInsertChange}
         />
+      )}
+
+      {showNoItems && (
+        <tr>
+          <td
+            colSpan={columns.length + (canEdit || canRemove ? 1 : 0)}
+            className="h-100 text-center text-sm text-neutral-400"
+          >
+            No items found.
+          </td>
+        </tr>
       )}
 
       {data.map((row) =>

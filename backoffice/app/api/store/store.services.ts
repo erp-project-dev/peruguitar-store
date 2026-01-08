@@ -11,6 +11,7 @@ import { ProductTypeService } from "@/infrastracture/services/product-type.servi
 import { SettingService } from "@/infrastracture/services/setting.service";
 import { UserService } from "@/infrastracture/services/user.service";
 import { CategoryService } from "@/infrastracture/services/category.service";
+import { CustomerService } from "@/infrastracture/services/customer.service";
 
 export const authService = new AuthService();
 export const userService = new UserService();
@@ -22,6 +23,7 @@ export const productImageReorderService = new ProductImageReorderService();
 
 export const categoryService = new CategoryService();
 export const merchantService = new MerchantService();
+export const customerService = new CustomerService();
 export const brandService = new BrandService();
 export const productTypeService = new ProductTypeService();
 export const settingService = new SettingService();
