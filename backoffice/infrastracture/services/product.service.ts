@@ -1,18 +1,39 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MongoRepository } from "../repositories/mongo.repository";
 import { ApplicationError } from "../shared/error";
 import { toSlug } from "../helpers/slug.helper";
 import { Product } from "../domain/product.entity";
 import { ProductSchema } from "../schema/product.schema";
+import { Category } from "../domain/category.entity";
+import { CategorySchema } from "../schema/category.schema";
+
+type FindAllProps = {
+  onlyStoreProducts?: boolean;
+};
 
 export class ProductService {
   private repository = new MongoRepository<Product>("catalog", ProductSchema);
+  private categoryRepository = new MongoRepository<Category>(
+    "categories",
+    CategorySchema
+  );
 
   async findById(id: string): Promise<Product> {
     return this.repository.findById(id);
   }
 
-  async findAll(): Promise<Product[]> {
-    return this.repository.findAll();
+  async findAll(query?: FindAllProps): Promise<Product[]> {
+    const filter: any = {};
+
+    if (query) {
+      const categories = await this.categoryRepository.findAll({
+        parent_id: "store",
+      });
+
+      filter.category_id = { $in: categories.map((c) => c._id) };
+    }
+
+    return this.repository.findAll(filter);
   }
 
   async create(entry: Omit<Product, "_id">): Promise<Product> {

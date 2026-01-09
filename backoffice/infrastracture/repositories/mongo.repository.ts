@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Db, Filter, Document } from "mongodb";
+import { Db, Filter, Document, Sort } from "mongodb";
 import { ZodError, ZodObject } from "zod";
 
 import { getDbInstance } from "@/infrastracture/repositories/database";
@@ -39,9 +39,19 @@ export class MongoRepository<T extends Document> {
     return entity;
   }
 
-  async findOne(filter: Filter<T>): Promise<T | null> {
+  async findOne(
+    filter: Filter<T>,
+    options?: { sort?: Sort }
+  ): Promise<T | null> {
     const col = await this.collection();
-    const results = (await col.find(filter).limit(2).toArray()) as T[];
+
+    const cursor = col.find(filter);
+
+    if (options?.sort) {
+      cursor.sort(options.sort);
+    }
+
+    const results = (await cursor.limit(2).toArray()) as T[];
 
     if (results.length > 1) {
       throw new ApplicationError(

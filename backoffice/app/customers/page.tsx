@@ -122,7 +122,7 @@ export default function Customers() {
           },
 
           {
-            key: "tax_id_type",
+            key: "tax_type",
             label: "Tax type",
             editable: true,
             width: 140,

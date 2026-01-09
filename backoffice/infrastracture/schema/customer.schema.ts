@@ -8,7 +8,7 @@ export const CustomerSchema = z
     type: z.enum(["individual", "company"]),
 
     tax_id: z.string().min(1).optional(),
-    tax_id_type: z.enum(["dni", "ruc", "passport"]).optional(),
+    tax_type: z.enum(["dni", "ruc", "passport"]).optional(),
 
     name: z.string().min(1),
     last_name: z.string().min(1).optional(),

@@ -13,7 +13,7 @@ import {
   CURRENCIES,
   PRODUCT_PRICE_TYPES,
 } from "@/app/common/data";
-import { PRODUCT_STATUS } from "@/app/common/data/status.data";
+import { PRODUCT_STATUS } from "@/app/common/data/product-status.data";
 
 import { Brand } from "@/infrastracture/domain/brand.entity";
 import { Merchant } from "@/infrastracture/domain/merchant.entity";

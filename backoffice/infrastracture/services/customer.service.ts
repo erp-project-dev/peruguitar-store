@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Customer } from "../domain/customer.entity";
 import { MongoRepository } from "../repositories/mongo.repository";
 import { ApplicationError } from "../shared/error";
 import { CustomerSchema } from "../schema/customer.schema";
 import { ObjectId } from "mongodb";
+
+type FindAllProps = {
+  name?: string;
+};
 
 export class CustomerService {
   private repository = new MongoRepository<Customer>(
@@ -14,8 +19,14 @@ export class CustomerService {
     return this.repository.findById(id);
   }
 
-  async findAll(): Promise<Customer[]> {
-    return this.repository.findAll();
+  async findAll(query?: FindAllProps): Promise<Customer[]> {
+    const filter: any = {};
+
+    if (query) {
+      filter.name = { $regex: query.name, $options: "i" };
+    }
+
+    return this.repository.findAll(filter);
   }
 
   async create(entry: Omit<Customer, "_id">): Promise<Customer> {

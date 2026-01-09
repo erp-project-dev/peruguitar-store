@@ -9,6 +9,7 @@ type InputProps = {
   placeholder?: string;
   rows?: number;
   className?: string;
+  readOnly?: boolean;
 };
 
 const baseClasses =
@@ -16,11 +17,26 @@ const baseClasses =
   "placeholder-neutral-400 transition-colors " +
   "focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900";
 
+const readOnlyClasses =
+  "bg-neutral-100 text-neutral-600 cursor-default focus:ring-0 focus:border-neutral-300";
+
 const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
   function Input(
-    { type = "text", value, onChange, placeholder, rows = 4, className = "" },
+    {
+      type = "text",
+      value,
+      onChange,
+      placeholder,
+      rows = 4,
+      className = "",
+      readOnly = false,
+    },
     ref
   ) {
+    const classes = `${baseClasses} ${
+      readOnly ? readOnlyClasses : ""
+    } ${className}`;
+
     if (type === "textarea") {
       return (
         <textarea
@@ -28,8 +44,9 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
           rows={rows}
           value={value as string}
           placeholder={placeholder}
-          onChange={(e) => onChange?.(e.target.value)}
-          className={`${baseClasses} resize-y ${className}`}
+          readOnly={readOnly}
+          onChange={(e) => !readOnly && onChange?.(e.target.value)}
+          className={`${classes} resize-y`}
         />
       );
     }
@@ -40,8 +57,9 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
         type={type}
         value={value}
         placeholder={placeholder}
-        onChange={(e) => onChange?.(e.target.value)}
-        className={`${baseClasses} ${className}`}
+        readOnly={readOnly}
+        onChange={(e) => !readOnly && onChange?.(e.target.value)}
+        className={classes}
       />
     );
   }

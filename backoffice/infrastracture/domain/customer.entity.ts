@@ -7,7 +7,7 @@ export interface Customer extends BaseEntity {
   type: CustomerType;
 
   tax_id?: string;
-  tax_id_type?: TaxType;
+  tax_type?: TaxType;
 
   name: string;
   last_name?: string;

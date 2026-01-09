@@ -55,6 +55,13 @@ export enum StoreCommand {
   ProductTypeUpdate = "product_type.update",
   ProductTypeRemove = "product_type.remove",
 
+  // ORDERS
+  OrderFindAll = "order.find_all",
+  OrderFindById = "order.find_by_id",
+  OrderCreate = "order.create",
+  OrderUpdate = "order.update",
+  OrderRemove = "order.remove",
+
   // SETTING
   SettingFindAll = "setting.find_all",
   SettingFindById = "setting.find_by_id",

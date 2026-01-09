@@ -21,9 +21,7 @@ export default function Sidebar() {
     (async () => {
       try {
         const me = await storeClient.execute<User>(StoreCommand.UserFindMe, {
-          options: {
-            cacheTtlSeconds: 60 * 60 * 24,
-          },
+          options: { cacheTtlSeconds: 60 * 60 * 24 },
         });
         setUser(me);
       } catch {
@@ -43,6 +41,7 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed inset-y-0 left-0 w-64 bg-neutral-900 border-r border-neutral-800 text-neutral-200 flex flex-col">
+      {/* Header */}
       <div className="border-b border-neutral-800">
         <div className="h-14 flex items-center justify-between px-4 font-bold text-sm tracking-wide">
           <span>Peru Guitar Panel</span>
@@ -72,14 +71,16 @@ export default function Sidebar() {
         )}
       </div>
 
-      <nav className="flex-1 px-2 py-3 text-sm">
-        {SIDEBAR_MENU.map((item, index) => {
-          const Icon = item.icon;
+      {/* Navigation */}
+      <nav className="flex-1 px-2 py-3 text-sm space-y-4">
+        {SIDEBAR_MENU.map((block) => {
+          if (!("group" in block)) {
+            const Icon = block.icon;
 
-          return (
-            <div key={item.id}>
+            return (
               <a
-                href={item.path}
+                key={block.id}
+                href={block.path}
                 className="
                   group w-full flex items-center gap-3
                   px-3 py-2 rounded-md
@@ -92,17 +93,46 @@ export default function Sidebar() {
                   size={16}
                   className="text-neutral-500 group-hover:text-neutral-100 transition-colors"
                 />
-                <span>{item.label}</span>
+                <span>{block.label}</span>
               </a>
+            );
+          }
 
-              {index < SIDEBAR_MENU.length - 1 && (
-                <div className="mx-3 my-1 h-px bg-neutral-800" />
-              )}
+          return (
+            <div key={block.group} className="space-y-1">
+              <div className="px-3 pt-3 pb-1 text-xs font-semibold tracking-widest text-neutral-500 uppercase">
+                {block.group}
+              </div>
+
+              {block.items.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <a
+                    key={item.id}
+                    href={item.path}
+                    className="
+                      group w-full flex items-center gap-3
+                      px-3 py-2 rounded-md
+                      text-neutral-400
+                      hover:bg-neutral-800 hover:text-neutral-100
+                      transition-colors cursor-pointer
+                    "
+                  >
+                    <Icon
+                      size={16}
+                      className="text-neutral-500 group-hover:text-neutral-100 transition-colors"
+                    />
+                    <span>{item.label}</span>
+                  </a>
+                );
+              })}
             </div>
           );
         })}
       </nav>
 
+      {/* Footer */}
       <div className="border-t border-neutral-800 p-2 space-y-1">
         <a
           href="https://peruguitar.com"

@@ -12,6 +12,7 @@ import { SettingService } from "@/infrastracture/services/setting.service";
 import { UserService } from "@/infrastracture/services/user.service";
 import { CategoryService } from "@/infrastracture/services/category.service";
 import { CustomerService } from "@/infrastracture/services/customer.service";
+import { OrderService } from "@/infrastracture/services/order.service";
 
 export const authService = new AuthService();
 export const userService = new UserService();
@@ -26,6 +27,7 @@ export const merchantService = new MerchantService();
 export const customerService = new CustomerService();
 export const brandService = new BrandService();
 export const productTypeService = new ProductTypeService();
+export const orderService = new OrderService();
 export const settingService = new SettingService();
 
 export const storeMetricsService = new StoreMetricsService();

@@ -18,6 +18,7 @@ import {
   dataSyncService,
   categoryService,
   customerService,
+  orderService,
 } from "./store.services";
 
 import { CommandHandler } from "./store.type";
@@ -75,7 +76,7 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
 
   // CUSTOMER
   [StoreCommand.CustomerFindAll]: {
-    next: () => customerService.findAll(),
+    next: (q) => customerService.findAll(q),
   },
   [StoreCommand.CustomerFindById]: {
     next: (_q, _p, id) => customerService.findById(id!),
@@ -88,6 +89,23 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   },
   [StoreCommand.CustomerRemove]: {
     next: (_q, _p, id) => customerService.remove(id!),
+  },
+
+  // ORDERS
+  [StoreCommand.OrderFindAll]: {
+    next: () => orderService.findAll(),
+  },
+  [StoreCommand.OrderFindById]: {
+    next: (_q, _p, id) => orderService.findById(id!),
+  },
+  [StoreCommand.OrderCreate]: {
+    next: (_q, payload) => orderService.create(payload),
+  },
+  [StoreCommand.OrderUpdate]: {
+    next: (_q, payload, id) => orderService.update(id!, payload),
+  },
+  [StoreCommand.OrderRemove]: {
+    next: (_q, _p, id) => orderService.remove(id!),
   },
 
   // BRAND
@@ -143,7 +161,7 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
 
   // PRODUCT
   [StoreCommand.CatalogFindAll]: {
-    next: () => productService.findAll(),
+    next: (q) => productService.findAll(q),
   },
   [StoreCommand.CatalogFindById]: {
     next: (_q, _p, id) => productService.findById(id!),
