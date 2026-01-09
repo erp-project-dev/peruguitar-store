@@ -1,218 +1,243 @@
 import { Db } from "mongodb";
+
 import { getDbInstance } from "../repositories/database";
 import { StoreMetrics } from "../domain/store-metrics.entity";
 
+import { Product } from "../domain/product.entity";
+import { Category } from "../domain/category.entity";
+import { Merchant } from "../domain/merchant.entity";
+import { Customer } from "../domain/customer.entity";
+import { Order } from "../domain/order.entity";
+
 export class StoreMetricsService {
   private async getCollections(db: Db) {
-    const [catalog, merchants, brands] = await Promise.all([
-      db.collection("catalog").find().toArray(),
-      db.collection("merchants").find().toArray(),
-      db.collection("brands").find().toArray(),
-    ]);
+    const [catalog, categories, merchants, customers, orders] =
+      await Promise.all([
+        db.collection<Product>("catalog").find().toArray(),
+        db.collection<Category>("categories").find().toArray(),
+        db.collection<Merchant>("merchants").find().toArray(),
+        db.collection<Customer>("customers").find().toArray(),
+        db.collection<Order>("orders").find().toArray(),
+      ]);
 
-    return { catalog, merchants, brands };
+    return { catalog, categories, merchants, customers, orders };
   }
 
-  async find(): Promise<StoreMetrics | null> {
+  async find(): Promise<StoreMetrics> {
     const db = await getDbInstance();
-    const { catalog, merchants, brands } = await this.getCollections(db);
+    const data = await this.getCollections(db);
 
-    const now = new Date();
-
-    const activeProducts = catalog.filter((p) => p.is_enabled);
-    const pinnedProducts = catalog.filter((p) => p.is_pinned);
-
-    const prices = catalog
-      .map((p) => p.price)
-      .filter((p) => typeof p === "number");
-
-    const sortedPrices = [...prices].sort((a, b) => a - b);
-
-    const averagePrice =
-      prices.reduce((a, b) => a + b, 0) / (prices.length || 1);
-
-    const medianPrice =
-      sortedPrices.length === 0
-        ? 0
-        : sortedPrices[Math.floor(sortedPrices.length / 2)];
-
-    const countBy = (key: string) =>
-      catalog.reduce<Record<string, number>>((acc, item) => {
-        const value = key.includes(".")
-          ? key.split(".").reduce((o, k) => o?.[k], item)
-          : item[key];
-        if (!value) return acc;
-        acc[value] = (acc[value] || 0) + 1;
-        return acc;
-      }, {});
-
-    const countByDate = (days: number) => {
-      const from = new Date();
-      from.setDate(from.getDate() - days);
-      return catalog.filter(
-        (p) => p.publish_date && new Date(p.publish_date) >= from
-      ).length;
+    return {
+      products: this.buildProductsMetrics(data.catalog, data.categories),
+      categories: this.buildCategoriesMetrics(data.catalog, data.categories),
+      merchants: this.buildMerchantsMetrics(data.catalog, data.merchants),
+      store: this.buildStoreMetrics(data.orders, data.customers),
+      orders: this.buildOrderMetrics(data.orders),
     };
+  }
 
-    const imagesStats = catalog.reduce(
-      (acc, p) => {
-        const count = p.images?.length || 0;
-        acc.total += count;
-        if (count === 6) acc.withSix++;
-        if (count < 3) acc.withLessThanThree++;
-        return acc;
-      },
-      { total: 0, withSix: 0, withLessThanThree: 0 }
+  private buildProductsMetrics(
+    catalog: Product[],
+    categories: Category[]
+  ): StoreMetrics["products"] {
+    const total = catalog.length;
+    const active = catalog.filter((p) => p.status === "available").length;
+    const disabled = catalog.filter((p) => p.status === "disabled").length;
+
+    const storeCategoryTotal = this.countProductsUnderStoreCategory(
+      catalog,
+      categories
     );
 
-    const merchantsMap = new Map(merchants.map((m) => [m._id, m]));
-    const merchantsWithProducts = new Set(catalog.map((p) => p.merchant_id));
+    return {
+      total,
+      active,
+      disabled,
+      storeCategoryTotal,
+    };
+  }
 
-    const productsPerMerchantMap = catalog.reduce<Record<string, number>>(
-      (acc, p) => {
-        acc[p.merchant_id] = (acc[p.merchant_id] || 0) + 1;
+  private buildCategoriesMetrics(
+    catalog: Product[],
+    categories: Category[]
+  ): StoreMetrics["categories"] {
+    const parentCategories = categories
+      .filter((c) => c.parent_id === null)
+      .sort((a, b) => a.order - b.order);
+
+    const childCategories = categories.filter((c) => c.parent_id !== null);
+
+    const productsByCategory = catalog.reduce<Record<string, number>>(
+      (acc, product) => {
+        if (!product.category_id) return acc;
+        acc[product.category_id] = (acc[product.category_id] || 0) + 1;
         return acc;
       },
       {}
     );
 
-    const productsPerMerchant = Object.values(productsPerMerchantMap);
+    return parentCategories.map((parent) => {
+      const childIds = childCategories
+        .filter((c) => c.parent_id === parent._id)
+        .map((c) => c._id);
 
-    const byCity: Record<string, number> = {};
-    const byDistrict: Record<string, number> = {};
+      const products = childIds.reduce(
+        (sum, id) => sum + (productsByCategory[id] || 0),
+        0
+      );
 
-    for (const product of catalog) {
-      const merchant = merchantsMap.get(product.merchant_id);
-      if (!merchant) continue;
+      return {
+        id: parent._id,
+        name: parent.name,
+        products,
+      };
+    });
+  }
 
-      if (merchant.city) {
-        byCity[merchant.city] = (byCity[merchant.city] || 0) + 1;
-      }
+  private buildMerchantsMetrics(
+    catalog: Product[],
+    merchants: Merchant[]
+  ): StoreMetrics["merchants"] {
+    const total = merchants.length;
+    const active = new Set(catalog.map((p) => p.merchant_id)).size;
 
-      if (merchant.state) {
-        byDistrict[merchant.state] = (byDistrict[merchant.state] || 0) + 1;
-      }
-    }
+    return { total, active };
+  }
 
-    // 🔹 PRODUCT COMPLETENESS (specs dinámicos)
-    const productsWithCompleteSpecs = catalog.filter(
-      (p) => p.specs && Object.keys(p.specs).length > 0
-    ).length;
+  private buildStoreMetrics(
+    orders: Order[],
+    customers: Customer[]
+  ): StoreMetrics["store"] {
+    const now = new Date();
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(now.getDate() - 7);
 
-    const metrics: StoreMetrics = {
-      generatedAt: now.toISOString(),
+    const ordersLastWeek = orders.filter(
+      (o) => new Date(o.created_at) >= oneWeekAgo
+    );
 
-      totalProducts: catalog.length,
-      totalActiveProducts: activeProducts.length,
-      totalDisabledProducts: catalog.length - activeProducts.length,
-      totalPinnedProducts: pinnedProducts.length,
+    const totalOrders = orders.length;
 
-      totalBrands: brands.length,
-      brandsWithProducts: Object.keys(countBy("brand_id")).length,
+    const weeklyRevenue = ordersLastWeek.reduce(
+      (sum, o) => sum + (o.total || 0),
+      0
+    );
 
-      totalMerchants: merchants.length,
-      activeMerchants: merchantsWithProducts.size,
-      merchantsWithoutProducts: merchants.length - merchantsWithProducts.size,
+    return {
+      totalCustomers: customers.length,
+      totalOrders,
 
-      productsByBrand: countBy("brand_id"),
-      productsByType: countBy("type_id"),
-      productsByCondition: countBy("condition"),
-
-      price: {
-        min: prices.length ? Math.min(...prices) : 0,
-        max: prices.length ? Math.max(...prices) : 0,
-        average: Number(averagePrice.toFixed(2)),
-        median: medianPrice,
-
-        byCurrency: countBy("currency"),
-        averageByBrand: {},
-        averageByType: {},
-      },
-
-      pinnedRatio:
-        catalog.length === 0 ? 0 : pinnedProducts.length / catalog.length,
-
-      premiumRatio:
-        catalog.filter((p) =>
-          ["high_end", "boutique", "vintage"].includes(p.type_id)
-        ).length / (catalog.length || 1),
-
-      vintageAndRareCount: catalog.filter((p) =>
-        ["vintage", "rare"].includes(p.type_id)
-      ).length,
-
-      publish: {
-        latest:
-          catalog
-            .map((p) => p.publish_date)
-            .filter(Boolean)
-            .sort()
-            .at(-1) || null,
-
-        oldest:
-          catalog
-            .map((p) => p.publish_date)
-            .filter(Boolean)
-            .sort()
-            .at(0) || null,
-
-        last7Days: countByDate(7),
-        last30Days: countByDate(30),
-        perWeek: countByDate(30) / 4,
-      },
-
-      merchantLocation: {
-        byCity,
-        byDistrict,
-      },
-
-      images: {
-        averagePerProduct: imagesStats.total / (catalog.length || 1),
-        withSixImages: imagesStats.withSix,
-        withLessThanThree: imagesStats.withLessThanThree,
-      },
-
-      productCompleteness: {
-        withCompleteSpecs: productsWithCompleteSpecs,
-        withIncompleteSpecs: catalog.length - productsWithCompleteSpecs,
-      },
-
-      valueSignals: {
-        fixedPriceCount: catalog.filter((p) => p.price_type === "fixed").length,
-
-        negotiablePriceCount: catalog.filter(
-          (p) => p.price_type === "negotiable"
-        ).length,
-
-        productsWithHighCondition: catalog.filter((p) => p.condition_score >= 4)
-          .length,
-
-        averageConditionScore:
-          catalog.reduce((a, p) => a + (p.condition_score || 0), 0) /
-          (catalog.length || 1),
-      },
-
-      merchants: {
-        productsPerMerchant: {
-          min: productsPerMerchant.length
-            ? Math.min(...productsPerMerchant)
-            : 0,
-          max: productsPerMerchant.length
-            ? Math.max(...productsPerMerchant)
-            : 0,
-          average:
-            productsPerMerchant.reduce((a, b) => a + b, 0) /
-            (productsPerMerchant.length || 1),
-        },
-        topMerchantsByListings: [],
-      },
-
-      brands: {
-        topBrandsByListings: [],
-        brandMarketValue: {},
+      ordersPerWeek: {
+        orders: ordersLastWeek.length,
+        avgSale:
+          ordersLastWeek.length === 0
+            ? 0
+            : Number((weeklyRevenue / ordersLastWeek.length).toFixed(2)),
       },
     };
+  }
 
-    return metrics;
+  private buildOrderMetrics(orders: Order[]): StoreMetrics["orders"] {
+    const emptyResult: StoreMetrics["orders"] = {
+      lastOrder: "",
+      pendingOrders: 0,
+      completedOrders: 0,
+      cancelledOrders: 0,
+      refundedOrders: 0,
+      ordersPerMonth: [],
+    };
+
+    if (orders.length === 0) {
+      return emptyResult;
+    }
+
+    const pendingOrders = orders.filter((o) => o.status === "pending").length;
+    const completedOrders = orders.filter(
+      (o) => o.status === "completed"
+    ).length;
+    const cancelledOrders = orders.filter(
+      (o) => o.status === "cancelled"
+    ).length;
+    const refundedOrders = orders.filter((o) => o.status === "refunded").length;
+
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const lastOrder = orders.sort((a, b) => (a._id < b._id ? 1 : -1))[0];
+    const year = new Date(lastOrder.created_at).getFullYear();
+
+    const ordersPerMonthMap = orders.reduce<
+      Record<
+        string,
+        {
+          year: number;
+          month: string;
+          totalOrders: number;
+          totalRevenue: number;
+        }
+      >
+    >((acc, order) => {
+      const date = new Date(order.created_at);
+      const y = date.getFullYear();
+      const m = date.toLocaleString("en-US", { month: "short" });
+
+      if (y !== year) return acc;
+
+      if (!acc[m]) {
+        acc[m] = {
+          year,
+          month: m,
+          totalOrders: 0,
+          totalRevenue: 0,
+        };
+      }
+
+      acc[m].totalOrders += 1;
+      acc[m].totalRevenue += order.total || 0;
+
+      return acc;
+    }, {});
+
+    const ordersPerMonth = months.map((month) => ({
+      year,
+      month,
+      totalOrders: ordersPerMonthMap[month]?.totalOrders ?? 0,
+      totalRevenue: ordersPerMonthMap[month]?.totalRevenue ?? 0,
+    }));
+
+    return {
+      lastOrder: lastOrder._id,
+      pendingOrders,
+      completedOrders,
+      cancelledOrders,
+      refundedOrders,
+      ordersPerMonth,
+    };
+  }
+
+  private countProductsUnderStoreCategory(
+    catalog: Product[],
+    categories: Category[]
+  ): number {
+    const childCategoryIds = categories
+      .filter((c) => c.parent_id === "store")
+      .map((c) => c._id);
+
+    if (!childCategoryIds) return 0;
+
+    return catalog.filter((p) => childCategoryIds.includes(p.category_id))
+      .length;
   }
 }

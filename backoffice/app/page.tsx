@@ -5,15 +5,13 @@ import {
   Package,
   PackageCheck,
   PackageX,
-  Pin,
   Store,
   Users,
   Calendar,
-  Image as ImageIcon,
   DollarSign,
-  Guitar,
-  Tag,
-  MapPin,
+  Layers,
+  Receipt,
+  Box,
 } from "lucide-react";
 
 import PageSection from "@/app/components/PageSection";
@@ -27,76 +25,42 @@ import MetricSection from "./components/Dashboard/MetricSection";
 import MetricGrid from "./components/Dashboard/MetricGrid";
 import { MetricCard } from "./components/Dashboard/MetricCard";
 import MetricTable from "./components/Dashboard/MetricTable";
+import { MetricChart } from "./components/Dashboard/MetricChart";
 
 const storeClient = new StoreClient();
 
-export default function Home() {
-  const [metrics, setMetrics] = useState<StoreMetrics>({
-    generatedAt: "",
-    totalProducts: 0,
-    totalActiveProducts: 0,
-    totalDisabledProducts: 0,
-    totalPinnedProducts: 0,
-    totalBrands: 0,
-    brandsWithProducts: 0,
-    totalMerchants: 0,
-    activeMerchants: 0,
-    merchantsWithoutProducts: 0,
-    productsByBrand: {},
-    productsByType: {},
-    productsByCondition: {},
-    price: {
-      min: 0,
-      max: 0,
-      average: 0,
-      median: 0,
-      byCurrency: {},
-      averageByBrand: {},
-      averageByType: {},
+const EMPTY_METRICS: StoreMetrics = {
+  products: {
+    total: 0,
+    active: 0,
+    disabled: 0,
+    storeCategoryTotal: 0,
+  },
+  categories: [],
+  merchants: {
+    total: 0,
+    active: 0,
+  },
+  store: {
+    totalCustomers: 0,
+    totalOrders: 0,
+    ordersPerWeek: {
+      orders: 0,
+      avgSale: 0,
     },
-    pinnedRatio: 0,
-    premiumRatio: 0,
-    vintageAndRareCount: 0,
-    publish: {
-      latest: null,
-      oldest: null,
-      last7Days: 0,
-      last30Days: 0,
-      perWeek: 0,
-    },
-    merchantLocation: {
-      byCity: {},
-      byDistrict: {},
-    },
-    images: {
-      averagePerProduct: 0,
-      withSixImages: 0,
-      withLessThanThree: 0,
-    },
-    productCompleteness: {
-      withCompleteSpecs: 0,
-      withIncompleteSpecs: 0,
-    },
-    valueSignals: {
-      fixedPriceCount: 0,
-      negotiablePriceCount: 0,
-      productsWithHighCondition: 0,
-      averageConditionScore: 0,
-    },
-    merchants: {
-      productsPerMerchant: {
-        min: 0,
-        max: 0,
-        average: 0,
-      },
-      topMerchantsByListings: [],
-    },
-    brands: {
-      topBrandsByListings: [],
-      brandMarketValue: {},
-    },
-  });
+  },
+  orders: {
+    lastOrder: "",
+    pendingOrders: 0,
+    completedOrders: 0,
+    cancelledOrders: 0,
+    refundedOrders: 0,
+    ordersPerMonth: [],
+  },
+};
 
+export default function Home() {
+  const [metrics, setMetrics] = useState<StoreMetrics>(EMPTY_METRICS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -125,73 +89,98 @@ export default function Home() {
       loading={loading}
     >
       <div className="space-y-14">
-        {/* ================= PRODUCTS ================= */}
-        <MetricSection title="Products">
+        {/* ================= STORE ================= */}
+        <MetricSection title="Store">
           <MetricGrid>
             <MetricCard
-              label="Total products"
-              value={metrics?.totalProducts}
-              icon={<Package size={18} />}
+              label="Total customers"
+              value={metrics.store.totalCustomers}
+              icon={<Users size={18} />}
             />
             <MetricCard
-              label="Active products"
-              value={metrics?.totalActiveProducts}
-              variant="success"
-              icon={<PackageCheck size={18} />}
+              label="Total orders"
+              value={metrics.store.totalOrders}
+              icon={<Calendar size={18} />}
             />
             <MetricCard
-              label="Disabled products"
-              value={metrics?.totalDisabledProducts}
-              variant="warning"
-              icon={<PackageX size={18} />}
-            />
-            <MetricCard
-              label="Pinned products"
-              value={metrics?.totalPinnedProducts}
+              label="Orders (last 7 days)"
+              value={metrics.store.ordersPerWeek.orders}
               variant="info"
-              icon={<Pin size={18} />}
-            />
-          </MetricGrid>
-        </MetricSection>
-
-        {/* ================= BRANDS ================= */}
-        <MetricSection title="Brands">
-          <MetricGrid cols={2}>
-            <MetricCard
-              label="Total brands"
-              value={metrics?.totalBrands}
-              icon={<Store size={18} />}
+              icon={<Calendar size={18} />}
             />
             <MetricCard
-              label="Brands with products"
-              value={metrics?.brandsWithProducts}
+              label="Avg sale (last 7 days)"
+              value={metrics.store.ordersPerWeek.avgSale.toLocaleString(
+                "es-PE",
+                {
+                  style: "currency",
+                  currency: "PEN",
+                }
+              )}
               variant="success"
-              icon={<Store size={18} />}
-            />
-          </MetricGrid>
-
-          <MetricGrid cols={2}>
-            <MetricTable
-              title="Products by brand"
-              data={metrics?.productsByBrand}
-              iconResolver={() => Guitar}
+              icon={<DollarSign size={18} />}
             />
           </MetricGrid>
         </MetricSection>
 
-        {/* ================= CLASSIFICATION ================= */}
-        <MetricSection title="Product classification">
+        {/* ================= ORDERS ================= */}
+        <MetricSection title="Orders">
+          <MetricGrid>
+            <MetricCard
+              label="Pending orders"
+              value={metrics.orders.pendingOrders}
+              variant="warning"
+              icon={<Receipt size={18} />}
+            />
+            <MetricCard
+              label="Completed orders"
+              value={metrics.orders.completedOrders}
+              variant="success"
+              icon={<Receipt size={18} />}
+            />
+            <MetricCard
+              label="Cancelled orders"
+              value={metrics.orders.cancelledOrders}
+              variant="danger"
+              icon={<Receipt size={18} />}
+            />
+            <MetricCard
+              label="Refunded orders"
+              value={metrics.orders.refundedOrders}
+              variant="info"
+              icon={<Receipt size={18} />}
+            />
+            <MetricCard
+              label="Last Order"
+              value={metrics.orders.lastOrder}
+              icon={<Receipt size={18} />}
+            />
+          </MetricGrid>
+
           <MetricGrid cols={2}>
-            <MetricTable
-              title="Products by type"
-              data={metrics?.productsByType}
-              iconResolver={() => Tag}
+            <MetricChart
+              title="Orders per month"
+              description="Total number of orders grouped by month"
+              data={metrics.orders.ordersPerMonth.map((o) => ({
+                label: `${o.month} ${o.year}`,
+                value: o.totalOrders,
+              }))}
             />
 
-            <MetricTable
-              title="Products by condition"
-              data={metrics?.productsByCondition}
-              iconResolver={() => Package}
+            <MetricChart
+              title="Revenue per month"
+              description="Total revenue grouped by month (PEN)"
+              data={metrics.orders.ordersPerMonth.map((o) => ({
+                label: `${o.month} ${o.year}`,
+                value: o.totalRevenue,
+              }))}
+              formatter={(value) =>
+                value.toLocaleString("es-PE", {
+                  style: "currency",
+                  currency: "PEN",
+                })
+              }
+              variant="success"
             />
           </MetricGrid>
         </MetricSection>
@@ -201,114 +190,58 @@ export default function Home() {
           <MetricGrid>
             <MetricCard
               label="Total merchants"
-              value={metrics?.totalMerchants}
+              value={metrics.merchants.total}
               icon={<Users size={18} />}
             />
             <MetricCard
               label="Active merchants"
-              value={metrics?.activeMerchants}
+              value={metrics.merchants.active}
               variant="success"
               icon={<Users size={18} />}
-            />
-            <MetricCard
-              label="Without products"
-              value={metrics?.merchantsWithoutProducts}
-              variant="warning"
-              icon={<Users size={18} />}
-            />
-          </MetricGrid>
-
-          <MetricGrid cols={2}>
-            <MetricTable
-              title="Merchants by city"
-              data={metrics?.merchantLocation.byCity}
-              iconResolver={() => MapPin}
             />
           </MetricGrid>
         </MetricSection>
 
-        {/* ================= PRICING ================= */}
-        <MetricSection title="Pricing">
+        {/* ================= PRODUCTS ================= */}
+        <MetricSection title="Products">
           <MetricGrid>
             <MetricCard
-              label="Min price"
-              value={metrics?.price.min}
-              icon={<DollarSign size={18} />}
+              label="Total products"
+              value={metrics.products.total}
+              icon={<Package size={18} />}
             />
             <MetricCard
-              label="Max price"
-              value={metrics?.price.max}
-              icon={<DollarSign size={18} />}
-            />
-            <MetricCard
-              label="Average price"
-              value={Math.round(metrics?.price.average)}
-              icon={<DollarSign size={18} />}
-            />
-            <MetricCard
-              label="Median price"
-              value={metrics?.price.median}
-              icon={<DollarSign size={18} />}
-            />
-          </MetricGrid>
-
-          <MetricGrid cols={2}>
-            <MetricTable
-              title="Products by currency"
-              data={metrics?.price.byCurrency}
-              iconResolver={() => DollarSign}
-            />
-          </MetricGrid>
-        </MetricSection>
-
-        {/* ================= CONTENT QUALITY ================= */}
-        <MetricSection title="Content quality">
-          <MetricGrid cols={2}>
-            <MetricCard
-              label="Avg images / product"
-              value={Number(metrics?.images.averagePerProduct.toFixed(1))}
-              icon={<ImageIcon size={18} />}
-            />
-            <MetricCard
-              label="With 6 images"
-              value={metrics?.images.withSixImages}
+              label="Active products"
+              value={metrics.products.active}
               variant="success"
-              icon={<ImageIcon size={18} />}
+              icon={<PackageCheck size={18} />}
             />
-          </MetricGrid>
-
-          <MetricGrid cols={2}>
             <MetricCard
-              label="Less than 3 images"
-              value={metrics?.images.withLessThanThree}
+              label="Disabled products"
+              value={metrics.products.disabled}
               variant="warning"
-              icon={<ImageIcon size={18} />}
+              icon={<PackageX size={18} />}
+            />
+            <MetricCard
+              label="Store category products"
+              value={metrics.products.storeCategoryTotal}
+              variant="info"
+              icon={<Store size={18} />}
             />
           </MetricGrid>
         </MetricSection>
 
-        {/* ================= ACTIVITY ================= */}
-        <MetricSection title="Publishing activity">
+        {/* ================= CATEGORIES ================= */}
+        <MetricSection title="Categories">
           <MetricGrid cols={2}>
-            <MetricCard
-              label="Last 7 days"
-              value={metrics?.publish.last7Days}
-              icon={<Calendar size={18} />}
-            />
-            <MetricCard
-              label="Last 30 days"
-              value={metrics?.publish.last30Days}
-              icon={<Calendar size={18} />}
-            />
-          </MetricGrid>
-
-          <MetricGrid cols={2}>
-            <MetricCard
-              label="Products / week"
-              value={Number(metrics?.publish.perWeek.toFixed(1))}
-              variant="info"
-              icon={<Calendar size={18} />}
-            />
+            {metrics.categories.map((c) => (
+              <MetricCard
+                key={c.id}
+                label={c.name}
+                value={c.products}
+                icon={<Box size={18} />}
+              />
+            ))}
           </MetricGrid>
         </MetricSection>
       </div>

@@ -9,6 +9,6 @@ export const PRODUCT_STATUS = [
   },
   {
     value: "disabled",
-    label: "disabled",
+    label: "Disabled",
   },
 ] as const;

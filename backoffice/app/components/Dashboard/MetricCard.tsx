@@ -18,7 +18,7 @@ export function MetricCard({
   variant = "neutral",
 }: {
   label: string;
-  value: number;
+  value: string | number;
   suffix?: string;
   icon?: ReactNode;
   variant?: Variant;

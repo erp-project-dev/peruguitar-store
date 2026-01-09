@@ -2,11 +2,10 @@ import { LucideIcon } from "lucide-react";
 
 type MetricTableProps = {
   title?: string;
-  data: Record<string, number>;
+  data: Record<string, number | string>;
   labelHeader?: string;
   valueHeader?: string;
   limit?: number;
-  sort?: "asc" | "desc";
   formatter?: (key: string) => string;
   iconResolver?: (key: string) => LucideIcon | null;
 };
@@ -17,7 +16,6 @@ export default function MetricTable({
   labelHeader = "Label",
   valueHeader = "Total",
   limit,
-  sort = "desc",
   formatter,
   iconResolver,
 }: MetricTableProps) {
@@ -28,7 +26,6 @@ export default function MetricTable({
       value,
       Icon: iconResolver?.(key) ?? null,
     }))
-    .sort((a, b) => (sort === "desc" ? b.value - a.value : a.value - b.value))
     .slice(0, limit ?? Object.keys(data).length);
 
   if (rows.length === 0) {
