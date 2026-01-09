@@ -2,21 +2,18 @@
 import { MongoRepository } from "../repositories/mongo.repository";
 import { ApplicationError } from "../shared/error";
 import { toSlug } from "../helpers/slug.helper";
-import { Product } from "../domain/product.entity";
+import { Product, ProductStatus } from "../domain/product.entity";
 import { ProductSchema } from "../schema/product.schema";
-import { Category } from "../domain/category.entity";
-import { CategorySchema } from "../schema/category.schema";
 
 type FindAllProps = {
   onlyStoreProducts?: boolean;
+  status?: ProductStatus;
 };
 
 export class ProductService {
+  private merchantsFromStore = ["erpproject", "peruguitar"];
+
   private repository = new MongoRepository<Product>("catalog", ProductSchema);
-  private categoryRepository = new MongoRepository<Category>(
-    "categories",
-    CategorySchema
-  );
 
   async findById(id: string): Promise<Product> {
     return this.repository.findById(id);
@@ -25,12 +22,12 @@ export class ProductService {
   async findAll(query?: FindAllProps): Promise<Product[]> {
     const filter: any = {};
 
-    if (query) {
-      const categories = await this.categoryRepository.findAll({
-        parent_id: "store",
-      });
+    if (query?.onlyStoreProducts) {
+      filter.merchant_id = { $in: this.merchantsFromStore };
+    }
 
-      filter.category_id = { $in: categories.map((c) => c._id) };
+    if (query?.status !== undefined) {
+      filter.status = query.status;
     }
 
     return this.repository.findAll(filter);
@@ -54,8 +51,8 @@ export class ProductService {
     return this.repository.update(id, entry);
   }
 
-  private async validateUniqueId(id: string): Promise<void> {
-    const isUnique = await this.repository.isUnique("_id", id);
+  private async validateUniqueId(_id: string): Promise<void> {
+    const isUnique = await this.repository.isUnique({ _id });
 
     if (!isUnique) {
       throw new ApplicationError(

@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, Stars } from "lucide-react";
+import { BadgeCheck, Star, Stars } from "lucide-react";
 
 import { ReviewGetCommand } from "@/features/commands/review/index.command";
 import { Review } from "@/features/types/review.type";
@@ -29,8 +29,12 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
         {reviews.map((review: Review) => (
           <div key={review.id} className="rounded-lg bg-neutral-200 p-4">
             <div className="flex items-center justify-between">
-              <div className="font-semibold text-sm text-neutral-900">
-                {review.customer_name}
+              <div className="flex items-center gap-1">
+                <div className="font-semibold text-sm text-neutral-900">
+                  {review.customer_name}
+                </div>
+
+                <BadgeCheck className="w-4 h-4 text-blue-800" />
               </div>
 
               <div className="flex items-center gap-1">

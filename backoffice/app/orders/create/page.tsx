@@ -35,7 +35,7 @@ export default function CreateOrderPage() {
         const _products = await storeClient.execute<Product[]>(
           StoreCommand.CatalogFindAll,
           {
-            query: { onlyStoreProducts: true },
+            query: { onlyStoreProducts: true, status: "available" },
           }
         );
 
