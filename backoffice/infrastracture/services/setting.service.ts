@@ -30,8 +30,8 @@ export class SettingService {
     return this.repository.delete(id);
   }
 
-  private async validateUniqueId(id: string): Promise<void> {
-    const isUnique = await this.repository.isUnique("_id", id);
+  private async validateUniqueId(_id: string): Promise<void> {
+    const isUnique = await this.repository.isUnique({ _id });
 
     if (!isUnique) {
       throw new ApplicationError(

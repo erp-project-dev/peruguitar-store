@@ -62,6 +62,16 @@ export enum StoreCommand {
   OrderUpdate = "order.update",
   OrderRemove = "order.remove",
 
+  // REVIEWS
+  ReviewFindAll = "review.find_all",
+  ReviewFindById = "review.find_by_id",
+  ReviewCreate = "review.create",
+  ReviewUpdate = "review.update",
+  ReviewRemove = "review.remove",
+
+  // PRODUCT REVIEWS
+  ProductReviewFindProductsWithoutReview = "product_review.find_products_without_review",
+
   // SETTING
   SettingFindAll = "setting.find_all",
   SettingFindById = "setting.find_by_id",

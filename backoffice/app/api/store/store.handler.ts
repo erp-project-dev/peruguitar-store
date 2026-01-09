@@ -19,6 +19,8 @@ import {
   categoryService,
   customerService,
   orderService,
+  reviewService,
+  productReviewService,
 } from "./store.services";
 
 import { CommandHandler } from "./store.type";
@@ -106,6 +108,28 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   },
   [StoreCommand.OrderRemove]: {
     next: (_q, _p, id) => orderService.remove(id!),
+  },
+
+  // REVIEWS
+  [StoreCommand.ReviewFindAll]: {
+    next: () => reviewService.findAll(),
+  },
+  [StoreCommand.ReviewFindById]: {
+    next: (_q, _p, id) => reviewService.findById(id!),
+  },
+  [StoreCommand.ReviewCreate]: {
+    next: (_q, payload) => reviewService.create(payload),
+  },
+  [StoreCommand.ReviewUpdate]: {
+    next: (_q, payload, id) => reviewService.update(id!, payload),
+  },
+  [StoreCommand.ReviewRemove]: {
+    next: (_q, _p, id) => reviewService.remove(id!),
+  },
+
+  // PRODUCT REVIEWS
+  [StoreCommand.ProductReviewFindProductsWithoutReview]: {
+    next: () => productReviewService.findProductsWithoutReview(),
   },
 
   // BRAND

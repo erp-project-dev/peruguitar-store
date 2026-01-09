@@ -9,6 +9,7 @@ import {
   Tag,
   Receipt,
   LucideIcon,
+  Star,
 } from "lucide-react";
 
 export interface SidebarItem {
@@ -83,6 +84,12 @@ export const SIDEBAR_MENU: SidebarEntry[] = [
         label: "Orders",
         icon: Receipt,
         path: "/orders",
+      },
+      {
+        id: "reviews",
+        label: "Reviews",
+        icon: Star,
+        path: "/reviews",
       },
     ],
   },

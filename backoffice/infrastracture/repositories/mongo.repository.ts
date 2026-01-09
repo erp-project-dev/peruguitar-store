@@ -154,26 +154,30 @@ export class MongoRepository<T extends Document> {
     }
   }
 
-  async isUnique<K extends keyof T>(
-    field: K,
-    value: T[K],
-    ignoreId?: string
+  async isUnique(
+    filter: Record<string, any>,
+    ignoreIds?: string | string[]
   ): Promise<boolean> {
     const col = await this.collection();
 
-    const filter: any = {
-      [field]: value,
-    };
+    const finalFilter: any = { ...filter };
 
-    if (ignoreId) {
-      filter._id = { $ne: ignoreId };
+    if (ignoreIds) {
+      finalFilter._id = {
+        $nin: Array.isArray(ignoreIds) ? ignoreIds : [ignoreIds],
+      };
     }
 
-    const exists = await col.findOne(filter, {
+    const exists = await col.findOne(finalFilter, {
       projection: { _id: 1 },
     });
 
     return !exists;
+  }
+
+  async aggregate<R extends Document = T>(pipeline: Document[]): Promise<R[]> {
+    const col = await this.collection();
+    return col.aggregate<R>(pipeline).toArray();
   }
 
   private async prepareAudit(

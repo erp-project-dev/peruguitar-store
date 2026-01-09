@@ -3,12 +3,12 @@ import { ChevronDown } from "lucide-react";
 
 type Option = {
   label: string;
-  value: string;
+  value: string | number;
 };
 
 type SelectProps = {
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: string | number;
+  onChange?: (value: string | number) => void;
   options: Option[];
   placeholder?: string;
   className?: string;

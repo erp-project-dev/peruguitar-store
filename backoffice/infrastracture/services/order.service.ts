@@ -51,6 +51,7 @@ export class OrderService {
       total: item.quantity * item.price,
     }));
   }
+
   private async generateOrderId(): Promise<string> {
     const year = new Date().getFullYear();
     const prefix = `${this.orderPrefix}-${year}-`;

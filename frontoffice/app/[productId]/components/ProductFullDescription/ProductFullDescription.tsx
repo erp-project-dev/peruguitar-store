@@ -36,7 +36,9 @@ export default function ProductFullDescription({
           !open && canExpand ? "fade-mask-text" : ""
         }`}
         style={{
-          maxHeight: open ? ref.current?.scrollHeight : collapsedHeight,
+          maxHeight: open
+            ? (ref.current?.scrollHeight ?? 0) + 16
+            : collapsedHeight,
         }}
       >
         <div ref={ref} className="text-gray-800 markdown-preview">

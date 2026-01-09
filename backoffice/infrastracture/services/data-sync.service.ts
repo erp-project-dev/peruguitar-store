@@ -14,6 +14,7 @@ import { Merchant } from "../domain/merchant.entity";
 import { Brand } from "../domain/brand.entity";
 import { ProductType } from "../domain/product-type.entity";
 import { Category } from "../domain/category.entity";
+import { Review } from "../domain/review.entity";
 
 type EntityType =
   | "merchants"
@@ -21,6 +22,7 @@ type EntityType =
   | "catalog"
   | "brands"
   | "types"
+  | "reviews"
   | "settings";
 
 const EXCLUDED_COLUMNS = [
@@ -68,6 +70,7 @@ export class DataSyncService {
       Brands: this.normalize(collections.brands, "brands"),
       Types: this.normalize(collections.types, "types"),
       Categories: this.normalize(collections.categories, "categories"),
+      Reviews: this.normalize(collections.reviews, "reviews"),
       Settings: this.normalize(
         collections.settings.filter((s) => !s.is_private),
         "settings"
@@ -108,7 +111,7 @@ export class DataSyncService {
   }
 
   private async getCollections(db: Db) {
-    const [categories, catalog, merchants, brands, settings, types] =
+    const [categories, catalog, merchants, brands, settings, reviews, types] =
       await Promise.all([
         db.collection<Category>("categories").find().toArray(),
         db
@@ -118,10 +121,11 @@ export class DataSyncService {
         db.collection<Merchant>("merchants").find().toArray(),
         db.collection<Brand>("brands").find().toArray(),
         db.collection<Setting>("settings").find().toArray(),
+        db.collection<Review>("reviews").find().toArray(),
         db.collection<ProductType>("types").find().toArray(),
       ]);
 
-    return { categories, catalog, merchants, brands, settings, types };
+    return { categories, catalog, merchants, brands, settings, reviews, types };
   }
 
   private getNextRelease(settings: Setting[]): {

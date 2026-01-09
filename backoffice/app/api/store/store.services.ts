@@ -13,6 +13,8 @@ import { UserService } from "@/infrastracture/services/user.service";
 import { CategoryService } from "@/infrastracture/services/category.service";
 import { CustomerService } from "@/infrastracture/services/customer.service";
 import { OrderService } from "@/infrastracture/services/order.service";
+import { ReviewService } from "@/infrastracture/services/review.service";
+import { ProductReviewService } from "@/infrastracture/services/product-review.service";
 
 export const authService = new AuthService();
 export const userService = new UserService();
@@ -28,6 +30,8 @@ export const customerService = new CustomerService();
 export const brandService = new BrandService();
 export const productTypeService = new ProductTypeService();
 export const orderService = new OrderService();
+export const reviewService = new ReviewService();
+export const productReviewService = new ProductReviewService();
 export const settingService = new SettingService();
 
 export const storeMetricsService = new StoreMetricsService();

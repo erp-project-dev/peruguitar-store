@@ -9,7 +9,6 @@ import {
   Users,
   Calendar,
   DollarSign,
-  Layers,
   Receipt,
   Box,
 } from "lucide-react";

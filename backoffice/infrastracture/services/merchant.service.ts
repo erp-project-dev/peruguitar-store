@@ -42,8 +42,8 @@ export class MerchantService {
     return this.repository.update(id, entry);
   }
 
-  private async validateUniqueId(id: string): Promise<void> {
-    const isUnique = await this.repository.isUnique("_id", id);
+  private async validateUniqueId(_id: string): Promise<void> {
+    const isUnique = await this.repository.isUnique({ _id });
 
     if (!isUnique) {
       throw new ApplicationError(
@@ -63,11 +63,7 @@ export class MerchantService {
   ): Promise<void> {
     if (!whatsapp) return;
 
-    const isUnique = await this.repository.isUnique(
-      "whatsapp",
-      whatsapp,
-      ignoreId
-    );
+    const isUnique = await this.repository.isUnique({ whatsapp }, ignoreId);
 
     if (!isUnique) {
       throw new ApplicationError(
@@ -83,7 +79,7 @@ export class MerchantService {
   ): Promise<void> {
     if (!email) return;
 
-    const isUnique = await this.repository.isUnique("email", email, ignoreId);
+    const isUnique = await this.repository.isUnique({ email }, ignoreId);
 
     if (!isUnique) {
       throw new ApplicationError("taken", "Email is already registered");

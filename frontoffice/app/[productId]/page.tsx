@@ -15,6 +15,7 @@ import ProductFullDescription from "./components/ProductFullDescription/ProductF
 import { ProductYoutubeVideo } from "./components/ProductYoutubeVideo";
 import ProductSoldNotice from "./components/ProductSoldNotice";
 import Section from "@/features/components/Section";
+import ProductReviews from "./components/ProductReviews";
 
 export async function generateStaticParams() {
   const { items } = CatalogGetCommand.handle();
@@ -125,7 +126,10 @@ export default async function ProductPage({
         </div>
       </div>
 
+      <ProductReviews productId={product.id} />
+
       <ProductSimilarLising excludedProductId={product.id} />
+
       <ProductDisclaimer />
     </Section>
   );

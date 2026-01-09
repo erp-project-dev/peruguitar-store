@@ -56,7 +56,10 @@ export class CustomerService {
   ): Promise<void> {
     if (!taxId) return;
 
-    const isUnique = await this.repository.isUnique("tax_id", taxId, ignoreId);
+    const isUnique = await this.repository.isUnique(
+      { tax_id: taxId },
+      ignoreId
+    );
 
     if (!isUnique) {
       throw new ApplicationError("taken", "Tax ID is already registered");
