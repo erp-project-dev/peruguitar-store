@@ -11,7 +11,7 @@ export default function Section({
 }: SectionProps) {
   const widthClass =
     width === "full"
-      ? "w-full px-8"
+      ? "w-full px-4 -mt-6 -mb-6"
       : width === "narrow"
       ? "max-w-3xl px-4"
       : "max-w-7xl px-4";

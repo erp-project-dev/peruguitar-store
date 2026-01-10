@@ -23,7 +23,6 @@ import { StoreCommand } from "./api/store/store.command";
 import MetricSection from "./components/Dashboard/MetricSection";
 import MetricGrid from "./components/Dashboard/MetricGrid";
 import { MetricCard } from "./components/Dashboard/MetricCard";
-import MetricTable from "./components/Dashboard/MetricTable";
 import { MetricChart } from "./components/Dashboard/MetricChart";
 
 const storeClient = new StoreClient();
