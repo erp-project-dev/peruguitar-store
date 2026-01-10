@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { Check } from "lucide-react";
 
 import Button from "@/app/components/Form/Button";
 import { ModalFooter } from "@/app/components/Modal/ModalFooter";
@@ -14,30 +15,38 @@ type Props = {
   onSelect: (files: File[]) => void;
 };
 
+type LocalImage = {
+  file: File;
+  edited: boolean;
+};
+
 function formatSize(file: File) {
   return `${Math.round(file.size / 1024)} KB`;
 }
 
 export default function ProductImageUploadPreview({ files, onSelect }: Props) {
-  const [localFiles, setLocalFiles] = useState<File[]>([]);
+  const [localFiles, setLocalFiles] = useState<LocalImage[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    setLocalFiles(files);
+    setLocalFiles(files.map((file) => ({ file, edited: false })));
     setSelectedIndex(null);
   }, [files]);
 
   if (localFiles.length === 0) return null;
 
   const selectedFile =
-    selectedIndex !== null ? localFiles[selectedIndex] : null;
+    selectedIndex !== null ? localFiles[selectedIndex].file : null;
+
+  const allEdited = localFiles.length > 0 && localFiles.every((f) => f.edited);
+  const editedCount = localFiles.filter((f) => f.edited).length;
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_460px] gap-4">
         {/* LEFT: GRID */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 items-start">
-          {localFiles.map((file, index) => {
+          {localFiles.map(({ file, edited }, index) => {
             const url = URL.createObjectURL(file);
             const isSelected = index === selectedIndex;
 
@@ -46,27 +55,46 @@ export default function ProductImageUploadPreview({ files, onSelect }: Props) {
                 key={`${file.name}-${index}`}
                 onClick={() => setSelectedIndex(index)}
                 className={`
-                  cursor-pointer rounded-md border bg-white p-2 transition
+                  relative cursor-pointer rounded-md border p-2 transition
                   ${
-                    isSelected
-                      ? "border-neutral-900 shadow-md"
-                      : "border-neutral-300 hover:border-neutral-400 hover:shadow-sm"
+                    edited
+                      ? "border-emerald-300 bg-emerald-50"
+                      : isSelected
+                      ? "border-neutral-900 bg-white shadow-md"
+                      : "border-neutral-300 bg-white hover:border-neutral-400 hover:shadow-sm"
                   }
                 `}
               >
+                {/* CHECK OVERLAY */}
+                {edited && (
+                  <div className="absolute right-4 top-4 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 shadow transition">
+                    <Check className="h-4 w-4 text-white" />
+                  </div>
+                )}
+
+                {/* IMAGE */}
                 <div className="relative aspect-square overflow-hidden rounded">
                   <Image
                     src={url}
                     alt={file.name}
                     fill
-                    className="object-cover"
+                    className={`object-cover transition ${
+                      edited ? "opacity-95" : ""
+                    }`}
                   />
+
+                  {/* SOFT OVERLAY */}
+                  {edited && (
+                    <div className="pointer-events-none absolute inset-0 bg-emerald-500/5" />
+                  )}
                 </div>
 
+                {/* INFO */}
                 <div className="mt-2 text-xs text-neutral-600">
-                  <p className="truncate font-medium text-neutral-800">
+                  <div className="min-w-0 truncate font-medium text-neutral-800">
                     {file.name}
-                  </p>
+                  </div>
+
                   <p>{formatSize(file)}</p>
                 </div>
               </div>
@@ -74,13 +102,18 @@ export default function ProductImageUploadPreview({ files, onSelect }: Props) {
           })}
         </div>
 
+        {/* RIGHT: EDITOR */}
         <div className="rounded-md border border-neutral-300 bg-neutral-50">
           {selectedFile ? (
             <ProductImageUploadEdit
               file={selectedFile}
               onApply={(editedFile) => {
                 setLocalFiles((prev) =>
-                  prev.map((f, i) => (i === selectedIndex ? editedFile : f))
+                  prev.map((item, i) =>
+                    i === selectedIndex
+                      ? { file: editedFile, edited: true }
+                      : item
+                  )
                 );
 
                 toast.success("Image updated");
@@ -95,21 +128,29 @@ export default function ProductImageUploadPreview({ files, onSelect }: Props) {
         </div>
       </div>
 
+      {/* FOOTER */}
       <ModalFooter>
-        <Button
-          variant="success"
-          size="lg"
-          onClick={() => {
-            onSelect(localFiles);
-            toast.success(
-              `${localFiles.length} image${
-                localFiles.length > 1 ? "s" : ""
-              } uploaded`
-            );
-          }}
-        >
-          Upload images
-        </Button>
+        <div className="flex w-full items-center justify-between">
+          <div className="text-sm text-neutral-500">
+            Edited {editedCount} / {localFiles.length}
+          </div>
+
+          <Button
+            variant="success"
+            size="lg"
+            disabled={!allEdited}
+            onClick={() => {
+              onSelect(localFiles.map((f) => f.file));
+              toast.success(
+                `${localFiles.length} image${
+                  localFiles.length > 1 ? "s" : ""
+                } uploaded`
+              );
+            }}
+          >
+            {allEdited ? "Upload images" : "Edit all images"}
+          </Button>
+        </div>
       </ModalFooter>
     </div>
   );
