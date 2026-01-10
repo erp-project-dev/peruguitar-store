@@ -72,6 +72,9 @@ export enum StoreCommand {
   // PRODUCT REVIEWS
   ProductReviewFindProductsWithoutReview = "product_review.find_products_without_review",
 
+  // PRODUCT ORDER ITEMS
+  ProductOrderItemFindAll = "product_order_item.find_all",
+
   // SETTING
   SettingFindAll = "setting.find_all",
   SettingFindById = "setting.find_by_id",

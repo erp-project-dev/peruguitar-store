@@ -1,7 +1,9 @@
 "use client";
 
-import { OrderItem } from "@/infrastracture/domain/order.entity";
-import { Product } from "@/infrastracture/domain/product.entity";
+import {
+  OrderItem,
+  ProductOrderItem,
+} from "@/infrastracture/domain/order.entity";
 import { Customer } from "@/infrastracture/domain/customer.entity";
 
 import OrderFormItems from "./OrderFormItems";
@@ -21,7 +23,7 @@ const storeClient = new StoreClient();
 interface OrderFormProps {
   mode: "create" | "edit" | "view";
   order: OrderEntryForm;
-  products: Product[];
+  products: ProductOrderItem[];
 
   onChange: <K extends keyof OrderEntryForm>(
     key: K,

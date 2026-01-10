@@ -4,6 +4,7 @@ import { ChevronDown } from "lucide-react";
 type Option = {
   label: string;
   value: string | number;
+  group?: string; // 👈 OPCIONAL, NO JODAS
 };
 
 type SelectProps = {
@@ -14,6 +15,10 @@ type SelectProps = {
   className?: string;
   disabled?: boolean;
 };
+
+type RenderItem =
+  | { type: "group"; label: string }
+  | { type: "option"; option: Option };
 
 const baseClasses =
   "w-full rounded-md border border-neutral-300 px-3 py-2 pr-9 text-sm text-neutral-900 " +
@@ -29,7 +34,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
   const containerRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [activeIndex, setActiveIndex] = useState<number>(-1);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const selected = useMemo(
     () => options.find((o) => o.value === value),
@@ -43,13 +48,54 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
     );
   }, [options, search]);
 
+  const renderItems = useMemo<RenderItem[]>(() => {
+    const hasGroups = filteredOptions.some((o) => o.group);
+
+    if (!hasGroups) {
+      return filteredOptions.map((o) => ({ type: "option", option: o }));
+    }
+
+    const grouped = new Map<string, Option[]>();
+    const ungrouped: Option[] = [];
+
+    filteredOptions.forEach((opt) => {
+      if (opt.group) {
+        if (!grouped.has(opt.group)) grouped.set(opt.group, []);
+        grouped.get(opt.group)!.push(opt);
+      } else {
+        ungrouped.push(opt);
+      }
+    });
+
+    const items: RenderItem[] = [];
+
+    grouped.forEach((opts, group) => {
+      items.push({ type: "group", label: group });
+      opts.forEach((o) => items.push({ type: "option", option: o }));
+    });
+
+    if (ungrouped.length) {
+      items.push({ type: "group", label: "Others" });
+      ungrouped.forEach((o) => items.push({ type: "option", option: o }));
+    }
+
+    return items;
+  }, [filteredOptions]);
+
+  const flatOptions = useMemo(
+    () =>
+      renderItems.filter(
+        (i): i is { type: "option"; option: Option } => i.type === "option"
+      ),
+    [renderItems]
+  );
+
   const selectOption = (opt: Option) => {
     if (disabled) return;
 
     setOpen(false);
     setSearch("");
     setActiveIndex(-1);
-
     onChange?.(opt.value);
   };
 
@@ -58,9 +104,10 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
       ref={containerRef}
       className="relative"
       onBlur={(e) => {
-        if (disabled) return;
-
-        if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+        if (
+          !disabled &&
+          !containerRef.current?.contains(e.relatedTarget as Node)
+        ) {
           setOpen(false);
           setSearch("");
           setActiveIndex(-1);
@@ -72,15 +119,8 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
         value={search || selected?.label || ""}
         placeholder={placeholder}
         disabled={disabled}
-        aria-disabled={disabled}
-        onFocus={() => {
-          if (disabled) return;
-          setOpen(true);
-        }}
-        onClick={() => {
-          if (disabled) return;
-          setOpen(true);
-        }}
+        onFocus={() => !disabled && setOpen(true)}
+        onClick={() => !disabled && setOpen(true)}
         onChange={(e) => {
           if (disabled) return;
           setSearch(e.target.value);
@@ -98,7 +138,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
 
           if (e.key === "ArrowDown") {
             e.preventDefault();
-            setActiveIndex((i) => Math.min(i + 1, filteredOptions.length - 1));
+            setActiveIndex((i) => Math.min(i + 1, flatOptions.length - 1));
           }
 
           if (e.key === "ArrowUp") {
@@ -108,8 +148,8 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
 
           if (e.key === "Enter" && activeIndex >= 0) {
             e.preventDefault();
-            const opt = filteredOptions[activeIndex];
-            if (opt) selectOption(opt);
+            const opt = flatOptions[activeIndex];
+            if (opt) selectOption(opt.option);
           }
 
           if (e.key === "Escape") {
@@ -129,31 +169,47 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(function Select(
         className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 ${
           disabled ? "text-neutral-300" : "text-neutral-400"
         }`}
-        strokeWidth={2}
       />
 
       {open && !disabled && (
         <div className="absolute z-50 mt-1 max-h-56 w-full overflow-auto rounded-md border border-neutral-200 bg-white shadow-sm">
-          {filteredOptions.length === 0 && (
+          {renderItems.length === 0 && (
             <div className="px-3 py-2 text-sm text-neutral-400">No results</div>
           )}
 
-          {filteredOptions.map((opt, index) => (
-            <button
-              key={opt.value}
-              type="button"
-              tabIndex={-1}
-              className={`w-full px-3 py-2 text-left text-sm ${
-                index === activeIndex
-                  ? "bg-neutral-100"
-                  : "hover:bg-neutral-100"
-              }`}
-              onMouseEnter={() => setActiveIndex(index)}
-              onClick={() => selectOption(opt)}
-            >
-              {opt.label}
-            </button>
-          ))}
+          {renderItems.map((item, idx) => {
+            if (item.type === "group") {
+              return (
+                <div
+                  key={`group-${item.label}-${idx}`}
+                  className="px-3 py-1 text-xs font-semibold uppercase text-neutral-500"
+                >
+                  {item.label}
+                </div>
+              );
+            }
+
+            const optionIndex = flatOptions.findIndex(
+              (o) => o.option.value === item.option.value
+            );
+
+            return (
+              <button
+                key={item.option.value}
+                type="button"
+                tabIndex={-1}
+                className={`w-full px-3 py-2 text-left text-sm ${
+                  optionIndex === activeIndex
+                    ? "bg-neutral-100"
+                    : "hover:bg-neutral-100"
+                }`}
+                onMouseEnter={() => setActiveIndex(optionIndex)}
+                onClick={() => selectOption(item.option)}
+              >
+                {item.option.label}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

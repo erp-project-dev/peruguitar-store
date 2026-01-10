@@ -2,7 +2,6 @@ import { z } from "zod";
 import { BaseSchema } from "./base.schema";
 
 export const OrderItemSchema = z.object({
-  type: z.enum(["store", "listing"]),
   product_id: z.string().min(1),
   name: z.string().min(1),
   quantity: z.number().int().positive(),

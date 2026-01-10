@@ -4,10 +4,17 @@ export type OrderStatus = "pending" | "completed" | "cancelled" | "refunded";
 
 export type TaxType = "dni" | "ruc" | "passport";
 
-export type OrderItemType = "store" | "listing";
+export type ProductOrderItemType = "store" | "listing";
+
+export interface ProductOrderItem {
+  type: ProductOrderItemType;
+  product_id: string;
+  name: string;
+  price: number;
+  currency: string;
+}
 
 export interface OrderItem {
-  type: OrderItemType;
   product_id: string;
   name: string;
   quantity: number;

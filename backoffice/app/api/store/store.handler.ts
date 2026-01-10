@@ -21,6 +21,7 @@ import {
   orderService,
   reviewService,
   productReviewService,
+  productOrderItemService,
 } from "./store.services";
 
 import { CommandHandler } from "./store.type";
@@ -130,6 +131,11 @@ export const StoreCommandHandler: Record<StoreCommand, CommandHandler> = {
   // PRODUCT REVIEWS
   [StoreCommand.ProductReviewFindProductsWithoutReview]: {
     next: () => productReviewService.findProductsWithoutReview(),
+  },
+
+  // PRODUCT ORDER ITEMS
+  [StoreCommand.ProductOrderItemFindAll]: {
+    next: () => productOrderItemService.findAll(),
   },
 
   // BRAND

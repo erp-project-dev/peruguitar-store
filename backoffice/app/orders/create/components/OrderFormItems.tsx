@@ -3,12 +3,14 @@
 import Input from "@/app/components/Form/Input";
 import Select from "@/app/components/Form/Select";
 
-import { OrderItem } from "@/infrastracture/domain/order.entity";
-import { Product } from "@/infrastracture/domain/product.entity";
+import {
+  OrderItem,
+  ProductOrderItem,
+} from "@/infrastracture/domain/order.entity";
 
 interface OrderFormItemsProps {
   items: OrderItem[];
-  products: Product[];
+  products: ProductOrderItem[];
   currency: string;
   onChange: (items: OrderItem[]) => void;
   readonly?: boolean;
@@ -25,17 +27,19 @@ export default function OrderFormItems({
   const addProduct = (productId: string) => {
     if (readonly) return;
 
-    const product = products.find((p) => p._id === productId);
+    const product = products.find((p) => p.product_id === productId);
     if (!product) return;
 
-    if (items.some((i) => i.product_id === product._id)) return;
+    if (items.some((i) => i.product_id === product.product_id)) return;
 
     const price = product.price ?? 0;
 
     const newItem: OrderItem = {
-      type: "store",
-      product_id: product._id,
-      name: product.name,
+      product_id: product.product_id,
+      name:
+        product.type === "listing"
+          ? `Publicación en marketplace: ${product.name}`
+          : product.name,
       quantity: 1,
       price,
       total: price,
@@ -71,12 +75,13 @@ export default function OrderFormItems({
         <Select
           className="w-full rounded-md border px-3 py-2 text-sm"
           placeholder="Add product..."
-          onChange={(value) => value && addProduct(value)}
+          onChange={(value) => value && addProduct(String(value))}
           options={products
-            .filter((p) => !items.some((i) => i.product_id === p._id))
+            .filter((p) => !items.some((i) => i.product_id === p.product_id))
             .map((p) => ({
+              group: p.type,
               label: p.name,
-              value: p._id,
+              value: p.product_id,
             }))}
         />
       )}
@@ -90,7 +95,6 @@ export default function OrderFormItems({
           <table className="w-full text-sm">
             <thead className="bg-neutral-100">
               <tr>
-                <th className="px-3 py-2 w-20 text-left">Type</th>
                 <th className="px-3 py-2 text-left">Product</th>
                 <th className="px-3 py-2 text-right w-20">Qty</th>
                 <th className="px-3 py-2 text-right w-28">Price</th>
@@ -105,8 +109,6 @@ export default function OrderFormItems({
                   key={item.product_id}
                   className="border-t border-neutral-300"
                 >
-                  <td className="px-3 py-2">{item.type}</td>
-
                   <td className="px-3 py-2">{item.name}</td>
 
                   <td className="px-3 py-2 text-right">

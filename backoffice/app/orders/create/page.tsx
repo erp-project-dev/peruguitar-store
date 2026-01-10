@@ -16,7 +16,7 @@ import { StoreClient } from "@/app/common/store.client";
 
 import OrderForm from "./components/OrderForm";
 import { orderEntryForm, OrderEntryForm } from "../shared/order.entry";
-import { Order } from "@/infrastracture/domain/order.entity";
+import { Order, ProductOrderItem } from "@/infrastracture/domain/order.entity";
 
 const storeClient = new StoreClient();
 
@@ -27,16 +27,13 @@ export default function CreateOrderPage() {
     ...orderEntryForm,
   }));
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductOrderItem[]>([]);
 
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const _products = await storeClient.execute<Product[]>(
-          StoreCommand.CatalogFindAll,
-          {
-            query: { onlyStoreProducts: true, status: "available" },
-          }
+        const _products = await storeClient.execute<ProductOrderItem[]>(
+          StoreCommand.ProductOrderItemFindAll
         );
 
         setProducts(_products);

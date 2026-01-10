@@ -6,13 +6,10 @@ import { Product, ProductStatus } from "../domain/product.entity";
 import { ProductSchema } from "../schema/product.schema";
 
 type FindAllProps = {
-  onlyStoreProducts?: boolean;
   status?: ProductStatus;
 };
 
 export class ProductService {
-  private merchantsFromStore = ["erpproject", "peruguitar"];
-
   private repository = new MongoRepository<Product>("catalog", ProductSchema);
 
   async findById(id: string): Promise<Product> {
@@ -21,10 +18,6 @@ export class ProductService {
 
   async findAll(query?: FindAllProps): Promise<Product[]> {
     const filter: any = {};
-
-    if (query?.onlyStoreProducts) {
-      filter.merchant_id = { $in: this.merchantsFromStore };
-    }
 
     if (query?.status !== undefined) {
       filter.status = query.status;

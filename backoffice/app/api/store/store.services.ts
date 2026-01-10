@@ -15,6 +15,7 @@ import { CustomerService } from "@/infrastracture/services/customer.service";
 import { OrderService } from "@/infrastracture/services/order.service";
 import { ReviewService } from "@/infrastracture/services/review.service";
 import { ProductReviewService } from "@/infrastracture/services/product-review.service";
+import { ProductOrderItemService } from "@/infrastracture/services/product-order-item.service";
 
 export const authService = new AuthService();
 export const userService = new UserService();
@@ -32,6 +33,7 @@ export const productTypeService = new ProductTypeService();
 export const orderService = new OrderService();
 export const reviewService = new ReviewService();
 export const productReviewService = new ProductReviewService();
+export const productOrderItemService = new ProductOrderItemService();
 export const settingService = new SettingService();
 
 export const storeMetricsService = new StoreMetricsService();
