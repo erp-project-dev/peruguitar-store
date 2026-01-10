@@ -2,10 +2,10 @@
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/chunks/f943d050e3deb9f8.css","style"]
-:HL["/catalog/ed-vasquez/ibanez-rg-550-genesis-purple-neon-a1732df5.jpg","image"]
-:HL["/catalog/kikekluver/ibanez-jem777vbk-1989-1.jpg","image"]
-:HL["/catalog/santiagocasas/ltd-ec256-dimarzio-1.jpg","image"]
 :HL["/catalog/peruguitar/puas-pg-mark-i-para-guitarra-pack-x2-de-5-mm-6c2e1656.jpg","image"]
-:HL["/catalog/lucianotello/silvertone-u1-1960-1.jpg","image"]
-:HL["/catalog/victorvera/fender-american-professional-ii-1.jpg","image"]
-0:{"buildId":"afKQMEsTp3jQf3XL9lFqz","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"fender-stratocaster-american-ultra","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+:HL["/catalog/diegoandre/fender-telecaster-usa-avri-52-reissue-2008-upgrades-premium-1.jpg","image"]
+:HL["/catalog/percy-flores/produccion-musical-con-percy-flores-70269e80.jpg","image"]
+:HL["/catalog/ricardoroa/esp-e2-m1-made-in-japan-1.jpeg","image"]
+:HL["/catalog/jordisanmarti/prs-mccarty-usa-2016-dark-cherry-burst-1.jpg","image"]
+:HL["/catalog/santiagocasas/ltd-ec256-dimarzio-1.jpg","image"]
+0:{"buildId":"3k_V3aXARM2t_Lpdqn8IB","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"fender-stratocaster-american-ultra","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
