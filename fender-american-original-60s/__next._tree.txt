@@ -2,10 +2,10 @@
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/chunks/f943d050e3deb9f8.css","style"]
-:HL["/catalog/kikekluver/ibanez-jem777vbk-1989-1.jpg","image"]
-:HL["/catalog/martincamasca/custom-profesional-dimarzio-sperzel-1.jpg","image"]
-:HL["/catalog/mariodiaz/gibson-les-paul-studio-1.jpg","image"]
-:HL["/catalog/santiagocasas/ltd-ec256-dimarzio-1.jpg","image"]
-:HL["/catalog/peruguitar/puas-pg-mark-i-para-guitarra-pack-x2-de-5-mm-6c2e1656.jpg","image"]
+:HL["/catalog/cesarneyra/musicman-jp6-1.jpg","image"]
 :HL["/catalog/diegoandre/fender-telecaster-usa-avri-52-reissue-2008-upgrades-premium-1.jpg","image"]
-0:{"buildId":"3k_V3aXARM2t_Lpdqn8IB","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"fender-american-original-60s","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+:HL["/catalog/erpproject/erp-project-guitarrista-de-sesion-para-grabaciones-y-produccion-080e214d.jpg","image"]
+:HL["/catalog/ricardougarte/ibanez-rg-565-japonesa-1.jpg","image"]
+:HL["/catalog/omar-ramirez-risco/manos-de-acero-44b6e080.jpg","image"]
+:HL["/catalog/martincamasca/prs-se-custom-24-floyd-1.jpg","image"]
+0:{"buildId":"Tsmpois4pirL5RL8CoBDq","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"fender-american-original-60s","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
