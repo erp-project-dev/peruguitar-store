@@ -8,7 +8,7 @@
     "task:cards": "node worker-cards.js",
     "task:optz": "node worker-optz.js",
     "task:build": "npm run task:read && npm run task:cards",
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

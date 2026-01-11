@@ -1,0 +1,50 @@
+#!/bin/bash
+
+ROOT_DIR="/Users/eduardorodriguezpatino/Apps/peruguitar/store"
+
+C_BLUE="\033[0;34m"
+C_GREEN="\033[0;32m"
+C_RESET="\033[0m"
+
+info() { echo -e "${C_BLUE}pg${C_RESET} :: $1"; }
+step() { echo -e "  - $1"; }
+ok()   { echo -e "  ${C_GREEN}✓${C_RESET} $1"; }
+
+run_projects() {
+  info "starting projects"
+
+  step "backoffice"
+  (cd "$ROOT_DIR/backoffice" && npm run dev > /dev/null 2>&1 &)
+
+  step "frontoffice"
+  (cd "$ROOT_DIR/frontoffice" && npm run dev > /dev/null 2>&1 &)
+
+  ok "servers booting"
+}
+
+stop_projects() {
+  info "stopping projects"
+  pkill -f "npm run dev"
+  ok "all dev processes stopped"
+}
+
+status_projects() {
+  info "status"
+  ps aux | grep "npm run dev" | grep -v grep \
+    && ok "dev processes running" \
+    || echo "  - no dev processes running"
+}
+
+case "$1" in
+  run)      run_projects ;;
+  stop)     stop_projects ;;
+  restart)  stop_projects && run_projects ;;
+  status)   status_projects ;;
+  *)
+    info "usage"
+    echo "  pg run       start projects"
+    echo "  pg stop      stop projects"
+    echo "  pg restart   restart projects"
+    echo "  pg status    show status"
+    ;;
+esac
