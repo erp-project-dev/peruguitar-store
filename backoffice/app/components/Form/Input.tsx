@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { forwardRef } from "react";
 
-type InputType = "text" | "number" | "textarea";
+type InputType = "text" | "number" | "textarea" | "password" | "email";
 
 type InputProps = {
   type?: InputType;
-  value?: string | number;
-  onChange?: (value: string) => void;
+  value?: any;
+  onChange?: (value: any) => void;
   placeholder?: string;
   rows?: number;
   className?: string;

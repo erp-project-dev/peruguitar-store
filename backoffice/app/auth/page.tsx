@@ -4,6 +4,8 @@ import { useState } from "react";
 import { StoreClient } from "../common/store.client";
 import { StoreCommand } from "../api/store/store.command";
 import { useRouter } from "next/navigation";
+import Input from "../components/Form/Input";
+import Button from "../components/Form/Button";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -67,10 +69,9 @@ export default function LoginPage() {
           <label className="mb-1 block text-sm font-medium text-neutral-700">
             Email
           </label>
-          <input
-            type="email"
+          <Input
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(value) => setEmail(value)}
             className="w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-900 focus:outline-none"
             placeholder="you@example.com"
           />
@@ -80,22 +81,22 @@ export default function LoginPage() {
           <label className="mb-1 block text-sm font-medium text-neutral-700">
             Password
           </label>
-          <input
+          <Input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(value) => setPassword(value)}
             className="w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-900 focus:outline-none"
             placeholder="••••••••"
           />
         </div>
 
-        <button
+        <Button
           type="submit"
           disabled={loading}
           className="w-full rounded bg-neutral-900 px-4 py-4 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-60 cursor-pointer"
         >
           {loading ? "Signing in..." : "Sign in"}
-        </button>
+        </Button>
       </form>
     </div>
   );

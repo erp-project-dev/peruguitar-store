@@ -20,10 +20,24 @@ export class ProductReviewService {
       {
         $lookup: {
           from: "reviews",
-          localField: "items.product_id",
-          foreignField: "product_id",
+          let: {
+            productId: "$items.product_id",
+            orderId: "$_id",
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$product_id", "$$productId"] },
+                    { $eq: ["$order_id", "$$orderId"] },
+                  ],
+                },
+              },
+            },
+            { $limit: 1 },
+          ],
           as: "review",
-          pipeline: [{ $limit: 1 }],
         },
       },
       {

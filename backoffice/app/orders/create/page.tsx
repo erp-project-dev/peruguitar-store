@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Save, Undo } from "lucide-react";
 
-import { Product } from "@/infrastracture/domain/product.entity";
-
 import PageSection from "@/app/components/PageSection";
 import Button from "@/app/components/Form/Button";
 

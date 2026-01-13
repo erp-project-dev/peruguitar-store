@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { forwardRef, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 type Option = {
   label: string;
   value: string | number;
-  group?: string; // 👈 OPCIONAL, NO JODAS
+  group?: string;
 };
 
 type SelectProps = {
-  value?: string | number;
-  onChange?: (value: string | number) => void;
+  value?: any;
+  onChange?: (value: any) => void;
   options: Option[];
   placeholder?: string;
   className?: string;

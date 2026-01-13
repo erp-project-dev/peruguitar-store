@@ -4,6 +4,7 @@ import { MongoRepository } from "../repositories/mongo.repository";
 import { ApplicationError } from "../shared/error";
 import { CustomerSchema } from "../schema/customer.schema";
 import { ObjectId } from "mongodb";
+import { Order } from "../domain/order.entity";
 
 type FindAllProps = {
   name?: string;
@@ -47,6 +48,19 @@ export class CustomerService {
   }
 
   async remove(id: string): Promise<void> {
+    const referencedInOrders = await this.repository.isReferencedById<Order>(
+      "orders",
+      "customer_id",
+      id
+    );
+
+    if (referencedInOrders) {
+      throw new ApplicationError(
+        "in-use",
+        "Customer could not be removed, is referenced by another entity"
+      );
+    }
+
     return this.repository.delete(id);
   }
 

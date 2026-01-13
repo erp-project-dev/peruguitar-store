@@ -19,6 +19,6 @@ export class ReviewGetCommand {
       );
     }
 
-    return result;
+    return result.sort((a, b) => b.review_date.localeCompare(a.review_date));
   }
 }
