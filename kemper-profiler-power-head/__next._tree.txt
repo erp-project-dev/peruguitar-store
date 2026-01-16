@@ -2,10 +2,10 @@
 :HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/chunks/f943d050e3deb9f8.css","style"]
-:HL["/catalog/moshegarcia-saldana/fender-telecaster-american-professional-i-sunburst-19e75dc3.jpg","image"]
+:HL["/catalog/lucianotello/silvertone-u1-1960-1.jpg","image"]
+:HL["/catalog/ricardoroa/fender-player-plus-stratocaster-tequila-sunrise-2024-made-in-mexico-1.jpeg","image"]
+:HL["/catalog/koko-rengifo/clases-de-guitarra-electrica-con-koko-rengifo-1a56aef9.jpg","image"]
+:HL["/catalog/jordisanmarti/jackson-soloist-sl1-usa-select-custom-1.jpg","image"]
+:HL["/catalog/victorvera/fender-american-professional-ii-1.jpg","image"]
 :HL["/catalog/ricardoroa/esp-e2-m1-made-in-japan-1.jpeg","image"]
-:HL["/catalog/ed-vasquez/ibanez-rg-550-genesis-purple-neon-a1732df5.jpg","image"]
-:HL["/catalog/peruguitar/puas-pg-mark-i-para-guitarra-pack-x2-de-5-mm-6c2e1656.jpg","image"]
-:HL["/catalog/percy-flores/produccion-musical-con-percy-flores-70269e80.jpg","image"]
-:HL["/catalog/jordisanmarti/prs-mccarty-usa-2016-dark-cherry-burst-1.jpg","image"]
-0:{"buildId":"a5XS6ij5wTiuvpkafK68x","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"kemper-profiler-power-head","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"Ai-idruW5SrfoU_v6m5L3","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"productId","paramType":"d","paramKey":"kemper-profiler-power-head","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
