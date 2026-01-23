@@ -45,7 +45,7 @@ export default function ProductImageUploadEdit({ file, onApply }: Props) {
         y: Math.min(0, Math.max(minY, y)),
       };
     },
-    [zoom]
+    [zoom],
   );
 
   const draw = useCallback(() => {
@@ -71,7 +71,7 @@ export default function ProductImageUploadEdit({ file, onApply }: Props) {
       offset.x * scaleX,
       offset.y * scaleY,
       img.width * zoom * scaleX,
-      img.height * zoom * scaleY
+      img.height * zoom * scaleY,
     );
 
     ctx.filter = "none";
@@ -115,8 +115,8 @@ export default function ProductImageUploadEdit({ file, onApply }: Props) {
     setOffset((o) =>
       clampOffset(
         o.x + e.movementX * (EXPORT_WIDTH / VIEW_WIDTH),
-        o.y + e.movementY * (EXPORT_HEIGHT / VIEW_HEIGHT)
-      )
+        o.y + e.movementY * (EXPORT_HEIGHT / VIEW_HEIGHT),
+      ),
     );
   };
 
@@ -148,7 +148,7 @@ export default function ProductImageUploadEdit({ file, onApply }: Props) {
         new File([blob], file.name, {
           type: "image/jpeg",
           lastModified: Date.now(),
-        })
+        }),
       );
     }, "image/jpeg");
   };
