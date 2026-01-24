@@ -26,7 +26,7 @@ export default function DataTableEditRow<T extends { _id: string }>({
   onCancel,
 }: DataTableEditRowProps<T>) {
   return (
-    <tr className="border-t border-neutral-100 bg-neutral-50">
+    <tr key={row._id} className="border-t border-neutral-100 bg-neutral-50">
       {columns.map((col) => {
         const rawValue = draft[col.key];
 

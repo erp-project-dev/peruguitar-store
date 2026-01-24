@@ -24,7 +24,10 @@ export default function DataTableRow<T extends { _id: string }>({
   onRemove,
 }: DataTableRowProps<T>) {
   return (
-    <tr className="border-t border-neutral-100 hover:bg-neutral-50">
+    <tr
+      key={row._id}
+      className="border-t border-neutral-100 hover:bg-neutral-50"
+    >
       {columns.map((col) => {
         const value = row[col.key];
         const truncated = col.truncate ?? true;
@@ -33,7 +36,7 @@ export default function DataTableRow<T extends { _id: string }>({
           <td
             key={String(col.key)}
             className={`px-4 py-4 ${truncated ? "truncate" : ""} ${alignClass(
-              col.align
+              col.align,
             )}`}
           >
             {col.render ? col.render(value, row) : String(value ?? "")}

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
-import { Pin, PinOff, Check, X, Plus, ImageIcon } from "lucide-react";
+import { Pin, PinOff, Check, X, Plus, ImageIcon, Share2 } from "lucide-react";
 
 import { Product, ProductStatus } from "@/infrastracture/domain/product.entity";
 
@@ -17,10 +17,12 @@ import { StoreCommand } from "@/app/api/store/store.command";
 import DataTable from "../components/Form/DataTable/DataTable";
 import Button from "../components/Form/Button";
 import { getPublicImagePath } from "../common/helpers/product.helper";
+import ProductReelShareModal from "./components/ProductReelShare";
 
 const storeClient = new StoreClient();
 
 export default function Catalog() {
+  const [reelProduct, setReelProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +34,7 @@ export default function Catalog() {
         setLoading(true);
 
         const data = await storeClient.execute<Product[]>(
-          StoreCommand.CatalogFindAll
+          StoreCommand.CatalogFindAll,
         );
 
         setProducts(data);
@@ -209,10 +211,49 @@ export default function Catalog() {
               }
             },
           },
+
+          {
+            key: "images",
+            label: "Reel",
+            width: 100,
+            align: "center",
+            render: (_value: string[], row) => {
+              const hasImage =
+                Array.isArray(row.images) && row.images.length > 0;
+
+              return (
+                <button
+                  type="button"
+                  disabled={!hasImage}
+                  onClick={() => setReelProduct(row)}
+                  className="inline-flex items-center justify-center
+          h-9 w-9 rounded-full
+          hover:bg-neutral-100
+          text-neutral-600 hover:text-neutral-900
+          transition
+          disabled:opacity-40 disabled:cursor-not-allowed"
+                  title="Generar Reel"
+                >
+                  <Share2 className="h-4 w-4" />
+                </button>
+              );
+            },
+          },
         ]}
         actions={["remove"]}
         onRemove={handleRemove}
       />
+
+      {reelProduct && (
+        <ProductReelShareModal
+          open={!!reelProduct.images.length}
+          image={getPublicImagePath(reelProduct.images[0])}
+          name={reelProduct.name}
+          price={reelProduct.price ?? 0}
+          currency={reelProduct.currency}
+          onClose={() => setReelProduct(null)}
+        />
+      )}
     </PageSection>
   );
 }

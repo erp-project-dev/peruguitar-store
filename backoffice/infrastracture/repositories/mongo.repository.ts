@@ -15,7 +15,7 @@ type UpdateData<T> = Partial<Omit<T, "_id" | "created_at" | "updated_at">>;
 export class MongoRepository<T extends Document> {
   constructor(
     private readonly collectionName: string,
-    private readonly validator: ZodObject
+    private readonly validator: ZodObject,
   ) {}
 
   private async collection() {
@@ -32,16 +32,39 @@ export class MongoRepository<T extends Document> {
     if (!entity) {
       throw new ApplicationError(
         "not-found",
-        `${this.collectionName} with id '${id}' could not be found`
+        `${this.collectionName} with id '${id}' could not be found`,
       );
     }
 
     return entity;
   }
 
+  async findByIds(ids: string[]): Promise<T[]> {
+    const col = await this.collection();
+
+    if (!ids.length) {
+      return [];
+    }
+
+    const entities = (await col
+      .find({
+        _id: { $in: ids },
+      } as Filter<T>)
+      .toArray()) as T[];
+
+    if (!entities.length) {
+      throw new ApplicationError(
+        "not-found",
+        `${this.collectionName} with ids '${ids.join(", ")}' could not be found`,
+      );
+    }
+
+    return entities;
+  }
+
   async findOne(
     filter: Filter<T>,
-    options?: { sort?: Sort }
+    options?: { sort?: Sort },
   ): Promise<T | null> {
     const col = await this.collection();
 
@@ -56,7 +79,7 @@ export class MongoRepository<T extends Document> {
     if (results.length > 1) {
       throw new ApplicationError(
         "conflict",
-        `${this.collectionName} query returned more than one result`
+        `${this.collectionName} query returned more than one result`,
       );
     }
 
@@ -66,7 +89,7 @@ export class MongoRepository<T extends Document> {
   async isReferencedById<T>(
     targetCollection: string,
     key: keyof T,
-    id: string
+    id: string,
   ): Promise<boolean> {
     const db: Db = await getDbInstance();
     const col = db.collection<BaseEntity>(targetCollection);
@@ -85,14 +108,14 @@ export class MongoRepository<T extends Document> {
   async isReferencedInArray<T>(
     targetCollection: string,
     key: keyof T,
-    id: string
+    id: string,
   ): Promise<boolean> {
     const db: Db = await getDbInstance();
     const col = db.collection<BaseEntity>(targetCollection);
 
     const exists = await col.findOne(
       { [key as string]: id },
-      { projection: { _id: 1 } }
+      { projection: { _id: 1 } },
     );
 
     return Boolean(exists);
@@ -129,7 +152,7 @@ export class MongoRepository<T extends Document> {
       if (result.matchedCount === 0) {
         throw new ApplicationError(
           "not-found",
-          `${this.collectionName} with id '${id}' could not be found`
+          `${this.collectionName} with id '${id}' could not be found`,
         );
       }
 
@@ -149,14 +172,14 @@ export class MongoRepository<T extends Document> {
     if (result.deletedCount === 0) {
       throw new ApplicationError(
         "not-found",
-        `${this.collectionName} with id '${id}' could not be found`
+        `${this.collectionName} with id '${id}' could not be found`,
       );
     }
   }
 
   async isUnique(
     filter: Record<string, any>,
-    ignoreIds?: string | string[]
+    ignoreIds?: string | string[],
   ): Promise<boolean> {
     const col = await this.collection();
 
@@ -182,7 +205,7 @@ export class MongoRepository<T extends Document> {
 
   private async prepareAudit(
     entry: Partial<BaseEntity>,
-    type: "insert" | "update"
+    type: "insert" | "update",
   ) {
     const newEntry = { ...entry };
     const currentUser = await getAuthUser();
